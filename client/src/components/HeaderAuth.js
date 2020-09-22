@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AuthHeader = () => {
+const AuthHeader = ({isAuthenticated, logout}) => {
   const theme = useTheme();
   const classes = useStyles();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
@@ -285,7 +285,7 @@ const AuthHeader = () => {
                   button
                   key={`${item.text}, ${index}`}
                   selected={value === item.activeIndex}
-                  onClick={logout()}
+                  onClick={logout}
                 >
                   <ListItemIcon>{item.icon}</ListItemIcon>
                   <ListItemText primary={item.text} />

@@ -72,7 +72,6 @@ export const register = ({
 // LOGOUT USER
 // Must send null as the body
 export const logout = () => async (dispatch) => {
-  // dispatch({type: LOGOUT_SUCCESS});
   // Headers
   const config = {
     headers: {
@@ -82,7 +81,7 @@ export const logout = () => async (dispatch) => {
   config.headers['Authorization'] = `Token ${localStorage.token}`;
 
   try {
-    //await axios.post('http://localhost:8000/logout/', null, config);
+    await axios.post('http://localhost:8000/logout/', null, config);
     dispatch({type: LOGOUT_SUCCESS});
   } catch (err) {
     //dispatch({type: 'CLEAR_LEADS'});
