@@ -1,0 +1,30 @@
+/*  
+bg color - 53,58,63 
+
+*/
+
+body {
+  /* background-color: rgb(33, 33, 33); */
+  /* font-family: 'Muli', sans-serif; */
+  /* font-size: 1rem; */
+}
+
+/* xs < 768 */
+@media screen and (min-width: 551px) {
+}
+
+/* xs < 768 */
+@media screen and (min-width: 767px) {
+}
+
+/* sm */
+@media screen and (min-width: 768px) {
+}
+
+/* md */
+@media screen and (min-width: 992px) {
+}
+
+/* lg */
+@media screen and (min-width: 1200px) {
+}
