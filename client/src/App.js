@@ -16,6 +16,7 @@ import {makeStyles} from '@material-ui/core/styles';
 
 //Components
 import PrivateRoute from './PrivateRoute';
+import Alerts from './components/Alerts';
 import LandingPage from './components/LandingPage';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
@@ -106,6 +107,7 @@ function App({isAuthenticated}) {
   return (
     <>
       <Router>
+        <Alerts />
         <Route exact path='/' component={LandingPage} />
         <Route exact path='/signin' component={SignIn} />
         <Route exact path='/signup' component={SignUp} />

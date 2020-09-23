@@ -6,6 +6,7 @@ import {
   USER_LOADED,
   USER_LOADING,
   LOGOUT_SUCCESS,
+  AUTH_ERROR,
 } from '../actions/types';
 
 const initialState = {
@@ -38,6 +39,7 @@ export default (state = initialState, action) => {
         isAuthenticated: true,
         isLoading: false,
       };
+    case AUTH_ERROR:
     case LOGOUT_SUCCESS:
     case REGISTER_FAIL:
     case LOGIN_FAIL:

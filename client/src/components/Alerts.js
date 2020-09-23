@@ -4,12 +4,28 @@ import PropTypes from 'prop-types';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Alerts = () => {
-  useEffect(() => {}, []);
+const Alerts = ({error, message}) => {
+  useEffect(() => {
+    const handleErrorProps = () => {
+      if (error.status) toast.error(`${error.status}`);
+    };
+
+    handleErrorProps();
+  }, [error]);
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer
+        position='top-center'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 };

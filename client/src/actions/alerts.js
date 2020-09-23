@@ -1,10 +1,10 @@
-import {CREATE_ALERTS, GET_ERRORS} from './types';
+import {CREATE_ALERT, GET_ERRORS} from './types';
 
 //CREATE Alerts
 
 export const createAlerts = (msg) => {
   return {
-    type: CREATE_ALERTS,
+    type: CREATE_ALERT,
     payload: msg,
   };
 };
