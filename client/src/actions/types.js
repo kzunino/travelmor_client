@@ -11,3 +11,6 @@ export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 // Alerts
 export const CREATE_ALERT = 'CREATE_ALERT';
 export const GET_ERRORS = 'GET_ERRORS';
+
+//Trips
+export const GET_TRIP = 'GET_TRIP';

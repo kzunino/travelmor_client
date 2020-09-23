@@ -1,8 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {getTrip} from '../actions/trips';
+
 import Trip from './Trip';
 import Typography from '@material-ui/core/Typography';
-// import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
@@ -11,36 +14,12 @@ import Container from '@material-ui/core/Container';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-// const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
-  // toolbarMargin: {
-  //   ...theme.mixins.toolbar,
-  //   marginBottom: '1em',
-  // },
   table: {
     minWidth: 300,
     maxWidth: 700,
   },
-  // toolbar: {
-  //   padding: 0,
-  // },
-  // content: {
-  //   flexGrow: 1,
-  //   padding: theme.spacing(3),
-  //   marginLeft: drawerWidth,
-  //   marginBottom: 50,
-  //   //backgroundColor: '#2F2F31',
-  //   backgroundColor: 'whitesmoke',
-  //   [theme.breakpoints.down('sm')]: {
-  //     marginLeft: 0,
-  //     padding: theme.spacing(1, 1.5),
-  //     marginTop: '1em',
-  //   },
-  // },
-  // containerWrapper: {
-  //   margin: 'auto',
-  // },
+
   button: {
     marginTop: '1em',
     borderRadius: '2em',
@@ -100,50 +79,65 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Dashboard = () => {
+const Dashboard = ({trips, getTrip, trip_data}) => {
   const theme = useTheme();
   const classes = useStyles();
 
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
+  /*
+  if user has trips rendered as Links, component will automatically fire
+  a post request to render the most recent trip to the Dashboard and pass those as 
+  props to the <TRIP/> component inside render method
+  */
+  if (trips.length) getTrip(trips[0].trip_uid);
+
   return (
     <>
-      {/* <main className={classes.content}>
-        <Toolbar />
-        <Grid container direction='column' className={classes.containerWrapper}> */}
       {/* -----Welcome Container----- */}
       <Grid item>
         <Typography variant={matchXs ? 'h4' : 'h2'}>Welcome, Kyle!</Typography>
       </Grid>
       <Divider />
       <Container maxWidth={'lg'} className={classes.container}>
-        <Grid item>
-          <Grid container direction='column'>
-            <Grid item>
-              <Typography variant={matchXs ? 'h5' : 'h4'}>
-                Create a trip to get started!
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Button
-                variant='outlined'
-                disableRipple
-                component={Link}
-                to='/newtrip'
-                className={classes.button}
-              >
-                Create New Trip
-              </Button>
+        {!trips.length ? (
+          <Grid item>
+            <Grid container direction='column'>
+              <Grid item>
+                <Typography variant={matchXs ? 'h5' : 'h4'}>
+                  Create a trip to get started!
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant='outlined'
+                  disableRipple
+                  component={Link}
+                  to='/newtrip'
+                  className={classes.button}
+                >
+                  Create New Trip
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        {/* -----Trip----- */}
-        <Trip />
+        ) : (
+          <Trip tripData={trip_data} />
+        )}
       </Container>
-      {/* </Grid>
-      </main> */}
     </>
   );
 };
 
-export default Dashboard;
+Dashboard.propTypes = {
+  trips: PropTypes.array,
+  getTrip: PropTypes.func.isRequired,
+  trip_data: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  trips: state.auth.user.trips,
+  trip_data: state.auth.trips,
+});
+
+export default connect(mapStateToProps, {getTrip})(Dashboard);

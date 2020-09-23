@@ -180,7 +180,6 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
   ];
 
   //Maps trips into the dashboard navigation with UUID as parameter
-
   trips.map((trip) => {
     return {
       name: `${trip.name}`,
@@ -189,12 +188,6 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
       activeIndex: 0,
     };
   });
-  // const trips = [
-  //   {name: 'Trip One', link: '/trip', trip_uid: 12344, activeIndex: 0},
-  //   {name: 'Trip Two', link: '/trip', trip_uid: 22343434, activeIndex: 0},
-  //   {name: 'Trip Three', link: '/trip', trip_uid: 123234334, activeIndex: 0},
-  //   {name: 'Trip Four', link: '/trip', trip_uid: 1234334, activeIndex: 0},
-  // ];
 
   //Routes
   // const routes = [
