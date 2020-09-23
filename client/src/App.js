@@ -1,7 +1,21 @@
 import React, {useEffect} from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
+
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+
+// Material UI components
+import Toolbar from '@material-ui/core/Toolbar';
+import Grid from '@material-ui/core/Grid';
+import {makeStyles} from '@material-ui/core/styles';
 
 //Components
+import PrivateRoute from './PrivateRoute';
 import LandingPage from './components/LandingPage';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
@@ -21,16 +35,35 @@ import BottomActions from './components/BottomActions';
 import {loadUser} from './actions/auth';
 import store from './store';
 
-function App() {
-  // if auth then set the header to authorized for private routes.
+const drawerWidth = 240;
 
-  // if auth - req to server for latest trip then load the dashboard with trip
-  //if no trip then render basic dashboard with link to create a trip
+const useStyles = makeStyles((theme) => ({
+  toolbarMargin: {
+    ...theme.mixins.toolbar,
+    marginBottom: '1em',
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    marginLeft: drawerWidth,
+    marginBottom: 50,
+    backgroundColor: theme.palette.background.main,
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 0,
+      padding: theme.spacing(1, 1.5),
+      marginTop: '1em',
+    },
+  },
+  containerWrapper: {
+    margin: 'auto',
+  },
+  hide: {
+    marginBottom: 0,
+  },
+}));
 
-  // Query database for all trips and pass them to auth header for trips tab
-
-  //With Context should handle the global state - passes component state information
-  //down to components
+function App({isAuthenticated}) {
+  const classes = useStyles();
 
   /* 
 
@@ -73,33 +106,49 @@ function App() {
   return (
     <>
       <Router>
-        {window.location.pathname === '/' ||
-        window.location.pathname === '/signin' ||
-        window.location.pathname === '/signup' ||
-        window.location.pathname === '/verification' ? null : (
-          <AuthHeader />
-        )}
-        <Switch>
-          <Route exact path='/' component={LandingPage} />
-          <Route exact path='/signin' component={SignIn} />
-          <Route exact path='/signup' component={SignUp} />
-          <Route exact path='/verification' component={Verification} />
+        <Route exact path='/' component={LandingPage} />
+        <Route exact path='/signin' component={SignIn} />
+        <Route exact path='/signup' component={SignUp} />
+        <Route exact path='/verification' component={Verification} />
 
-          <Route exact path='/dashboard' component={Dashboard} />
-          <Route exact path='/dashboard/trip' component={Trip} />
-          <Route exact path='/dashboard/history' component={ExpenseHistory} />
-          <Route exact path='/history' component={History} />
-          <Route exact path='/newtrip' component={NewTrip} />
-          <Route exact path='/about' component={About} />
-          <Route exact path='/contact' component={Contact} />
-          <Route exact path='/account' component={MyAccount} />
+        {isAuthenticated ? <AuthHeader /> : null}
+        <main className={!isAuthenticated ? classes.hide : classes.content}>
+          <Toolbar />
+          <Grid
+            container
+            direction='column'
+            className={classes.containerWrapper}
+          >
+            <Switch>
+              <PrivateRoute exact path='/dashboard' component={Dashboard} />
+              <PrivateRoute exact path='/dashboard/trip' component={Trip} />
+              <PrivateRoute
+                exact
+                path='/dashboard/history'
+                component={ExpenseHistory}
+              />
+              <PrivateRoute exact path='/history' component={History} />
+              <PrivateRoute exact path='/newtrip' component={NewTrip} />
+              <PrivateRoute exact path='/about' component={About} />
+              <PrivateRoute exact path='/contact' component={Contact} />
+              <PrivateRoute exact path='/account' component={MyAccount} />
 
-          <Route exact path='/trip' component={Trip} />
-        </Switch>
+              <PrivateRoute exact path='/trip' component={Trip} />
+            </Switch>
+          </Grid>
+        </main>
         {window.location.pathname === '/dashboard' ? <BottomActions /> : null}
       </Router>
     </>
   );
 }
 
-export default App;
+App.propTypes = {
+  isAuthenticated: PropTypes.bool,
+};
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps)(App);

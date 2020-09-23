@@ -1,14 +1,15 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import {makeStyles} from '@material-ui/core/styles';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
-
-//import logo from '../imgs/travelmor_square.png';
-
 import LandingPageContent from './LandingPageContent';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 //const drawerWidth = 240;
 
@@ -20,6 +21,12 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
+  spinner: {
+    display: 'flex',
+    '& > * + *': {
+      marginLeft: theme.spacing(2),
+    },
+  },
   appBar: {
     zIndex: theme.zIndex.modal + 1,
   },
@@ -27,16 +34,6 @@ const useStyles = makeStyles((theme) => ({
     background: 'transparent',
     padding: 0,
   },
-  // logoContainer: {
-  //   padding: 0,
-  // },
-  // logo: {
-  //   width: drawerWidth,
-  //   height: '5.5em',
-  //   [theme.breakpoints.down('xs')]: {
-  //     width: 200,
-  //   },
-  // },
   buttonWrapper: {
     marginLeft: 'auto',
   },
@@ -56,11 +53,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LandingPage = () => {
-  //const theme = useTheme();
+const LandingPage = ({isAuthenticated, isLoading}) => {
   const classes = useStyles();
 
-  return (
+  //If authenticated redirect to dashboard
+  if (isAuthenticated) {
+    return <Redirect to='/dashboard' />;
+  }
+
+  // if isLoading, don't render the page
+  return isLoading ? (
+    <div className={classes.spinner}>
+      <CircularProgress />
+    </div>
+  ) : (
     <>
       <div className={classes.root}>
         <CssBaseline />
@@ -70,14 +76,6 @@ const LandingPage = () => {
           className={classes.appBar}
         >
           <Toolbar className={classes.toolbar}>
-            {/* <Button
-              component={Link}
-              to='/'
-              className={classes.logoContainer}
-              disableRipple
-            >
-              <img src={logo} alt='Travelmor.logo' className={classes.logo} />
-            </Button> */}
             <div className={classes.buttonWrapper}>
               <Button className={classes.signin} component={Link} to='/signin'>
                 Sign In
@@ -95,4 +93,14 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+LandingPage.propTypes = {
+  isAuthenticated: PropTypes.bool,
+  isLoading: PropTypes.bool,
+};
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  isLoading: state.auth.isLoading,
+});
+
+export default connect(mapStateToProps)(LandingPage);

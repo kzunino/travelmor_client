@@ -38,7 +38,7 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 import {Bar} from 'react-chartjs-2';
 import {Pie} from 'react-chartjs-2';
 
-import {makeStyles, useTheme} from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const drawerWidth = 240;

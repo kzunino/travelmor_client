@@ -343,7 +343,7 @@ const AuthHeader = ({isAuthenticated, logout}) => {
         <Toolbar className={classes.toolbar}>
           <Button
             component={Link}
-            to='/'
+            to='/dashboard'
             className={classes.logoContainer}
             disableRipple
           >
@@ -361,11 +361,11 @@ const AuthHeader = ({isAuthenticated, logout}) => {
 
 AuthHeader.propTypes = {
   logout: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
+  isAuthenticated: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({
-  auth: state.auth.isAuthenticated,
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProps, {logout})(AuthHeader);

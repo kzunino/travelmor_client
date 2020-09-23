@@ -3,30 +3,37 @@ import axios from 'axios';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
   USER_LOADED,
   USER_LOADING,
   LOGOUT_SUCCESS,
 } from './types';
 
 // Checks Token and Loads the User
-export const loadUser = () => (dispatch, getState) => {
-  // User Loading
-  dispatch({type: USER_LOADING});
-
-  axios
-    .get('http://localhost:8000/api/user/me', tokenConfig(getState))
-    .then((res) => {
-      dispatch({
-        type: USER_LOADED,
-        payload: res.data,
-      });
-    })
-    .catch((err) => {
+export const loadUser = () => async (dispatch, getState) => {
+  if (localStorage.getItem('token')) {
+    try {
+      // User Loading
+      dispatch({type: USER_LOADING});
+      //Get request for user information
+      const res = await axios.get(
+        'http://localhost:8000/api/user/me',
+        tokenConfig(getState)
+      );
+      if (res) {
+        dispatch({
+          type: USER_LOADED,
+          payload: res.data,
+        });
+      }
+    } catch (err) {
       // dispatch(returnErrors(err.response.data, err.response.status));
       // dispatch({
       //   type: AUTH_ERROR,
       // });
-    });
+    }
+  }
 };
 
 // REGISTER USER
@@ -59,7 +66,7 @@ export const register = ({
     .post('http://localhost:8000/auth/registration/', body, config)
     .then((res) => {
       dispatch({
-        type: REGISTER_SUCCESS,
+        type: LOGIN_SUCCESS,
         payload: res.data,
       });
     })
@@ -67,6 +74,33 @@ export const register = ({
       //dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({type: REGISTER_FAIL});
     });
+};
+
+// LOGIN USER
+export const login = ({email, password}) => async (dispatch) => {
+  // Headers
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  // Request Body
+  const body = JSON.stringify({
+    email,
+    password,
+  });
+  try {
+    const res = await axios.post(
+      'http://localhost:8000/auth/login/',
+      body,
+      config
+    );
+    if (res) dispatch({type: REGISTER_SUCCESS, payload: res.data});
+  } catch (err) {
+    //dispatch(returnErrors(err.response.data, err.response.status));
+    dispatch({type: LOGIN_FAIL});
+  }
 };
 
 // LOGOUT USER

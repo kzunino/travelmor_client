@@ -2,7 +2,7 @@ import React from 'react';
 import Moment from 'moment';
 import {Link} from 'react-router-dom';
 
-import Toolbar from '@material-ui/core/Toolbar';
+// import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -19,32 +19,13 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 // Table Imports
 
-const drawerWidth = 240;
+// const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
-  toolbarMargin: {
-    ...theme.mixins.toolbar,
-    marginBottom: '1em',
-  },
   root: {
     width: '100%',
   },
 
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    marginLeft: drawerWidth,
-    marginBottom: 50,
-    backgroundColor: theme.palette.background.main,
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: 0,
-      padding: theme.spacing(1, 1.5),
-      marginTop: '1em',
-    },
-  },
-  containerWrapper: {
-    margin: 'auto',
-  },
   mainContentBox: {
     //backgroundColor: theme.palette.secondary.light,
     backgroundColor: theme.palette.background.main,
@@ -130,57 +111,59 @@ const History = () => {
   });
 
   return (
-    <main className={classes.content}>
-      <Toolbar />
-      <Grid container direction='column' className={classes.containerWrapper}>
-        <Grid item>
-          <Typography variant={matchXs ? 'h4' : 'h2'}>
-            All Trip History
-          </Typography>
-        </Grid>
-        <Divider />
-        <Container maxWidth={'md'}>
-          <Box m={1} boxShadow={3} className={classes.mainContentBox}>
-            <Grid item>
-              <Grid container>
-                <Grid item>
-                  {/* map over trips to get years then map over trips in that year to list them */}
-                  {tripYears.map((year, index) => (
-                    <List
-                      subheader={
-                        <ListSubheader>
-                          {Moment(year).format('YYYY')}
-                        </ListSubheader>
-                      }
-                      className={classes.root}
-                      key={year + index}
-                    >
-                      {trips.map((trip, index) => {
-                        if (year === trip.start_date.slice(-4)) {
-                          return (
-                            <ListItem
-                              key={trip.trip_uid}
-                              component={Link}
-                              to={`/history/${trip.trip_uid}`}
-                              classes={{root: classes.listItem}}
-                            >
-                              <ListItemText
-                                classes={classes.listItemText}
-                                primary={`${trip.trip_name}`}
-                              />
-                            </ListItem>
-                          );
-                        } else return null;
-                      })}
-                    </List>
-                  ))}
-                </Grid>
+    <>
+      {/* <main className={classes.content}>
+       <Toolbar />
+       <Grid container direction='column' className={classes.containerWrapper}> */}
+      <Grid item>
+        <Typography variant={matchXs ? 'h4' : 'h2'}>
+          All Trip History
+        </Typography>
+      </Grid>
+      <Divider />
+      <Container maxWidth={'md'}>
+        <Box m={1} boxShadow={3} className={classes.mainContentBox}>
+          <Grid item>
+            <Grid container>
+              <Grid item>
+                {/* map over trips to get years then map over trips in that year to list them */}
+                {tripYears.map((year, index) => (
+                  <List
+                    subheader={
+                      <ListSubheader>
+                        {Moment(year).format('YYYY')}
+                      </ListSubheader>
+                    }
+                    className={classes.root}
+                    key={year + index}
+                  >
+                    {trips.map((trip, index) => {
+                      if (year === trip.start_date.slice(-4)) {
+                        return (
+                          <ListItem
+                            key={trip.trip_uid}
+                            component={Link}
+                            to={`/history/${trip.trip_uid}`}
+                            classes={{root: classes.listItem}}
+                          >
+                            <ListItemText
+                              classes={classes.listItemText}
+                              primary={`${trip.trip_name}`}
+                            />
+                          </ListItem>
+                        );
+                      } else return null;
+                    })}
+                  </List>
+                ))}
               </Grid>
             </Grid>
-          </Box>
-        </Container>
-      </Grid>
-    </main>
+          </Grid>
+        </Box>
+      </Container>
+      {/* </Grid> */}
+      {/* </main> */}
+    </>
   );
 };
 

@@ -1,5 +1,10 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import React, {useState} from 'react';
+import {Link, Redirect} from 'react-router-dom';
+import {makeStyles} from '@material-ui/core/styles';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {login} from '../actions/auth';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,8 +15,8 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function Copyright() {
   return (
@@ -33,6 +38,12 @@ const useStyles = makeStyles((theme) => ({
     padding: 15,
     [theme.breakpoints.down('xs')]: {
       border: 'none',
+    },
+  },
+  spinner: {
+    display: 'flex',
+    '& > * + *': {
+      marginLeft: theme.spacing(2),
     },
   },
   paper: {
@@ -59,10 +70,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+const SignIn = ({isAuthenticated, login, isLoading}) => {
   const classes = useStyles();
 
-  return (
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  let {email, password} = formData;
+
+  const handleForm = (e) => {
+    setFormData({...formData, [e.target.name]: e.target.value});
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    //passes info to register action passed in from props
+    login({
+      email,
+      password,
+    });
+  };
+
+  // Redirect if logged in
+  if (isAuthenticated) {
+    return <Redirect to='/dashboard' />;
+  }
+
+  return isLoading ? (
+    <div className={classes.spinner}>
+      <CircularProgress />
+    </div>
+  ) : (
     <Container
       component='main'
       maxWidth='xs'
@@ -76,27 +117,31 @@ export default function SignIn() {
         <Typography component='h1' variant='h5'>
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={(e) => onSubmit(e)}>
           <TextField
             variant='standard'
             margin='normal'
             required
             fullWidth
+            value={email}
             id='email'
             label='Email Address'
             name='email'
             autoComplete='email'
             autoFocus
+            onChange={handleForm}
           />
           <TextField
             variant='standard'
             margin='normal'
             required
             fullWidth
+            value={password}
             name='password'
             label='Password'
             type='password'
             id='password'
+            onChange={handleForm}
             autoComplete='current-password'
           />
           <FormControlLabel
@@ -115,7 +160,7 @@ export default function SignIn() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href='#' variant='body2'>
+              <Link to='/' variant='body2'>
                 Forgot password?
               </Link>
             </Grid>
@@ -132,4 +177,17 @@ export default function SignIn() {
       </Box>
     </Container>
   );
-}
+};
+
+SignIn.propTypes = {
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+  isLoading: PropTypes.bool,
+};
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  isLoading: state.auth.isLoading,
+});
+
+export default connect(mapStateToProps, {login})(SignIn);

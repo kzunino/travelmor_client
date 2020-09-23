@@ -9,14 +9,11 @@ import Container from '@material-ui/core/Container';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-//import DataReports from '../imgs/undraw_data_reports_706v.svg';
 import Traveler from '../imgs/undraw_stranded_traveler_pdbw.svg';
 import Adventure from '../imgs/undraw_adventure_4hum.svg';
 import Globe from '../imgs/undraw_connected_world_wuay.svg';
 
-//import Background from '../imgs/luca-bravo-O453M2Liufs-unsplash.jpg';
 import Background2 from '../imgs/simon-migaj-Yui5vfKHuzs-unsplash.jpg';
-//import Background3 from '../imgs/diego-jimenez-A-NVHPka9Rk-unsplash.jpg';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -119,7 +116,6 @@ const useStyles = makeStyles((theme) => ({
 const LandingPageContent = () => {
   const classes = useStyles();
   const theme = useTheme();
-  //   const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   const matchesXs = useMediaQuery(theme.breakpoints.down('xs'));
 
@@ -134,7 +130,12 @@ const LandingPageContent = () => {
         className={classes.heroContentBlock}
       >
         <Grid xs={12} sm={8} md={6} lg={5} item className={classes.heroItem}>
-          <Grid container='column' justify='center' alignItems='center'>
+          <Grid
+            container
+            direction='column'
+            justify='center'
+            alignItems='center'
+          >
             <Grid item>
               <Typography
                 variant={matchesXs ? 'h4' : 'h3'}
@@ -147,9 +148,8 @@ const LandingPageContent = () => {
             </Grid>
             <Grid item>
               <Button
-                button
                 component={Link}
-                to='/signup'
+                to='/signin'
                 variant='outlined'
                 className={classes.button}
                 disableRipple

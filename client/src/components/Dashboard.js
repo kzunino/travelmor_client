@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import Trip from './Trip';
 import Typography from '@material-ui/core/Typography';
-import Toolbar from '@material-ui/core/Toolbar';
+// import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
@@ -11,36 +11,36 @@ import Container from '@material-ui/core/Container';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const drawerWidth = 240;
+// const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
-  toolbarMargin: {
-    ...theme.mixins.toolbar,
-    marginBottom: '1em',
-  },
+  // toolbarMargin: {
+  //   ...theme.mixins.toolbar,
+  //   marginBottom: '1em',
+  // },
   table: {
     minWidth: 300,
     maxWidth: 700,
   },
-  toolbar: {
-    padding: 0,
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    marginLeft: drawerWidth,
-    marginBottom: 50,
-    //backgroundColor: '#2F2F31',
-    backgroundColor: 'whitesmoke',
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: 0,
-      padding: theme.spacing(1, 1.5),
-      marginTop: '1em',
-    },
-  },
-  containerWrapper: {
-    margin: 'auto',
-  },
+  // toolbar: {
+  //   padding: 0,
+  // },
+  // content: {
+  //   flexGrow: 1,
+  //   padding: theme.spacing(3),
+  //   marginLeft: drawerWidth,
+  //   marginBottom: 50,
+  //   //backgroundColor: '#2F2F31',
+  //   backgroundColor: 'whitesmoke',
+  //   [theme.breakpoints.down('sm')]: {
+  //     marginLeft: 0,
+  //     padding: theme.spacing(1, 1.5),
+  //     marginTop: '1em',
+  //   },
+  // },
+  // containerWrapper: {
+  //   margin: 'auto',
+  // },
   button: {
     marginTop: '1em',
     borderRadius: '2em',
@@ -108,42 +108,40 @@ const Dashboard = () => {
 
   return (
     <>
-      <main className={classes.content}>
+      {/* <main className={classes.content}>
         <Toolbar />
-        <Grid container direction='column' className={classes.containerWrapper}>
-          {/* -----Welcome Container----- */}
-          <Grid item>
-            <Typography variant={matchXs ? 'h4' : 'h2'}>
-              Welcome, Kyle!
-            </Typography>
-          </Grid>
-          <Divider />
-          <Container maxWidth={'lg'} className={classes.container}>
+        <Grid container direction='column' className={classes.containerWrapper}> */}
+      {/* -----Welcome Container----- */}
+      <Grid item>
+        <Typography variant={matchXs ? 'h4' : 'h2'}>Welcome, Kyle!</Typography>
+      </Grid>
+      <Divider />
+      <Container maxWidth={'lg'} className={classes.container}>
+        <Grid item>
+          <Grid container direction='column'>
             <Grid item>
-              <Grid container direction='column'>
-                <Grid item>
-                  <Typography variant={matchXs ? 'h5' : 'h4'}>
-                    Create a trip to get started!
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Button
-                    variant='outlined'
-                    disableRipple
-                    component={Link}
-                    to='/newtrip'
-                    className={classes.button}
-                  >
-                    Create New Trip
-                  </Button>
-                </Grid>
-              </Grid>
+              <Typography variant={matchXs ? 'h5' : 'h4'}>
+                Create a trip to get started!
+              </Typography>
             </Grid>
-            {/* -----Trip----- */}
-            <Trip />
-          </Container>
+            <Grid item>
+              <Button
+                variant='outlined'
+                disableRipple
+                component={Link}
+                to='/newtrip'
+                className={classes.button}
+              >
+                Create New Trip
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
-      </main>
+        {/* -----Trip----- */}
+        <Trip />
+      </Container>
+      {/* </Grid>
+      </main> */}
     </>
   );
 };

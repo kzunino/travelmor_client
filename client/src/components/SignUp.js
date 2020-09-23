@@ -18,6 +18,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 //Select
 
@@ -47,6 +48,12 @@ const useStyles = makeStyles((theme) => ({
     padding: 15,
     [theme.breakpoints.down('xs')]: {
       border: 'none',
+    },
+  },
+  spinner: {
+    display: 'flex',
+    '& > * + *': {
+      marginLeft: theme.spacing(2),
     },
   },
   paper: {
@@ -79,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUp = ({register, isAuthenticated}) => {
+const SignUp = ({register, isAuthenticated, isLoading}) => {
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
@@ -128,7 +135,11 @@ const SignUp = ({register, isAuthenticated}) => {
     return <Redirect to='/dashboard' />;
   }
 
-  return (
+  return isLoading ? (
+    <div className={classes.spinner}>
+      <CircularProgress />
+    </div>
+  ) : (
     <Container
       component='main'
       maxWidth='xs'
@@ -181,8 +192,9 @@ const SignUp = ({register, isAuthenticated}) => {
               <MenuItem value={'EUR'}>EUR</MenuItem>
               <MenuItem value={'AUD'}>AUD</MenuItem>
               <Divider />
-              {countryData.map((country) => (
+              {countryData.map((country, index) => (
                 <MenuItem
+                  key={country + index}
                   value={`${country.code}`}
                 >{`${country.code}`}</MenuItem>
               ))}
@@ -259,10 +271,12 @@ const SignUp = ({register, isAuthenticated}) => {
 SignUp.propTypes = {
   register: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
+  isLoading: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  isLoading: state.auth.isLoading,
 });
 
 export default connect(mapStateToProps, {register})(SignUp);
