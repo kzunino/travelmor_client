@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AuthHeader = ({isAuthenticated, logout}) => {
+const AuthHeader = ({isAuthenticated, logout, trips}) => {
   const theme = useTheme();
   const classes = useStyles();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
@@ -179,13 +179,22 @@ const AuthHeader = ({isAuthenticated, logout}) => {
     },
   ];
 
-  //Trips will be rendered from the API
-  const trips = [
-    {name: 'Trip One', link: '/trip', trip_uid: 12344, activeIndex: 0},
-    {name: 'Trip Two', link: '/trip', trip_uid: 22343434, activeIndex: 0},
-    {name: 'Trip Three', link: '/trip', trip_uid: 123234334, activeIndex: 0},
-    {name: 'Trip Four', link: '/trip', trip_uid: 1234334, activeIndex: 0},
-  ];
+  //Maps trips into the dashboard navigation with UUID as parameter
+
+  trips.map((trip) => {
+    return {
+      name: `${trip.name}`,
+      link: `/trip/${trip.trip_uid}`,
+      trip_uid: `/trip/${trip.trip_uid}`,
+      activeIndex: 0,
+    };
+  });
+  // const trips = [
+  //   {name: 'Trip One', link: '/trip', trip_uid: 12344, activeIndex: 0},
+  //   {name: 'Trip Two', link: '/trip', trip_uid: 22343434, activeIndex: 0},
+  //   {name: 'Trip Three', link: '/trip', trip_uid: 123234334, activeIndex: 0},
+  //   {name: 'Trip Four', link: '/trip', trip_uid: 1234334, activeIndex: 0},
+  // ];
 
   //Routes
   // const routes = [
@@ -362,10 +371,12 @@ const AuthHeader = ({isAuthenticated, logout}) => {
 AuthHeader.propTypes = {
   logout: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
+  trips: PropTypes.array,
 };
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  trips: state.auth.user.trips,
 });
 
 export default connect(mapStateToProps, {logout})(AuthHeader);

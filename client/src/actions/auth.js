@@ -73,7 +73,7 @@ export const register = ({
       });
     })
     .catch((err) => {
-      //dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({type: REGISTER_FAIL});
     });
 };
@@ -107,21 +107,25 @@ export const login = ({email, password}) => async (dispatch) => {
 
 // LOGOUT USER
 // Must send null as the body
-export const logout = () => async (dispatch) => {
+export const logout = () => async (dispatch, getState) => {
   // Headers
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
-  config.headers['Authorization'] = `Token ${localStorage.token}`;
+  // const config = {
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  // };
+  // config.headers['Authorization'] = `Token ${localStorage.token}`;
 
   try {
-    await axios.post('http://localhost:8000/logout/', null, config);
+    await axios.post(
+      'http://localhost:8000/logout/',
+      null,
+      tokenConfig(getState)
+    );
     dispatch({type: LOGOUT_SUCCESS});
   } catch (err) {
     //dispatch({type: 'CLEAR_LEADS'});
-    //dispatch(returnErrors(err.response.data, err.response.status));
+    dispatch(returnErrors(err.response.data, err.response.status));
   }
 };
 

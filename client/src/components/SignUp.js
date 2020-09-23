@@ -90,12 +90,12 @@ const SignUp = ({register, isAuthenticated, isLoading}) => {
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
-    first_name: 'raquel',
+    first_name: 'raq',
     last_name: 's',
     home_currency: 'USD',
-    email: 'raquel@gmail.com',
-    password1: 'raquel123',
-    password2: 'raquel123',
+    email: '',
+    password1: 'raq123456',
+    password2: 'raq123456',
   });
 
   let {
@@ -114,20 +114,16 @@ const SignUp = ({register, isAuthenticated, isLoading}) => {
   const onSubmit = async (e) => {
     console.log('i work');
     e.preventDefault();
-    if (password1 !== password2) {
-      //message / alert goes here
-      console.log('Passwords dont match');
-    } else {
-      //passes info to register action passed in from props
-      register({
-        first_name,
-        last_name,
-        home_currency,
-        email,
-        password1,
-        password2,
-      });
-    }
+
+    //passes info to register action passed in from props
+    register({
+      first_name,
+      last_name,
+      home_currency,
+      email,
+      password1,
+      password2,
+    });
   };
 
   // Redirect if logged in

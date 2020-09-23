@@ -7,7 +7,25 @@ import 'react-toastify/dist/ReactToastify.css';
 const Alerts = ({error, message}) => {
   useEffect(() => {
     const handleErrorProps = () => {
-      if (error.status) toast.error(`${error.status}`);
+      if (error.msg.non_field_errors)
+        toast.error(`${error.msg.non_field_errors}`);
+      if (error.msg.password) toast.error(`${error.msg.password}`);
+      if (error.msg.password1) {
+        for (const errors of error.msg.password1) {
+          toast.error(`Password: ${errors}`);
+        }
+      }
+      if (error.msg.password2) {
+        for (const errors of error.msg.password2) {
+          toast.error(`Confirm password: ${errors}`);
+        }
+      }
+      if (error.msg.email) toast.error(`Email: ${error.msg.email}`);
+      if (error.msg.home_currency)
+        toast.error(`Home currency: ${error.msg.home_currency}`);
+      if (error.msg.last_name) toast.error(`Last name: ${error.msg.last_name}`);
+      if (error.msg.first_name)
+        toast.error(`First name: ${error.msg.first_name}`);
     };
 
     handleErrorProps();
