@@ -15,7 +15,6 @@
     "axios": "^0.20.0",
     "chart.js": "^2.9.3",
     "currency-codes": "^2.1.0",
-    "date-fns": "^2.16.1",
     "fontsource-roboto": "^3.0.3",
     "material-table": "^1.69.0",
     "moment": "^2.27.0",

@@ -1,8 +1,6 @@
 import {GET_TRIP} from '../actions/types';
 
-const initialState = {
-  trip: [],
-};
+const initialState = {};
 
 export default (state = initialState, action) => {
   switch (action.type) {

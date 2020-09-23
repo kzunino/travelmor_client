@@ -1,12 +1,10 @@
 import React, {useState, forwardRef} from 'react';
 // import {Link} from 'react-router-dom';
+
 import Moment from 'moment';
 import Typography from '@material-ui/core/Typography';
-// import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-// import Button from '@material-ui/core/Button';
-// import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 
 //icons
@@ -156,9 +154,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Trip = () => {
+const Trip = ({tripData}) => {
   // const theme = useTheme();
   const classes = useStyles();
+
+  const {
+    trip_uid,
+    user,
+    name,
+    total_budget,
+    length,
+    home_currency,
+    currencies,
+    expenses,
+    start_date,
+    end_date,
+  } = tripData;
+
+  let daily_budget = (total_budget / length).toFixed(2);
 
   const [barState, setBarState] = useState({
     labels: [
@@ -313,13 +326,13 @@ const Trip = () => {
               <Grid item>
                 <Grid container justify='center'>
                   <Grid item>
-                    <Typography variant='h3'>Peru Trip</Typography>
+                    <Typography variant='h3'>{name}</Typography>
                     <Typography
                       variant='subtitle2'
                       align='center'
                       className={classes.budgetHeading}
                     >
-                      Aug 30th - Sept 10th
+                      DATES here
                     </Typography>
                   </Grid>
                 </Grid>
@@ -333,7 +346,7 @@ const Trip = () => {
                     >
                       trip budget
                     </Typography>
-                    <Typography variant='h6'>$1,000.00</Typography>
+                    <Typography variant='h6'>${total_budget}</Typography>
                   </Grid>
                   <Grid item className={classes.mainBoxBudgetItems}>
                     <Typography
@@ -342,7 +355,7 @@ const Trip = () => {
                     >
                       daily budget
                     </Typography>
-                    <Typography variant='h6'>$50.00</Typography>
+                    <Typography variant='h6'>${daily_budget}</Typography>
                   </Grid>
                 </Grid>
               </Grid>

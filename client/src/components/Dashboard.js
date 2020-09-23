@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Dashboard = ({trips, getTrip, trip_data}) => {
+const Dashboard = ({trips, getTrip, trip_data, name}) => {
   const theme = useTheme();
   const classes = useStyles();
 
@@ -90,13 +90,18 @@ const Dashboard = ({trips, getTrip, trip_data}) => {
   a post request to render the most recent trip to the Dashboard and pass those as 
   props to the <TRIP/> component inside render method
   */
-  if (trips.length) getTrip(trips[0].trip_uid);
+
+  useEffect(() => {
+    if (trips.length) getTrip(trips[0].trip_uid);
+  }, [trips]);
 
   return (
     <>
       {/* -----Welcome Container----- */}
       <Grid item>
-        <Typography variant={matchXs ? 'h4' : 'h2'}>Welcome, Kyle!</Typography>
+        <Typography variant={matchXs ? 'h4' : 'h2'}>
+          Welcome, {name}!
+        </Typography>
       </Grid>
       <Divider />
       <Container maxWidth={'lg'} className={classes.container}>
@@ -133,11 +138,13 @@ Dashboard.propTypes = {
   trips: PropTypes.array,
   getTrip: PropTypes.func.isRequired,
   trip_data: PropTypes.object.isRequired,
+  name: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
   trips: state.auth.user.trips,
-  trip_data: state.auth.trips,
+  trip_data: state.trips,
+  name: state.auth.user.first_name,
 });
 
 export default connect(mapStateToProps, {getTrip})(Dashboard);
