@@ -65,35 +65,167 @@ const TripMain = ({tripData}) => {
   const [weekExpenses, setWeekExpenses] = useState({
     todayExpenses: [],
     yesterdayExpenses: [],
+    threeDaysAgoExpenses: [],
+    fourDaysAgoExpenses: [],
+    fiveDaysAgoExpenses: [],
+    sixDaysAgoExpenses: [],
+    sevenDaysAgoExpenses: [],
   });
 
-  let {todayExpenses} = weekExpenses;
+  let {
+    todayExpenses,
+    yesterdayExpenses,
+    threeDaysAgoExpenses,
+    fourDaysAgoExpenses,
+    fiveDaysAgoExpenses,
+    sixDaysAgoExpenses,
+    sevenDaysAgoExpenses,
+  } = weekExpenses;
 
   // Sum of all expenses for each day
+  // if none then 0 is default value
   let dailyWeekTotals = {
     today:
       todayExpenses.reduce((acc, item) => {
         return acc + parseFloat(item.cost);
       }, 0) || 0,
+    yesterday:
+      yesterdayExpenses.reduce((acc, item) => {
+        return acc + parseFloat(item.cost);
+      }, 0) || 0,
+    threeDaysAgo:
+      threeDaysAgoExpenses.reduce((acc, item) => {
+        return acc + parseFloat(item.cost);
+      }, 0) || 0,
+    fourDaysAgo:
+      fourDaysAgoExpenses.reduce((acc, item) => {
+        return acc + parseFloat(item.cost);
+      }, 0) || 0,
+    fiveDaysAgo:
+      fiveDaysAgoExpenses.reduce((acc, item) => {
+        return acc + parseFloat(item.cost);
+      }, 0) || 0,
+    sixDaysAgo:
+      sixDaysAgoExpenses.reduce((acc, item) => {
+        return acc + parseFloat(item.cost);
+      }, 0) || 0,
+    sevenDaysAgo:
+      sevenDaysAgoExpenses.reduce((acc, item) => {
+        return acc + parseFloat(item.cost);
+      }, 0) || 0,
   };
 
-  let {today} = dailyWeekTotals;
-  console.log(today);
+  let {
+    today,
+    yesterday,
+    threeDaysAgo,
+    fourDaysAgo,
+    fiveDaysAgo,
+    sixDaysAgo,
+    sevenDaysAgo,
+  } = dailyWeekTotals;
 
   useEffect(() => {
+    //checks to see if purchase date
+    // Passing in 'day' will check day, month, and year
+    // if timezone is present first moment will be timezone used for comparison
     const weekExpenses = () => {
       if (expenses) {
         setWeekExpenses({
+          //Filters through all expenses and sets todays purchases
           todayExpenses: expenses.filter((expense) => {
-            return (
-              Moment(expense.purchase_date).diff(Moment(Date.now()), 'days') ===
-              0
-            );
+            return Moment(expense.purchase_date).isAfter(
+              Moment(Date.now()),
+              'day'
+            )
+              ? expense
+              : null;
           }),
+
+          //Yesterday expenses
+          //filters purchase date if is the same as todays date - one day
+          yesterdayExpenses: expenses.filter((expense) => {
+            return Moment(expense.purchase_date).isSame(
+              Moment(Date.now()).subtract(1, 'days'),
+              'days'
+            )
+              ? expense
+              : null;
+          }),
+
+          //three days ago expenses
+          threeDaysAgoExpenses: expenses.filter((expense) => {
+            return Moment(expense.purchase_date).isSame(
+              Moment(Date.now()).subtract(2, 'days'),
+              'days'
+            )
+              ? expense
+              : null;
+          }),
+
+          //four days ago expenses
+          fourDaysAgoExpenses: expenses.filter((expense) => {
+            return Moment(expense.purchase_date).isSame(
+              Moment(Date.now()).subtract(3, 'days'),
+              'days'
+            )
+              ? expense
+              : null;
+          }),
+
+          //five days ago expenses
+          fiveDaysAgoExpenses: expenses.filter((expense) => {
+            return Moment(expense.purchase_date).isSame(
+              Moment(Date.now()).subtract(4, 'days'),
+              'days'
+            )
+              ? expense
+              : null;
+          }),
+
+          //six days ago expenses
+          sixDaysAgoExpenses: expenses.filter((expense) => {
+            return Moment(expense.purchase_date).isSame(
+              Moment(Date.now()).subtract(5, 'days'),
+              'days'
+            )
+              ? expense
+              : null;
+          }),
+
+          //seven days ago expenses
+          sevenDaysAgoExpenses: expenses.filter((expense) => {
+            return Moment(expense.purchase_date).isSame(
+              Moment(Date.now()).subtract(6, 'days'),
+              'days'
+            )
+              ? expense
+              : null;
+          }),
+
+          //end setWeekExpenses
         });
       }
     };
     weekExpenses();
+    if (expenses) {
+      console.log(
+        expenses.filter((expense) => {
+          console.log(
+            Moment(expense.purchase_date).isSame(
+              Moment(Date.now()).subtract(1, 'days'),
+              'days'
+            )
+          );
+          return Moment(expense.purchase_date).isAfter(
+            Moment(Date.now()),
+            'days'
+          )
+            ? expense
+            : null;
+        })
+      );
+    }
   }, [expenses, setWeekExpenses]);
 
   const barData = {
@@ -112,7 +244,15 @@ const TripMain = ({tripData}) => {
         backgroundColor: 'rgba(75,192,192,1)',
         borderColor: 'rgba(0,0,0,1)',
         borderWidth: 2,
-        data: [14, 23, 34, 81, 56, 25, today],
+        data: [
+          sevenDaysAgo,
+          sixDaysAgo,
+          fiveDaysAgo,
+          fourDaysAgo,
+          threeDaysAgo,
+          yesterday,
+          today,
+        ],
       },
     ],
   };
