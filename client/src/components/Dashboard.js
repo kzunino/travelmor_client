@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {getTrip} from '../actions/trips';
 
-import Trip from './Trip';
+import Trip from './trip/Trip';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
@@ -93,7 +93,7 @@ const Dashboard = ({trips, getTrip, trip_data, name}) => {
 
   useEffect(() => {
     if (trips.length) getTrip(trips[0].trip_uid);
-  }, [trips]);
+  }, [trips, getTrip]);
 
   return (
     <>

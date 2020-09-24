@@ -1,5 +1,6 @@
 import React, {useState, forwardRef} from 'react';
 // import {Link} from 'react-router-dom';
+import TripMain from './tripComponents/TripMain';
 
 import Moment from 'moment';
 import Typography from '@material-ui/core/Typography';
@@ -320,83 +321,7 @@ const Trip = ({tripData}) => {
           <Container maxWidth={'lg'} className={classes.container}> */}
       <Grid item>
         <Grid container justify='space-between'>
-          {/* Heading Box Item */}
-          <Grid item xs={12}>
-            <Box m={1} boxShadow={3} className={classes.headingBox}>
-              <Grid item>
-                <Grid container justify='center'>
-                  <Grid item>
-                    <Typography variant='h3'>{name}</Typography>
-                    <Typography
-                      variant='subtitle2'
-                      align='center'
-                      className={classes.budgetHeading}
-                    >
-                      DATES here
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item>
-                <Grid container justify='space-around' direction='row'>
-                  <Grid item className={classes.mainBoxBudgetItems}>
-                    <Typography
-                      variant='subtitle2'
-                      className={classes.budgetHeading}
-                    >
-                      trip budget
-                    </Typography>
-                    <Typography variant='h6'>${total_budget}</Typography>
-                  </Grid>
-                  <Grid item className={classes.mainBoxBudgetItems}>
-                    <Typography
-                      variant='subtitle2'
-                      className={classes.budgetHeading}
-                    >
-                      daily budget
-                    </Typography>
-                    <Typography variant='h6'>${daily_budget}</Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-
-              <Grid item className={classes.chartContainer}>
-                <Bar
-                  data={barState}
-                  options={{
-                    title: {
-                      display: false,
-                      fontSize: 20,
-                    },
-                    legend: {
-                      display: false,
-                      position: 'right',
-                    },
-                    maintainAspectRatio: false,
-                    scales: {
-                      xAxes: [
-                        {
-                          gridLines: {
-                            display: false,
-                          },
-                        },
-                      ],
-                      yAxes: [
-                        {
-                          gridLines: {
-                            display: false,
-                          },
-                          ticks: {
-                            display: false,
-                          },
-                        },
-                      ],
-                    },
-                  }}
-                />
-              </Grid>
-            </Box>
-          </Grid>
+          <TripMain tripData={tripData} />
 
           {/* Budget Boxes Item */}
           <Grid item xs={12}>

@@ -25,7 +25,7 @@ import AuthHeader from './components/HeaderAuth';
 import Dashboard from './components/Dashboard';
 import History from './components/History';
 import ExpenseHistory from './components/ExpenseHistory';
-import Trip from './components/Trip';
+import Trip from './components/trip/Trip';
 import NewTrip from './components/NewTrip';
 import About from './components/About';
 import Contact from './components/ContactUs';
