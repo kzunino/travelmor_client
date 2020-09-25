@@ -34,6 +34,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// Sum of all expense objects from state for each day
+// if none, then 0 is default value
+const reduceExpenses = (obj) => {
+  return (
+    obj.reduce((acc, item) => {
+      return acc + parseFloat(item.cost);
+    }, 0) || 0
+  );
+};
+
 const TripMain = ({tripData}) => {
   // const theme = useTheme();
   const classes = useStyles();
@@ -73,16 +83,6 @@ const TripMain = ({tripData}) => {
 
   // Calculates the average daily budget
   let daily_budget = (total_budget / length).toFixed(2);
-
-  // Sum of all expenses from state for each day
-  // if none, then 0 is default value
-  const reduceExpenses = (obj) => {
-    return (
-      obj.reduce((acc, item) => {
-        return acc + parseFloat(item.cost);
-      }, 0) || 0
-    );
-  };
 
   //sets daily totals of money spent
   let dailyWeekTotals = {

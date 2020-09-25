@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 // import {Link} from 'react-router-dom';
 
 import Moment from 'moment';
@@ -13,6 +13,7 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 
 import {makeStyles} from '@material-ui/core/styles';
+import {red} from '@material-ui/core/colors';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const drawerWidth = 240;
@@ -88,22 +89,93 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// Sum of all expense objects from state for each day
+// if none, then 0 is default value
+const reduceExpenses = (obj) => {
+  return obj.reduce((acc, item) => {
+    return acc + parseFloat(item.cost);
+  }, 0);
+};
+
 const TripBudgetBoxes = ({tripData}) => {
   // const theme = useTheme();
   const classes = useStyles();
 
   const {
-    trip_uid,
-    user,
-    name,
+    // trip_uid,
+    // user,
+    // name,
     total_budget,
     length,
-    home_currency,
-    currencies,
+    // home_currency,
+    // currencies,
     expenses,
-    start_date,
+    // start_date,
     end_date,
   } = tripData;
+
+  let todayExpenses;
+  let totalSpentToday = 0;
+  let day_remaining = 0;
+  let daily_budget = (total_budget / length).toFixed(2);
+  let trip_average = 0;
+  let new_daily_average = 0;
+  let total_budget_spent = 0;
+  let total_budget_remaining = 0;
+  let days_left;
+
+  if (expenses) {
+    todayExpenses = expenses.filter((expense) => {
+      return Moment(expense.purchase_date).isSame(Moment(Date.now()), 'days')
+        ? expense
+        : null;
+    });
+
+    totalSpentToday = reduceExpenses(todayExpenses);
+    day_remaining = (daily_budget - totalSpentToday).toFixed(2);
+
+    total_budget_spent = reduceExpenses(expenses);
+    total_budget_remaining = total_budget - total_budget_spent;
+
+    days_left = Moment(end_date).diff(Date.now(), 'days');
+
+    trip_average = (total_budget_spent / (length - days_left)).toFixed(2);
+
+    new_daily_average = (total_budget_remaining / days_left).toFixed(2);
+  }
+
+  console.log(days_left);
+
+  //let totalSpentToday = todayExpenses
+
+  //   const [todayExpenses, setTodayExpenses] = useState([]);
+  //   //   const [totalSpentToday, setTotalSpentToday] = useState(0);
+  //   let totalSpentToday = 0;
+
+  //   if (todayExpenses !== null) {
+  //     console.log(todayExpenses);
+  //     // console.log(Object.values(todayExpenses));
+  //     totalSpentToday = reduceExpenses(todayExpenses);
+  //     console.log(totalSpentToday);
+  //     // setTotalSpentToday({
+  //     //   totalSpentToday: reduceExpenses(Object.values(todayExpenses)),
+  //     // });
+  //   }
+
+  //   useEffect(() => {
+  //     if (expenses) {
+  //       setTodayExpenses({
+  //         todayExpenses: expenses.filter((expense) => {
+  //           return Moment(expense.purchase_date).isSame(
+  //             Moment(Date.now()),
+  //             'days'
+  //           )
+  //             ? expense
+  //             : null;
+  //         }),
+  //       });
+  //     }
+  //   }, [expenses]);
 
   // const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
@@ -141,7 +213,7 @@ const TripBudgetBoxes = ({tripData}) => {
                       spent today
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      $40.00
+                      ${totalSpentToday}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -153,7 +225,7 @@ const TripBudgetBoxes = ({tripData}) => {
                       className={classes.underBudgetColor}
                       align='right'
                     >
-                      $10.00
+                      ${day_remaining}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -178,7 +250,7 @@ const TripBudgetBoxes = ({tripData}) => {
                         variant='h5'
                         className={classes.spendingWidgetTitle}
                       >
-                        Daily
+                        Trip
                       </Typography>
                     </Grid>
                   </Grid>
@@ -187,10 +259,10 @@ const TripBudgetBoxes = ({tripData}) => {
                 <Grid container justify='space-around'>
                   <Grid item>
                     <Typography variant='subtitle2' align='right'>
-                      daily avg.
+                      trip avg.
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      $43.50
+                      ${trip_average}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -198,7 +270,7 @@ const TripBudgetBoxes = ({tripData}) => {
                       new daily budget.
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      $54.00
+                      ${new_daily_average}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -236,7 +308,7 @@ const TripBudgetBoxes = ({tripData}) => {
                       total spent
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      $352.50
+                      ${total_budget_spent}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -248,7 +320,7 @@ const TripBudgetBoxes = ({tripData}) => {
                       className={classes.underBudgetColor}
                       align='right'
                     >
-                      $647.50
+                      ${total_budget_remaining}
                     </Typography>
                   </Grid>
                 </Grid>
