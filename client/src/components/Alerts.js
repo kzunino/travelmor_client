@@ -48,7 +48,7 @@ const Alerts = ({error, message}) => {
   );
 };
 
-const propTypes = {
+Alerts.propTypes = {
   error: PropTypes.object.isRequired,
   message: PropTypes.object.isRequired,
 };
