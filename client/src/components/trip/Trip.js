@@ -1,6 +1,7 @@
 import React, {useState, forwardRef} from 'react';
 // import {Link} from 'react-router-dom';
 import TripMain from './tripComponents/TripMain';
+import TripBudgetBoxes from './tripComponents/TripBudgetBoxes';
 
 import Moment from 'moment';
 import Typography from '@material-ui/core/Typography';
@@ -159,42 +160,6 @@ const Trip = ({tripData}) => {
   // const theme = useTheme();
   const classes = useStyles();
 
-  const {
-    trip_uid,
-    user,
-    name,
-    total_budget,
-    length,
-    home_currency,
-    currencies,
-    expenses,
-    start_date,
-    end_date,
-  } = tripData;
-
-  let daily_budget = (total_budget / length).toFixed(2);
-
-  const [barState, setBarState] = useState({
-    labels: [
-      Moment(Date.now()).subtract(6, 'days').format('ddd'),
-      Moment(Date.now()).subtract(5, 'days').format('ddd'),
-      Moment(Date.now()).subtract(4, 'days').format('ddd'),
-      Moment(Date.now()).subtract(3, 'days').format('ddd'),
-      Moment(Date.now()).subtract(2, 'days').format('ddd'),
-      Moment(Date.now()).subtract(1, 'days').format('ddd'),
-      'Today',
-    ],
-    datasets: [
-      {
-        label: '$',
-        backgroundColor: 'rgba(75,192,192,1)',
-        borderColor: 'rgba(0,0,0,1)',
-        borderWidth: 2,
-        data: [65, 23, 34, 81, 56, 25, 14],
-      },
-    ],
-  });
-
   const [pieStateData, setPieStateData] = useState({
     labels: [
       'Uncategorized',
@@ -322,167 +287,7 @@ const Trip = ({tripData}) => {
       <Grid item>
         <Grid container justify='space-between'>
           <TripMain tripData={tripData} />
-
-          {/* Budget Boxes Item */}
-          <Grid item xs={12}>
-            <Grid container>
-              <Grid item xs={12} sm={4} md={4}>
-                <Box
-                  m={1}
-                  boxShadow={3}
-                  className={classes.spendingInfoWidgetBox}
-                >
-                  <Grid container direction='column'>
-                    <Grid item>
-                      <Grid container justify='space-between'>
-                        <Grid item>
-                          <TodayIcon
-                            classes={{root: classes.todayIconColor}}
-                            fontSize='large'
-                            className={classes.icon}
-                          />
-                        </Grid>
-                        <Grid item>
-                          <Typography
-                            variant='h5'
-                            className={classes.spendingWidgetTitle}
-                          >
-                            {Moment(Date.now()).format('MMM Do')}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Divider className={classes.divider} />
-                    <Grid container justify='space-around'>
-                      <Grid item>
-                        <Typography variant='subtitle2' align='right'>
-                          spent today
-                        </Typography>
-                        <Typography variant='h6' align='right'>
-                          $40.00
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Typography variant='subtitle2' align='right'>
-                          remaining
-                        </Typography>
-                        <Typography
-                          variant='h6'
-                          className={classes.underBudgetColor}
-                          align='right'
-                        >
-                          $10.00
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Grid>
-
-              <Grid item xs={12} sm={4} md={4}>
-                <Box
-                  m={1}
-                  boxShadow={3}
-                  className={classes.spendingInfoWidgetBox}
-                >
-                  <Grid container direction='column'>
-                    <Grid item>
-                      <Grid container justify='space-between'>
-                        <Grid item>
-                          <TimelineIcon
-                            fontSize='large'
-                            classes={{root: classes.dailyIconColor}}
-                            className={classes.icon}
-                          />
-                        </Grid>
-                        <Grid item>
-                          <Typography
-                            variant='h5'
-                            className={classes.spendingWidgetTitle}
-                          >
-                            Daily
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Divider className={classes.divider} />
-                    <Grid container justify='space-around'>
-                      <Grid item>
-                        <Typography variant='subtitle2' align='right'>
-                          daily avg.
-                        </Typography>
-                        <Typography variant='h6' align='right'>
-                          $43.50
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Typography variant='subtitle2' align='right'>
-                          new daily budget.
-                        </Typography>
-                        <Typography variant='h6' align='right'>
-                          $54.00
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Grid>
-
-              {/* Total Widget */}
-              <Grid item xs={12} sm={4} md={4}>
-                <Box
-                  m={1}
-                  boxShadow={3}
-                  className={classes.spendingInfoWidgetBox}
-                >
-                  <Grid container direction='column'>
-                    <Grid item>
-                      <Grid container justify='space-between'>
-                        <Grid item>
-                          <AccountBalanceIcon
-                            classes={{root: classes.accountBalanceColor}}
-                            fontSize='large'
-                            className={classes.icon}
-                          />
-                        </Grid>
-                        <Grid item>
-                          <Typography
-                            variant='h5'
-                            className={classes.spendingWidgetTitle}
-                          >
-                            Total
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Divider className={classes.divider} />
-                    <Grid container justify='space-around'>
-                      <Grid item>
-                        <Typography variant='subtitle2' align='right'>
-                          total spent
-                        </Typography>
-                        <Typography variant='h6' align='right'>
-                          $352.50
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Typography variant='subtitle2' align='right'>
-                          remaining
-                        </Typography>
-                        <Typography
-                          variant='h6'
-                          className={classes.underBudgetColor}
-                          align='right'
-                        >
-                          $647.50
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Grid>
-            </Grid>
-          </Grid>
+          <TripBudgetBoxes tripData={tripData} />
 
           {/* Table / Pie Chart Container */}
           <Grid item xs>

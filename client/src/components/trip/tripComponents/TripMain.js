@@ -13,17 +13,6 @@ import {makeStyles} from '@material-ui/core/styles';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
-  // mainContentBox: {
-  //   //backgroundColor: theme.palette.secondary.light,
-  //   backgroundColor: theme.palette.background.main,
-  //   marginTop: '2em',
-  //   marginLeft: 0,
-  //   marginRight: 0,
-  //   paddingTop: '1em',
-  //   paddingBottom: '1em',
-  //   display: 'flex',
-  // },
-
   chartContainer: {
     height: '15em',
     padding: 5,

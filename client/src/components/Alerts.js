@@ -50,7 +50,7 @@ const Alerts = ({error, message}) => {
 
 Alerts.propTypes = {
   error: PropTypes.object.isRequired,
-  message: PropTypes.object.isRequired,
+  message: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
