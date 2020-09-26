@@ -44,11 +44,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
 
-  chartContainer: {
-    [theme.breakpoints.down('xs')]: {
-      height: '12em',
-    },
-  },
   overallSpendingItems: {
     padding: '1em',
     textAlign: 'left',

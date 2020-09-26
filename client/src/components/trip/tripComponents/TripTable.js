@@ -130,7 +130,7 @@ const TripTable = ({tripData}) => {
           },
         ],
 
-        data: expenses.map((expense) => {
+        data: expenses.reverse().map((expense) => {
           return {
             name: expense.name,
             cost: expense.cost,

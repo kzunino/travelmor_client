@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   chartContainer: {
     height: '15em',
     padding: 5,
+    position: 'relative',
     [theme.breakpoints.down('xs')]: {
       height: '12em',
     },
@@ -431,6 +432,7 @@ const TripMain = ({tripData}) => {
                   position: 'right',
                 },
                 maintainAspectRatio: false,
+
                 scales: {
                   xAxes: [
                     {
@@ -446,9 +448,7 @@ const TripMain = ({tripData}) => {
                       },
                       ticks: {
                         display: false,
-                        max: max_bar_value,
-                        min: 0,
-                        stepSize: 1,
+                        beginAtZero: true,
                       },
                     },
                   ],
