@@ -101,18 +101,7 @@ const TripBudgetBoxes = ({tripData}) => {
   // const theme = useTheme();
   const classes = useStyles();
 
-  const {
-    // trip_uid,
-    // user,
-    // name,
-    total_budget,
-    length,
-    // home_currency,
-    // currencies,
-    expenses,
-    // start_date,
-    end_date,
-  } = tripData;
+  const {total_budget, length, expenses, end_date} = tripData;
 
   let todayExpenses;
   let totalSpentToday = 0;
@@ -124,58 +113,31 @@ const TripBudgetBoxes = ({tripData}) => {
   let total_budget_remaining = 0;
   let days_left;
 
+  // When props are passed down and render logic executes to make calculations
   if (expenses) {
+    //filters all expenses except for today's expenses
     todayExpenses = expenses.filter((expense) => {
       return Moment(expense.purchase_date).isSame(Moment(Date.now()), 'days')
         ? expense
         : null;
     });
 
+    // calculates total spent today and how much of todays daily budget remains
     totalSpentToday = reduceExpenses(todayExpenses);
     day_remaining = (daily_budget - totalSpentToday).toFixed(2);
 
+    // calculates total spent and remaining in budget
     total_budget_spent = reduceExpenses(expenses);
     total_budget_remaining = total_budget - total_budget_spent;
 
+    // calculates how many days left in trip not including today
     days_left = Moment(end_date).diff(Date.now(), 'days');
 
+    // calculates the overall trip average and new daily budget to stay
+    // on budget target
     trip_average = (total_budget_spent / (length - days_left)).toFixed(2);
-
     new_daily_average = (total_budget_remaining / days_left).toFixed(2);
   }
-
-  console.log(days_left);
-
-  //let totalSpentToday = todayExpenses
-
-  //   const [todayExpenses, setTodayExpenses] = useState([]);
-  //   //   const [totalSpentToday, setTotalSpentToday] = useState(0);
-  //   let totalSpentToday = 0;
-
-  //   if (todayExpenses !== null) {
-  //     console.log(todayExpenses);
-  //     // console.log(Object.values(todayExpenses));
-  //     totalSpentToday = reduceExpenses(todayExpenses);
-  //     console.log(totalSpentToday);
-  //     // setTotalSpentToday({
-  //     //   totalSpentToday: reduceExpenses(Object.values(todayExpenses)),
-  //     // });
-  //   }
-
-  //   useEffect(() => {
-  //     if (expenses) {
-  //       setTodayExpenses({
-  //         todayExpenses: expenses.filter((expense) => {
-  //           return Moment(expense.purchase_date).isSame(
-  //             Moment(Date.now()),
-  //             'days'
-  //           )
-  //             ? expense
-  //             : null;
-  //         }),
-  //       });
-  //     }
-  //   }, [expenses]);
 
   // const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 

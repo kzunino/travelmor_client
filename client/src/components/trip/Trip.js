@@ -2,40 +2,13 @@ import React, {useState, forwardRef} from 'react';
 // import {Link} from 'react-router-dom';
 import TripMain from './tripComponents/TripMain';
 import TripBudgetBoxes from './tripComponents/TripBudgetBoxes';
+import TripTable from './tripComponents/TripTable';
 
 import Moment from 'moment';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import Divider from '@material-ui/core/Divider';
-
-//icons
-import TodayIcon from '@material-ui/icons/Today';
-import TimelineIcon from '@material-ui/icons/Timeline';
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-
-// Table
-
-import MaterialTable from 'material-table';
-
-import AddBox from '@material-ui/icons/AddBox';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import Check from '@material-ui/icons/Check';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import Clear from '@material-ui/icons/Clear';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import Edit from '@material-ui/icons/Edit';
-import FilterList from '@material-ui/icons/FilterList';
-import FirstPage from '@material-ui/icons/FirstPage';
-import LastPage from '@material-ui/icons/LastPage';
-import Remove from '@material-ui/icons/Remove';
-import SaveAlt from '@material-ui/icons/SaveAlt';
-// import Search from '@material-ui/icons/Search';
-import ViewColumn from '@material-ui/icons/ViewColumn';
 
 //Charts
-import {Bar} from 'react-chartjs-2';
 import {Pie} from 'react-chartjs-2';
 
 import {makeStyles} from '@material-ui/core/styles';
@@ -192,91 +165,10 @@ const Trip = ({tripData}) => {
     ],
   });
 
-  const [tableData, setTableData] = useState({
-    columns: [
-      {title: 'Name', field: 'expense_name'},
-      {
-        title: 'Cost',
-        field: 'expense_cost',
-        type: 'currency',
-        currencySetting: {
-          currencyCode: 'USD',
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 2,
-        },
-      },
-      {
-        title: 'Type',
-        field: 'expense_type',
-        lookup: {
-          1: 'Uncategorized',
-          2: 'Accomodation',
-          3: 'Food',
-          4: 'Transportation',
-          5: 'Entertainment',
-          6: 'Tours',
-          7: 'Shopping',
-          8: 'Fees',
-          9: 'Emergency',
-          10: 'Miscellaneous',
-        },
-      },
-      {
-        title: 'Date',
-        field: 'expense_date',
-        type: 'date',
-      },
-    ],
-    data: [
-      {
-        expense_name: 'Dinner',
-        expense_cost: 10.01,
-        expense_type: 3,
-        expense_date: Moment(Date.now()).format('MM-DD-YYYY'),
-      },
-      {
-        expense_name: 'Hostel',
-        expense_cost: 8.0,
-        expense_type: 2,
-        expense_date: Moment(Date.now()).format('MM-DD-YYYY'),
-      },
-    ],
-  });
-
   // const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
   //prevents table from exceeding boundaries
   // const matchesTable = useMediaQuery('(max-width:648px)');
-
-  //Table Data
-
-  const tableIcons = {
-    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-    Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-    Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-    DetailPanel: forwardRef((props, ref) => (
-      <ChevronRight {...props} ref={ref} />
-    )),
-    Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-    Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-    Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-    FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-    LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-    NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-    PreviousPage: forwardRef((props, ref) => (
-      <ChevronLeft {...props} ref={ref} />
-    )),
-    ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    //Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-    SortArrow: forwardRef((props, ref) => (
-      <ArrowDownward {...props} ref={ref} />
-    )),
-    ThirdStateCheck: forwardRef((props, ref) => (
-      <Remove {...props} ref={ref} />
-    )),
-    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
-  };
 
   return (
     <>
@@ -288,76 +180,21 @@ const Trip = ({tripData}) => {
         <Grid container justify='space-between'>
           <TripMain tripData={tripData} />
           <TripBudgetBoxes tripData={tripData} />
+          <TripTable tripData={tripData} />
 
-          {/* Table / Pie Chart Container */}
-          <Grid item xs>
-            <Grid container justify='space-between'>
-              {/* Last Five Purchases Table */}
-              <Grid xs={12} lg={6} item>
-                <Box m={0} boxShadow={0} className={classes.tableBox}>
-                  <MaterialTable
-                    title='Expenses'
-                    options={{
-                      search: false,
-                    }}
-                    columns={tableData.columns}
-                    data={tableData.data}
-                    icons={tableIcons}
-                    editable={{
-                      onRowAdd: (newData) =>
-                        new Promise((resolve) => {
-                          setTimeout(() => {
-                            resolve();
-                            setTableData((prevState) => {
-                              const data = [...prevState.data];
-                              data.push(newData);
-                              return {...prevState, data};
-                            });
-                          }, 600);
-                        }),
-                      onRowUpdate: (newData, oldData) =>
-                        new Promise((resolve) => {
-                          setTimeout(() => {
-                            resolve();
-                            if (oldData) {
-                              setTableData((prevState) => {
-                                const data = [...prevState.data];
-                                data[data.indexOf(oldData)] = newData;
-                                return {...prevState, data};
-                              });
-                            }
-                          }, 600);
-                        }),
-                      onRowDelete: (oldData) =>
-                        new Promise((resolve) => {
-                          setTimeout(() => {
-                            resolve();
-                            setTableData((prevState) => {
-                              const data = [...prevState.data];
-                              data.splice(data.indexOf(oldData), 1);
-                              return {...prevState, data};
-                            });
-                          }, 600);
-                        }),
-                    }}
-                  />
-                </Box>
-              </Grid>
-
-              {/* ------ Pie Chart --------- */}
-              <Grid xs={12} md={12} lg={6} item>
-                <Box m={1} boxShadow={3} className={classes.budgetBox}>
-                  <Pie
-                    height={300}
-                    data={pieStateData}
-                    options={{maintainAspectRatio: false}}
-                  />
-                </Box>
-              </Grid>
-            </Grid>
+          {/* ------ Pie Chart --------- */}
+          <Grid xs={12} md={12} lg={6} item>
+            <Box m={1} boxShadow={3} className={classes.budgetBox}>
+              <Pie
+                height={300}
+                data={pieStateData}
+                options={{maintainAspectRatio: false}}
+              />
+            </Box>
           </Grid>
         </Grid>
       </Grid>
+
       {/* </Container>
         </Grid>
       </main> */}
