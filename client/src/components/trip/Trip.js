@@ -3,6 +3,7 @@ import React, {useState, forwardRef} from 'react';
 import TripMain from './tripComponents/TripMain';
 import TripBudgetBoxes from './tripComponents/TripBudgetBoxes';
 import TripTable from './tripComponents/TripTable';
+import TripPieChart from './tripComponents/TripPieChart';
 
 import Moment from 'moment';
 import Grid from '@material-ui/core/Grid';
@@ -133,38 +134,6 @@ const Trip = ({tripData}) => {
   // const theme = useTheme();
   const classes = useStyles();
 
-  const [pieStateData, setPieStateData] = useState({
-    labels: [
-      'Uncategorized',
-      'Accommodation',
-      'Food',
-      'Transportation',
-      'Entertainment',
-      'Tours',
-      'Shopping',
-      'Fees',
-      'Emergencies',
-      'Miscellaneous',
-    ],
-    datasets: [
-      {
-        data: [200, 400, 2850],
-        backgroundColor: [
-          'red',
-          'blue',
-          'green',
-          'black',
-          'purple',
-          'orange',
-          'tomato',
-          'violet',
-          'grey',
-          'yellow',
-        ],
-      },
-    ],
-  });
-
   // const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
   //prevents table from exceeding boundaries
@@ -181,17 +150,7 @@ const Trip = ({tripData}) => {
           <TripMain tripData={tripData} />
           <TripBudgetBoxes tripData={tripData} />
           <TripTable tripData={tripData} />
-
-          {/* ------ Pie Chart --------- */}
-          <Grid xs={12} md={12} lg={6} item>
-            <Box m={1} boxShadow={3} className={classes.budgetBox}>
-              <Pie
-                height={300}
-                data={pieStateData}
-                options={{maintainAspectRatio: false}}
-              />
-            </Box>
-          </Grid>
+          <TripPieChart tripData={tripData} />
         </Grid>
       </Grid>
 

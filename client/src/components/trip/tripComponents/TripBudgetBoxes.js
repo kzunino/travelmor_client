@@ -107,7 +107,7 @@ const TripBudgetBoxes = ({tripData}) => {
   let totalSpentToday = 0;
   let day_remaining = 0;
   let daily_budget = (total_budget / length).toFixed(2);
-  let trip_average = 0;
+  let daily_average = 0;
   let new_daily_average = 0;
   let total_budget_spent = 0;
   let total_budget_remaining = 0;
@@ -135,7 +135,7 @@ const TripBudgetBoxes = ({tripData}) => {
 
     // calculates the overall trip average and new daily budget to stay
     // on budget target
-    trip_average = (total_budget_spent / (length - days_left)).toFixed(2);
+    daily_average = (total_budget_spent / (length - days_left)).toFixed(2);
     new_daily_average = (total_budget_remaining / days_left).toFixed(2);
   }
 
@@ -221,10 +221,10 @@ const TripBudgetBoxes = ({tripData}) => {
                 <Grid container justify='space-around'>
                   <Grid item>
                     <Typography variant='subtitle2' align='right'>
-                      trip avg.
+                      daily avg.
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      ${trip_average}
+                      ${daily_average}
                     </Typography>
                   </Grid>
                   <Grid item>

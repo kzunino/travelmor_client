@@ -81,6 +81,7 @@ const TripTable = ({tripData}) => {
       {
         title: 'Type',
         field: 'expense_type',
+        lookup: {1: 'Uncategorized'},
       },
       {
         title: 'Date',
@@ -88,20 +89,7 @@ const TripTable = ({tripData}) => {
         type: 'date',
       },
     ],
-    data: [
-      {
-        name: 'Dinner',
-        cost: 10.01,
-        expense_type: 'Food',
-        purchase_date: Moment(Date.now()).format('MM-DD-YYYY'),
-      },
-      {
-        name: 'Hostel',
-        cost: 8.0,
-        expense_type: 'Accomodation',
-        purchase_date: Moment(Date.now()).format('MM-DD-YYYY'),
-      },
-    ],
+    data: [],
   });
 
   useEffect(() => {
@@ -122,6 +110,18 @@ const TripTable = ({tripData}) => {
           {
             title: 'Type',
             field: 'expense_type',
+            lookup: {
+              uncategorized: 'Uncategorized',
+              accomodation: 'Accomodation',
+              food: 'Food',
+              transportation: 'Transportation',
+              entertainment: 'Entertainment',
+              tours: 'Tours',
+              shopping: 'Shopping',
+              fees: 'Fees',
+              emergency: 'Emergency',
+              miscellaneous: 'Miscellaneous',
+            },
           },
           {
             title: 'Date',
