@@ -180,9 +180,9 @@ const TripTable = ({tripData}) => {
   return (
     <>
       {/* Table Container */}
-      <Grid item xs>
+      <Grid item xs={12}>
         <Grid container justify='space-between'>
-          <Grid xs={12} lg={6} item>
+          <Grid item xs={12}>
             <Box m={0} boxShadow={0} className={classes.tableBox}>
               <MaterialTable
                 title='Expenses'

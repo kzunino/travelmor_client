@@ -1,13 +1,18 @@
 import React from 'react';
+
 // import {Link} from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
-//Charts
-import {Pie} from 'react-chartjs-2';
-
 import {makeStyles} from '@material-ui/core/styles';
+
+//Charts
+import {Doughnut} from 'react-chartjs-2';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import Chart from 'chart.js';
+Chart.plugins.unregister(ChartDataLabels);
+
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,71 +29,87 @@ const TripPieChart = ({tripData}) => {
   // const theme = useTheme();
   const classes = useStyles();
 
-  const {
-    trip_uid,
-    user,
-    name,
-    total_budget,
-    length,
-    home_currency,
-    currencies,
-    expenses,
-    start_date,
-    end_date,
-  } = tripData;
+  const {expenses} = tripData;
 
+  //initial state of pie chart is greyed out
   let pieStateData = {
     labels: ['No Expenses Yet'],
     datasets: [
       {
         data: [1],
-        // backgroundColor: [
-        //   'red',
-        //   'blue',
-        //   'green',
-        //   'black',
-        //   'purple',
-        //   'orange',
-        //   'tomato',
-        //   'violet',
-        //   'grey',
-        //   'yellow',
-        // ],
+        backgroundColor: ['grey'],
       },
     ],
   };
-  let expenseTypeTotalCost = {
-    accommodation: 0,
-    emergencies: 0,
-    entertainment: 0,
-    fees: 0,
-    food: 0,
-    miscellaneous: 0,
-    shopping: 0,
-    tours: 0,
-    transportation: 0,
-    uncategorized: 0,
+
+  let options = {
+    maintainAspectRatio: false,
   };
 
   if (expenses) {
+    let expenseTypeTotalCost = {
+      accomodation: 0,
+      emergency: 0,
+      entertainment: 0,
+      fees: 0,
+      food: 0,
+      miscellaneous: 0,
+      shopping: 0,
+      tours: 0,
+      transportation: 0,
+      uncategorized: 0,
+    };
+
+    // loops through expense types and filters each category and adds totals for
+    // each type
+
+    Object.keys(expenseTypeTotalCost).forEach((key) => {
+      expenseTypeTotalCost[key] = expenses
+        .filter((expense) => {
+          return key === expense.expense_type;
+        })
+        .reduce((acc, item) => {
+          return acc + parseFloat(item.cost);
+        }, 0);
+    });
+
+    /*
+   Creates an array from the expenseTypeTotalCosts with all 
+   expense types that a user has used. 
+   */
+    let labels = Object.keys(expenseTypeTotalCost)
+      .filter((key) => {
+        return expenseTypeTotalCost[key] > 0;
+      })
+      .map((key) => {
+        if (expenseTypeTotalCost[key] > 0)
+          return key.charAt(0).toLocaleUpperCase() + key.slice(1);
+      });
+
+    /*
+   Creates an array from the expenseTypeTotalCosts with all types that have
+   a numerical value over 0 dollars spent 
+   */
+
+    let data = Object.keys(expenseTypeTotalCost)
+      .filter((key) => {
+        return expenseTypeTotalCost[key] > 0;
+      })
+      .map((key) => {
+        if (expenseTypeTotalCost[key] > 0) return expenseTypeTotalCost[key];
+        else;
+      });
+
+    console.log(data);
+
     pieStateData = {
       //
-      labels: [
-        'Accommodation',
-        'Emergencies',
-        'Entertainment',
-        'Fees',
-        'Food',
-        'Miscellaneous',
-        'Shopping',
-        'Tours',
-        'Transportation',
-        'Uncategorized',
-      ],
+      plugins: [ChartDataLabels],
+      labels: labels,
       datasets: [
         {
           //map over expense type if over 0 spent
-          data: [1],
+          data: data,
           backgroundColor: [
             'red',
             'blue',
@@ -98,9 +119,10 @@ const TripPieChart = ({tripData}) => {
             'orange',
             'tomato',
             'violet',
-            'grey',
             'yellow',
+            'grey',
           ],
+          //   hoverBackgroundColor: ['#FF6384', '#36A2EB'],
         },
       ],
     };
@@ -114,12 +136,13 @@ const TripPieChart = ({tripData}) => {
   return (
     <>
       {/* ------ Pie Chart --------- */}
-      <Grid xs={12} md={12} lg={6} item>
+      <Grid xs={12} sm={7} item>
         <Box m={1} boxShadow={3} className={classes.budgetBox}>
-          <Pie
+          <Doughnut
+            // plugins={[ChartDataLabels]}
             height={300}
             data={pieStateData}
-            options={{maintainAspectRatio: false}}
+            options={options}
           />
         </Box>
       </Grid>
