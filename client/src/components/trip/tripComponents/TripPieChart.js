@@ -126,6 +126,43 @@ const TripPieChart = ({tripData}) => {
         },
       ],
     };
+
+    // new options use plugin to calculate percentages
+    options = {
+      maintainAspectRatio: false,
+      layout: {
+        padding: {
+          left: 15,
+          right: 15,
+          top: 15,
+          bottom: 15,
+        },
+      },
+      legend: {
+        position: 'bottom',
+        labels: {
+          usePointStyle: true,
+        },
+      },
+      plugins: {
+        // Change options for ALL labels of THIS CHART
+        datalabels: {
+          color: 'black',
+          formatter: (value, ctx) => {
+            let sum = 0;
+            let dataArr = ctx.chart.data.datasets[0].data;
+            dataArr.map((data) => {
+              sum += data;
+            });
+            let percentage = ((value * 100) / sum).toFixed(0) + '%';
+            return percentage;
+          },
+          align: 'start',
+          offset: 38,
+          display: 'auto',
+        },
+      },
+    };
   }
 
   // const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
@@ -139,8 +176,8 @@ const TripPieChart = ({tripData}) => {
       <Grid xs={12} sm={7} item>
         <Box m={1} boxShadow={3} className={classes.budgetBox}>
           <Doughnut
-            // plugins={[ChartDataLabels]}
-            height={300}
+            plugins={[ChartDataLabels]}
+            height={400}
             data={pieStateData}
             options={options}
           />
