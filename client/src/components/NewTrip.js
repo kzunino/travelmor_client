@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {newTrip} from '../actions/trips';
 
-// import Moment from 'moment';
+import Moment from 'moment';
 import Typography from '@material-ui/core/Typography';
 // import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
@@ -69,27 +69,54 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewTrip = () => {
+const NewTrip = ({home_currency}) => {
   const theme = useTheme();
   const classes = useStyles();
 
-  const [currency, setCurrency] = useState('');
-  const [selectedStartDate, setSelectedStartDate] = useState(Date.now());
-  const [selectedEndDate, setSelectedEndDate] = useState(Date.now());
+  const [formData, setFormData] = useState({
+    name: '',
+    total_budget: '',
+    home_currency,
+  });
+  const [start_date, setStartDate] = useState(Date.now());
+  const [end_date, setEndDate] = useState(Date.now());
 
-  // Currency data
-  const handleCurrencyType = (event) => {
-    setCurrency(event.target.value);
-  };
+  let {name, total_budget, length} = formData;
 
   //start date state
   const handleStartDateChange = (date) => {
-    setSelectedStartDate(date);
+    setStartDate(date);
   };
 
   //end date state
   const handleEndDateChange = (date) => {
-    setSelectedEndDate(date);
+    setEndDate(date);
+  };
+
+  const handleChange = (e) => {
+    setFormData({...formData, [e.target.name]: e.target.value});
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    let length;
+
+    // Alert if trip end date is before trip start
+    if (Moment(start_date).isAfter(end_date)) {
+      return console.log('cannot start trip after end date');
+    }
+
+    // if start is same day as end day
+    if (Moment(end_date).isSame(Moment(start_date), 'day')) {
+      length = 1;
+    } else if (Moment(end_date).diff(Moment(start_date), 'days') === 1) {
+      length = 2;
+    } else {
+      length = Moment(end_date).diff(Moment(start_date), 'days') + 1;
+    }
+    console.log(length);
+
+    // pass variables to action  where form data added to body object
   };
 
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
@@ -107,15 +134,17 @@ const NewTrip = () => {
       <Container component='div' maxWidth='xs'>
         <CssBaseline />
 
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={onSubmit} noValidate>
           <TextField
             variant='standard'
             margin='normal'
             required
             fullWidth
-            id='trip_name'
+            id='name'
             label='Trip Name'
-            name='trip_name'
+            name='name'
+            value={name}
+            onChange={(e) => handleChange(e)}
             autoFocus
           />
           <TextField
@@ -124,12 +153,14 @@ const NewTrip = () => {
             margin='normal'
             required
             fullWidth
-            name='trip_budget_total'
+            name='total_budget'
+            value={total_budget}
+            onChange={(e) => handleChange(e)}
             label='Budget Total'
             type='number'
             placeholder='0.00'
             InputProps={{inputProps: {min: 0}}}
-            id='trip_budget_total'
+            id='total_budget'
           />
 
           {/* ------ Currency Input -----
@@ -178,7 +209,7 @@ const NewTrip = () => {
                 margin='normal'
                 id='date-picker-inline'
                 label='Start Date'
-                value={selectedStartDate}
+                value={start_date}
                 onChange={handleStartDateChange}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
@@ -194,7 +225,7 @@ const NewTrip = () => {
                 margin='normal'
                 id='date-picker-inline'
                 label='End Date'
-                value={selectedEndDate}
+                value={end_date}
                 onChange={handleEndDateChange}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
@@ -222,6 +253,11 @@ const NewTrip = () => {
 
 NewTrip.propTypes = {
   newTrip: PropTypes.func.isRequired,
+  home_currency: PropTypes.object.isRequired,
 };
 
-export default connect(null, {newTrip})(NewTrip);
+const mapStateToProps = (state) => ({
+  home_currency: state.auth.user.home_currency,
+});
+
+export default connect(mapStateToProps, {newTrip})(NewTrip);
