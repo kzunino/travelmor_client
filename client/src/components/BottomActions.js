@@ -1,12 +1,17 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {makeStyles} from '@material-ui/core/styles';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+
+// UI Components
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ListIcon from '@material-ui/icons/List';
 import HistoryIcon from '@material-ui/icons/History';
 
+//components
 import AddExpense from './AddExpense';
 
 //Modal
@@ -21,9 +26,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
     [theme.breakpoints.down('sm')]: {
       width: '100%',
-      marginLeft: 0,
+      marginLeft: -12,
     },
-    marginLeft: drawerWidth,
+    // marginLeft: drawerWidth,
+    marginLeft: -25,
     width: '100%',
     position: 'fixed',
     bottom: 0,
@@ -31,9 +37,8 @@ const useStyles = makeStyles((theme) => ({
   },
 
   navActionButtons: {
-    '& > :first-child': {
-      marginRight: drawerWidth,
-    },
+    marginRight: drawerWidth,
+
     [theme.breakpoints.down('sm')]: {
       marginRight: 0,
       '& > :first-child': {
@@ -59,9 +64,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BottomActions = () => {
+const BottomActions = ({trip_data}) => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+
+  const {name, currencies, home_currency} = trip_data;
+
+  // const [value, setValue] = React.useState(0);
 
   const [open, setOpen] = React.useState(false);
 
@@ -75,10 +83,10 @@ const BottomActions = () => {
 
   return (
     <BottomNavigation
-      value={value}
-      onChange={(event, newValue) => {
-        setValue(newValue);
-      }}
+      // value={value}
+      // onChange={(event, newValue) => {
+      //   setValue(newValue);
+      // }}
       showLabels
       className={classes.root}
     >
@@ -111,7 +119,11 @@ const BottomActions = () => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <AddExpense />
+            <AddExpense
+              name={name}
+              currencies={currencies}
+              homeCurrency={home_currency}
+            />
           </div>
         </Fade>
       </Modal>
@@ -128,4 +140,12 @@ const BottomActions = () => {
   );
 };
 
-export default BottomActions;
+BottomActions.propTypes = {
+  trip_data: PropTypes.object,
+};
+
+const mapStateToProps = (state) => ({
+  trip_data: state.trips,
+});
+
+export default connect(mapStateToProps)(BottomActions);

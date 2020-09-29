@@ -84,13 +84,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddExpense = () => {
+const AddExpense = ({currencies, name, homeCurrency}) => {
   const theme = useTheme();
   const classes = useStyles();
 
   //end date state
   const [selectedExpenseDate, setSelectedExpenseDate] = useState(Date.now());
   const [age, setAge] = React.useState('');
+  const [currency, setCurrency] = useState('');
+
+  const handleCurrency = (event) => {
+    setCurrency(event.target.value);
+  };
 
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -104,11 +109,11 @@ const AddExpense = () => {
 
   return (
     <>
-      <Grid direction='column' className={classes.containerWrapper}>
+      <Grid container direction='column' className={classes.containerWrapper}>
         {/* -----Welcome Container----- */}
         <Grid item>
           <Typography variant={matchXs ? 'h4' : 'h2'}>
-            Peru Trip - Add New Expense
+            {name} - Add New Expense
           </Typography>
         </Grid>
         <Divider />
@@ -125,6 +130,32 @@ const AddExpense = () => {
               name='expense_name'
               autoFocus
             />
+
+            <FormControl required className={classes.formControl}>
+              <InputLabel id='required-label'>Currency</InputLabel>
+              <Select
+                labelId='demo-simple-select-required-label'
+                id='demo-simple-select-required'
+                value={currency}
+                onChange={handleCurrency}
+                className={classes.selectEmpty}
+              >
+                <MenuItem value={homeCurrency}>
+                  <em>{homeCurrency}</em>
+                </MenuItem>
+                {currencies
+                  ? currencies.map((currency, index) => (
+                      <MenuItem
+                        value={currency.currency}
+                        key={currency.currency + index}
+                      >
+                        {currency.currency}
+                      </MenuItem>
+                    ))
+                  : null}
+              </Select>
+            </FormControl>
+
             <TextField
               className={classes.budgetField}
               variant='standard'
@@ -151,16 +182,16 @@ const AddExpense = () => {
                 <MenuItem value='Uncategorized'>
                   <em>Uncategorized</em>
                 </MenuItem>
-                <MenuItem value={'Lodging'}>Lodging</MenuItem>
-                <MenuItem value={'Accommodation'}>Accommodation</MenuItem>
-                <MenuItem value={'Food'}>Food</MenuItem>
-                <MenuItem value={'Transportation'}>Transportation</MenuItem>
-                <MenuItem value={'Entertainment'}>Entertainment</MenuItem>
-                <MenuItem value={'Tours'}>Tours</MenuItem>
-                <MenuItem value={'Shopping'}>Shopping</MenuItem>
-                <MenuItem value={'Fees'}>Fees</MenuItem>
-                <MenuItem value={'Emergencies'}>Emergencies</MenuItem>
-                <MenuItem value={'Miscellaneous'}>Miscellaneous</MenuItem>
+                <MenuItem value={'lodging'}>Lodging</MenuItem>
+                <MenuItem value={'accommodation'}>Accommodation</MenuItem>
+                <MenuItem value={'food'}>Food</MenuItem>
+                <MenuItem value={'transportation'}>Transportation</MenuItem>
+                <MenuItem value={'entertainment'}>Entertainment</MenuItem>
+                <MenuItem value={'tours'}>Tours</MenuItem>
+                <MenuItem value={'shopping'}>Shopping</MenuItem>
+                <MenuItem value={'fees'}>Fees</MenuItem>
+                <MenuItem value={'emergencies'}>Emergencies</MenuItem>
+                <MenuItem value={'miscellaneous'}>Miscellaneous</MenuItem>
               </Select>
             </FormControl>
 

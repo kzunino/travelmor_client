@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
 import {data as countryData} from 'currency-codes';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {newTrip} from '../actions/trips';
 
 // import Moment from 'moment';
 import Typography from '@material-ui/core/Typography';
@@ -131,7 +134,7 @@ const NewTrip = () => {
 
           {/* ------ Currency Input ----- */}
           <FormControl required className={classes.formControl}>
-            <InputLabel id='required-label'>Foreign Currency</InputLabel>
+            <InputLabel id='required-label'>Home Currency</InputLabel>
             <Select
               id='currency'
               value={currency}
@@ -217,4 +220,8 @@ const NewTrip = () => {
   );
 };
 
-export default NewTrip;
+NewTrip.propTypes = {
+  newTrip: PropTypes.func.isRequired,
+};
+
+export default connect(null, {newTrip})(NewTrip);

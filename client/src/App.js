@@ -32,8 +32,6 @@ import About from './components/About';
 import Contact from './components/ContactUs';
 import MyAccount from './components/MyAccount';
 
-import BottomActions from './components/BottomActions';
-
 import {loadUser} from './actions/auth';
 import store from './store';
 
@@ -67,40 +65,7 @@ const useStyles = makeStyles((theme) => ({
 function App({isAuthenticated}) {
   const classes = useStyles();
 
-  /* 
-
-  const user = {
-    first_name:
-    last_name:
-    home_currency:
-    email:
-    password:
-  }
-  
-  const trip = {
-    trip_uid: 
-    trip_ name:
-    trip_budget_total:
-    trip_start:
-    trip_end:
-    ----- virtual ------
-    trip_length: int - days (calculate on backend)
-    trip_currency: [] of currency types integers
-  }
-
-  const expense = {
-    expense_uid: 
-    fk_trip_uid:
-    expense_name:
-    expense_cost:
-    expense_type:
-    trip_length:
-    expense_currency: country integer
-
-  }
-  
-  */
-
+  // Loads user to maintain authentication
   useEffect(() => {
     store.dispatch(loadUser());
   }, []);
@@ -140,7 +105,6 @@ function App({isAuthenticated}) {
             </Switch>
           </Grid>
         </main>
-        {window.location.pathname === '/dashboard' ? <BottomActions /> : null}
       </Router>
     </>
   );

@@ -65,6 +65,16 @@ const TripTable = ({tripData}) => {
     end_date,
   } = tripData;
 
+  const [editExpense, setEditExpense] = useState({
+    name: '',
+    cost: '',
+    expense_type: '',
+    expense_uuid: '',
+    purchase_date: '',
+    exchange_rate: '',
+    currency: '',
+  });
+
   const [tableData, setTableData] = useState({
     columns: [
       {title: 'Name', field: 'name'},
@@ -128,6 +138,20 @@ const TripTable = ({tripData}) => {
             field: 'purchase_date',
             type: 'date',
           },
+          {
+            title: 'Exchange_rate',
+            field: 'exchange_rate',
+            readonly: true,
+            editable: 'never',
+            hidden: true,
+          },
+          {
+            title: 'ID',
+            field: 'expense_uuid',
+            readonly: true,
+            editable: 'never',
+            hidden: true,
+          },
         ],
 
         data: expenses.reverse().map((expense) => {
@@ -136,11 +160,17 @@ const TripTable = ({tripData}) => {
             cost: expense.cost,
             expense_type: expense.expense_type,
             purchase_date: Moment(expense.purchase_date).format('MM-DD-YYYY'),
+            exchange_rate: expense.exchange_rate,
+            expense_uuid: expense.expense_uid,
           };
         }),
       });
     }
   }, [expenses]);
+
+  const editHandler = (e) => {
+    e.preventDefault();
+  };
 
   // const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
@@ -150,7 +180,7 @@ const TripTable = ({tripData}) => {
   //Table Data
 
   const tableIcons = {
-    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+    // Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
     Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
     Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
     Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
@@ -193,21 +223,24 @@ const TripTable = ({tripData}) => {
                 data={tableData.data}
                 icons={tableIcons}
                 editable={{
-                  onRowAdd: (newData) =>
-                    new Promise((resolve) => {
-                      setTimeout(() => {
-                        resolve();
-                        setTableData((prevState) => {
-                          const data = [...prevState.data];
-                          data.push(newData);
-                          return {...prevState, data};
-                        });
-                      }, 600);
-                    }),
+                  //   onRowAdd: (newData) =>
+                  //     new Promise((resolve) => {
+                  //       setTimeout(() => {
+                  //         resolve();
+
+                  //         setTableData((prevState) => {
+                  //           const data = [...prevState.data];
+                  //           data.push(newData);
+                  //           return {...prevState, data};
+                  //         });
+                  //       }, 600);
+                  //     }),
                   onRowUpdate: (newData, oldData) =>
                     new Promise((resolve) => {
                       setTimeout(() => {
                         resolve();
+                        let editExpenses = newData;
+                        setEditExpense({editExpenses});
                         if (oldData) {
                           setTableData((prevState) => {
                             const data = [...prevState.data];

@@ -11,6 +11,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import {Doughnut} from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import Chart from 'chart.js';
+import {Typography} from '@material-ui/core';
 Chart.plugins.unregister(ChartDataLabels);
 
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -140,6 +141,7 @@ const TripPieChart = ({tripData}) => {
       },
       legend: {
         position: 'bottom',
+        align: 'start',
         labels: {
           usePointStyle: true,
         },
@@ -173,14 +175,19 @@ const TripPieChart = ({tripData}) => {
   return (
     <>
       {/* ------ Pie Chart --------- */}
-      <Grid xs={12} sm={7} item>
+      <Grid xs={12} sm={12} item>
         <Box m={1} boxShadow={3} className={classes.budgetBox}>
-          <Doughnut
-            plugins={[ChartDataLabels]}
-            height={400}
-            data={pieStateData}
-            options={options}
-          />
+          <Grid item>
+            <Typography variant='h5'>Trip Expense Types</Typography>
+          </Grid>
+          <Grid item>
+            <Doughnut
+              plugins={[ChartDataLabels]}
+              height={400}
+              data={pieStateData}
+              options={options}
+            />
+          </Grid>
         </Box>
       </Grid>
     </>
