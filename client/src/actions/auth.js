@@ -68,7 +68,7 @@ export const register = ({
     .post('http://localhost:8000/auth/registration/', body, config)
     .then((res) => {
       dispatch({
-        type: LOGIN_SUCCESS,
+        type: REGISTER_SUCCESS,
         payload: res.data,
       });
     })
@@ -98,7 +98,9 @@ export const login = ({email, password}) => async (dispatch) => {
       body,
       config
     );
-    if (res) dispatch({type: REGISTER_SUCCESS, payload: res.data});
+    if (res) {
+      dispatch({type: LOGIN_SUCCESS, payload: res.data});
+    }
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));
     dispatch({type: LOGIN_FAIL});

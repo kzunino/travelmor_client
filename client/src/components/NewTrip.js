@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {data as countryData} from 'currency-codes';
+// import {data as countryData} from 'currency-codes';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {newTrip} from '../actions/trips';
@@ -132,7 +132,7 @@ const NewTrip = () => {
             id='trip_budget_total'
           />
 
-          {/* ------ Currency Input ----- */}
+          {/* ------ Currency Input -----
           <FormControl required className={classes.formControl}>
             <InputLabel id='required-label'>Home Currency</InputLabel>
             <Select
@@ -167,7 +167,7 @@ const NewTrip = () => {
                 )
               )}
             </Select>
-          </FormControl>
+          </FormControl> */}
 
           <Grid container direction='row' spacing={2} justify='space-between'>
             <Grid xs={6} item>

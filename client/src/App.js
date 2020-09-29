@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function App({isAuthenticated}) {
+function App({isAuthenticated, user}) {
   const classes = useStyles();
 
   // Loads user to maintain authentication
@@ -79,7 +79,7 @@ function App({isAuthenticated}) {
         <Route exact path='/signup' component={SignUp} />
         <Route exact path='/verification' component={Verification} />
 
-        {isAuthenticated ? <AuthHeader /> : null}
+        {isAuthenticated && user ? <AuthHeader /> : null}
         <main className={!isAuthenticated ? classes.hide : classes.content}>
           <Toolbar />
           <Grid
@@ -112,10 +112,12 @@ function App({isAuthenticated}) {
 
 App.propTypes = {
   isAuthenticated: PropTypes.bool,
+  user: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  user: state.auth.user,
 });
 
 export default connect(mapStateToProps)(App);

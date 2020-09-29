@@ -38,6 +38,7 @@ export default (state = initialState, action) => {
         token: action.payload.key,
         isAuthenticated: true,
         isLoading: false,
+        user: action.payload.user,
       };
     case AUTH_ERROR:
     case LOGOUT_SUCCESS:
