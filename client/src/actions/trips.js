@@ -23,10 +23,24 @@ export const getTrip = (trip_uid) => async (dispatch, getState) => {
 };
 
 // Add new trip
-export const newTrip = (data) => async (dispatch, getState) => {
+export const newTrip = ({
+  user,
+  name,
+  total_budget,
+  home_currency,
+  length,
+  start_date,
+  end_date,
+}) => async (dispatch, getState) => {
   // Request Body
   const body = JSON.stringify({
-    data,
+    user,
+    name,
+    total_budget,
+    home_currency,
+    length,
+    start_date,
+    end_date,
   });
   try {
     const res = await axios.post(

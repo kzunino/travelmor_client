@@ -69,19 +69,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewTrip = ({home_currency}) => {
+const NewTrip = ({home_currency, newTrip, user}) => {
   const theme = useTheme();
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
     name: '',
     total_budget: '',
-    home_currency,
   });
   const [start_date, setStartDate] = useState(Date.now());
   const [end_date, setEndDate] = useState(Date.now());
 
-  let {name, total_budget, length} = formData;
+  let {name, total_budget} = formData;
 
   //start date state
   const handleStartDateChange = (date) => {
@@ -100,6 +99,7 @@ const NewTrip = ({home_currency}) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     let length;
+    const format = 'YYYY-MM-DD HH:mm:ss';
 
     // Alert if trip end date is before trip start
     if (Moment(start_date).isAfter(end_date)) {
@@ -114,8 +114,16 @@ const NewTrip = ({home_currency}) => {
     } else {
       length = Moment(end_date).diff(Moment(start_date), 'days') + 1;
     }
-    console.log(length);
 
+    newTrip({
+      user,
+      name,
+      total_budget,
+      length,
+      home_currency,
+      start_date: Moment(start_date).format(format),
+      end_date: Moment(end_date).format(format),
+    });
     // pass variables to action  where form data added to body object
   };
 
@@ -253,11 +261,13 @@ const NewTrip = ({home_currency}) => {
 
 NewTrip.propTypes = {
   newTrip: PropTypes.func.isRequired,
-  home_currency: PropTypes.object.isRequired,
+  home_currency: PropTypes.string.isRequired,
+  user: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   home_currency: state.auth.user.home_currency,
+  user: state.auth.user.id,
 });
 
 export default connect(mapStateToProps, {newTrip})(NewTrip);
