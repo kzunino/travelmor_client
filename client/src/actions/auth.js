@@ -10,6 +10,7 @@ import {
   USER_LOADED,
   USER_LOADING,
   LOGOUT_SUCCESS,
+  UPDATE_USER_SUCCESS,
 } from './types';
 
 // Checks Token and Loads the User
@@ -105,6 +106,43 @@ export const login = ({email, password}) => async (dispatch) => {
     dispatch(returnErrors(err.response.data, err.response.status));
     dispatch({type: LOGIN_FAIL});
   }
+};
+
+// Update User Information
+export const updateUser = ({
+  firstName,
+  lastName,
+  homeCurrency,
+  emailAddress,
+}) => async (dispatch, getState) => {
+  // // Headers
+  // const config = {
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  // };
+
+  // Request Body
+  const body = JSON.stringify({
+    first_name: firstName,
+    last_name: lastName,
+    email: emailAddress,
+    home_currency: homeCurrency,
+  });
+
+  axios
+    .put('http://localhost:8000/api/user/me', body, tokenConfig(getState))
+    .then((res) => {
+      console.log(res.data);
+      dispatch({
+        type: UPDATE_USER_SUCCESS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err.response.data);
+      dispatch(returnErrors(err.response.data, err.response.status));
+    });
 };
 
 // LOGOUT USER

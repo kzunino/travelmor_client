@@ -7,6 +7,7 @@ export const AUTH_ERROR = 'AUTH_ERROR';
 export const USER_LOADED = 'USER_LOADED';
 export const USER_LOADING = 'USER_LOADING';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
 
 // Alerts
 export const CREATE_ALERT = 'CREATE_ALERT';

@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
 import {data as countryData} from 'currency-codes';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {updateUser} from '../actions/auth';
 
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -34,27 +37,59 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
     fontWeight: 'bold',
   },
+  hidden: {
+    visibility: 'hidden',
+  },
 }));
 
-const MyAccount = () => {
+const MyAccount = ({
+  first_name,
+  last_name,
+  home_currency,
+  email,
+  updateUser,
+}) => {
   const theme = useTheme();
   const classes = useStyles();
 
-  const [currency, setCurrency] = useState('');
+  const [userData, setUserData] = useState({
+    firstName: first_name,
+    lastName: last_name,
+    emailAddress: email,
+    homeCurrency: home_currency,
+  });
 
-  // Currency data
-  const handleCurrencyType = (event) => {
-    setCurrency(event.target.value);
+  // hides the button if no changes are made to user info
+  const [hidden, setHidden] = useState(true);
+
+  const {firstName, lastName, emailAddress, homeCurrency} = userData;
+
+  // If state is changed  on user's information reveals the update button
+  const handleUserData = (e) => {
+    toggleHidden();
+    setUserData({...userData, [e.target.name]: e.target.value});
+  };
+
+  const toggleHidden = () => {
+    setHidden(false);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await updateUser({
+      firstName,
+      lastName,
+      emailAddress,
+      homeCurrency,
+    });
+
+    setHidden(true);
   };
 
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
   return (
     <>
-      {/* <main className={classes.content}>
-        <Toolbar />
-        <Grid container direction='column' className={classes.containerWrapper}> */}
-      {/* -----Welcome Container----- */}
       <Grid item>
         <Typography variant={matchXs ? 'h4' : 'h2'}>
           Account Settings
@@ -62,9 +97,13 @@ const MyAccount = () => {
       </Grid>
       <Divider />
 
-      <Container maxWidth={'xs'}>
+      <Container maxWidth={'sm'}>
         <CssBaseline />
-        <form className={classes.form} noValidate>
+        <form
+          className={classes.form}
+          onSubmit={(e) => handleSubmit(e)}
+          noValidate
+        >
           <Grid container spacing={3}>
             <Grid item>
               <TextField
@@ -73,7 +112,11 @@ const MyAccount = () => {
                 required
                 id='first_name'
                 label='First Name'
-                name='first_name'
+                name='firstName'
+                value={firstName}
+                onChange={(e) => {
+                  handleUserData(e);
+                }}
               />
             </Grid>
 
@@ -84,7 +127,11 @@ const MyAccount = () => {
                 required
                 id='last_name'
                 label='Last Name'
-                name='last_name'
+                name='lastName'
+                value={lastName}
+                onChange={(e) => {
+                  handleUserData(e);
+                }}
               />
             </Grid>
           </Grid>
@@ -96,7 +143,11 @@ const MyAccount = () => {
             fullWidth
             id='email'
             label='Email'
-            name='email'
+            name='emailAddress'
+            value={emailAddress}
+            onChange={(e) => {
+              handleUserData(e);
+            }}
           />
 
           <br />
@@ -106,20 +157,24 @@ const MyAccount = () => {
             <InputLabel id='required-label'>Home Currency</InputLabel>
             <Select
               id='currency'
-              value={currency}
-              onChange={handleCurrencyType}
+              value={homeCurrency}
+              name='homeCurrency'
+              onChange={(e) => {
+                handleUserData(e);
+              }}
               className={classes.selectEmpty}
               // accesses the menu styles
               MenuProps={{classes: {list: classes.selectMenu}}}
+              value={homeCurrency}
             >
-              <MenuItem value={'840'}>USD</MenuItem>
-              <MenuItem value={'978'}>EUR</MenuItem>
-              <MenuItem value={'036'}>AUD</MenuItem>
+              <MenuItem value={'USD'}>USD</MenuItem>
+              <MenuItem value={'EUR'}>EUR</MenuItem>
+              <MenuItem value={'AUD'}>AUD</MenuItem>
               <Divider />
               {countryData.map((country) => (
                 <MenuItem
                   key={country.number + country.code}
-                  value={country.number}
+                  value={country.code}
                 >{`${country.code}`}</MenuItem>
               ))}
             </Select>
@@ -129,18 +184,30 @@ const MyAccount = () => {
             type='submit'
             variant='contained'
             color='primary'
-            className={classes.submit}
+            className={hidden ? classes.hidden : classes.submit}
             disableRipple
           >
             Update
           </Button>
-          <Grid container></Grid>
         </form>
       </Container>
-      {/* </Grid>
-      </main> */}
     </>
   );
 };
 
-export default MyAccount;
+MyAccount.propTypes = {
+  first_name: PropTypes.string.isRequired,
+  last_name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  home_currency: PropTypes.string.isRequired,
+  updateUser: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  first_name: state.auth.user.first_name,
+  last_name: state.auth.user.last_name,
+  email: state.auth.user.email,
+  home_currency: state.auth.user.home_currency,
+});
+
+export default connect(mapStateToProps, {updateUser})(MyAccount);

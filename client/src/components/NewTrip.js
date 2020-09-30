@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewTrip = ({home_currency, newTrip, user}) => {
+const NewTrip = ({home_currency, newTrip, user, history}) => {
   const theme = useTheme();
   const classes = useStyles();
 
@@ -98,6 +98,7 @@ const NewTrip = ({home_currency, newTrip, user}) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
     let length;
     const format = 'YYYY-MM-DD HH:mm:ss';
 
@@ -115,7 +116,7 @@ const NewTrip = ({home_currency, newTrip, user}) => {
       length = Moment(end_date).diff(Moment(start_date), 'days') + 1;
     }
 
-    newTrip({
+    await newTrip({
       user,
       name,
       total_budget,
@@ -124,7 +125,8 @@ const NewTrip = ({home_currency, newTrip, user}) => {
       start_date: Moment(start_date).format(format),
       end_date: Moment(end_date).format(format),
     });
-    // pass variables to action  where form data added to body object
+
+    history.push('/dashboard');
   };
 
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
