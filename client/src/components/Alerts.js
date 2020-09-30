@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Alerts = ({error, message}) => {
+const Alerts = ({error, alert}) => {
   useEffect(() => {
     const handleErrorProps = () => {
       if (error.msg.non_field_errors)
@@ -26,10 +26,13 @@ const Alerts = ({error, message}) => {
       if (error.msg.last_name) toast.error(`Last name: ${error.msg.last_name}`);
       if (error.msg.first_name)
         toast.error(`First name: ${error.msg.first_name}`);
+
+      // Alert Success
+      if (alert.success) toast.success(alert.success);
     };
 
     handleErrorProps();
-  }, [error]);
+  }, [error, alert]);
 
   return (
     <>
@@ -55,7 +58,7 @@ Alerts.propTypes = {
 
 const mapStateToProps = (state) => ({
   error: state.errors,
-  message: state.messages,
+  alert: state.alerts,
 });
 
 export default connect(mapStateToProps)(Alerts);

@@ -3,7 +3,18 @@ import {data as countryData} from 'currency-codes';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {updateUser} from '../actions/auth';
+import {makeStyles, useTheme} from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
+/*
+
+ Needs to add extra security for users to update their email addresses.
+  -verification email before changing their email
+  -need to create a custom change password serializer in django
+
+*/
+
+// MUI Componeents
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
@@ -21,9 +32,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 //import {KeyboardDatePicker} from '@material-ui/pickers';
-
-import {makeStyles, useTheme} from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
   selectEmpty: {

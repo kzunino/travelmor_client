@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Dashboard = ({trips, getTrip, trip_data, name}) => {
+const Dashboard = ({trips, getTrip, name}) => {
   const theme = useTheme();
   const classes = useStyles();
 
@@ -122,7 +122,7 @@ const Dashboard = ({trips, getTrip, trip_data, name}) => {
             </Grid>
           </Grid>
         ) : (
-          <Trip tripData={trip_data} />
+          <Trip />
         )}
       </Container>
     </>
@@ -132,13 +132,11 @@ const Dashboard = ({trips, getTrip, trip_data, name}) => {
 Dashboard.propTypes = {
   trips: PropTypes.array,
   getTrip: PropTypes.func.isRequired,
-  trip_data: PropTypes.object.isRequired,
   name: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
   trips: state.auth.user.trips,
-  trip_data: state.trips,
   name: state.auth.user.first_name,
 });
 

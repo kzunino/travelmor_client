@@ -1,16 +1,24 @@
-import React, {useState, forwardRef} from 'react';
+import React, {useState, useEffect} from 'react';
+import {makeStyles} from '@material-ui/core/styles';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {getTrip} from '../../actions/trips';
+
 // import {Link} from 'react-router-dom';
+
+// Trip Components
 import TripMain from './tripComponents/TripMain';
 import TripBudgetBoxes from './tripComponents/TripBudgetBoxes';
 import TripTable from './tripComponents/TripTable';
 import TripPieChart from './tripComponents/TripPieChart';
 
+// MUI Componenets
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
+// Bottom Actions
 import BottomAction from '../BottomActions';
 
-import {makeStyles} from '@material-ui/core/styles';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const drawerWidth = 240;
@@ -46,9 +54,17 @@ const useStyles = makeStyles((theme) => ({
   // },
 }));
 
-const Trip = ({tripData}) => {
+const Trip = ({match, getTrip, trip_data}) => {
   // const theme = useTheme();
   const classes = useStyles();
+
+  useEffect(() => {
+    if (window.location.pathname !== '/dashboard') {
+      let {trip_uid} = match.params;
+      console.log(trip_uid);
+      getTrip(trip_uid);
+    }
+  }, []);
 
   // const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
@@ -59,10 +75,10 @@ const Trip = ({tripData}) => {
     <>
       <Grid item>
         <Grid container justify='space-between'>
-          <TripMain tripData={tripData} />
-          <TripBudgetBoxes tripData={tripData} />
-          <TripTable tripData={tripData} />
-          <TripPieChart tripData={tripData} />
+          <TripMain tripData={trip_data} />
+          <TripBudgetBoxes tripData={trip_data} />
+          <TripTable tripData={trip_data} />
+          <TripPieChart tripData={trip_data} />
         </Grid>
       </Grid>
       <BottomAction />
@@ -70,4 +86,13 @@ const Trip = ({tripData}) => {
   );
 };
 
-export default Trip;
+Trip.propTypes = {
+  getTrip: PropTypes.func.isRequired,
+  trip_data: PropTypes.object,
+};
+
+const mapStateToProps = (state) => ({
+  trip_data: state.trips,
+});
+
+export default connect(mapStateToProps, {getTrip})(Trip);

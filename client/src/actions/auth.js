@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {returnErrors} from './alerts';
+import {createAlerts, returnErrors} from './alerts';
 
 import {
   REGISTER_SUCCESS,
@@ -115,13 +115,6 @@ export const updateUser = ({
   homeCurrency,
   emailAddress,
 }) => async (dispatch, getState) => {
-  // // Headers
-  // const config = {
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  // };
-
   // Request Body
   const body = JSON.stringify({
     first_name: firstName,
@@ -138,6 +131,7 @@ export const updateUser = ({
         type: UPDATE_USER_SUCCESS,
         payload: res.data,
       });
+      dispatch(createAlerts({success: 'User updated!'}));
     })
     .catch((err) => {
       console.log(err.response.data);

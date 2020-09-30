@@ -89,7 +89,11 @@ function App({isAuthenticated, user}) {
           >
             <Switch>
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
-              <PrivateRoute exact path='/dashboard/trip' component={Trip} />
+              <PrivateRoute
+                exact
+                path='/dashboard/trip/:trip_uid'
+                component={Trip}
+              />
               <PrivateRoute
                 exact
                 path='/dashboard/history'
