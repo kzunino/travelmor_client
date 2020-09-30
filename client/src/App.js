@@ -96,7 +96,7 @@ function App({isAuthenticated, user}) {
               />
               <PrivateRoute
                 exact
-                path='/dashboard/history'
+                path='/history/:trip_uid'
                 component={ExpenseHistory}
               />
               <PrivateRoute exact path='/history' component={History} />

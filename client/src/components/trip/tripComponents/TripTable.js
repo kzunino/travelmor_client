@@ -53,16 +53,16 @@ const TripTable = ({tripData}) => {
   const classes = useStyles();
 
   const {
-    trip_uid,
-    user,
+    // trip_uid,
+    // user,
     name,
-    total_budget,
-    length,
+    // total_budget,
+    // length,
     home_currency,
-    currencies,
+    // currencies,
     expenses,
-    start_date,
-    end_date,
+    // start_date,
+    // end_date,
   } = tripData;
 
   const [editExpense, setEditExpense] = useState({
@@ -215,7 +215,7 @@ const TripTable = ({tripData}) => {
           <Grid item xs={12}>
             <Box m={0} boxShadow={0} className={classes.tableBox}>
               <MaterialTable
-                title='Expenses'
+                title={`${name} Expenses`}
                 options={{
                   search: false,
                 }}
