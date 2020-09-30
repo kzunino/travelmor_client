@@ -1,6 +1,9 @@
 import React from 'react';
 import Moment from 'moment';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {getTrip} from '../actions/trips';
 
 // import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
@@ -50,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const History = () => {
+const History = ({trips}) => {
   const theme = useTheme();
   const classes = useStyles();
   // const [checked, setChecked] = React.useState(['wifi']);
@@ -70,51 +73,16 @@ const History = () => {
 
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
-  let trips = [
-    {
-      trip_uid: 23422224,
-      trip_name: 'Peru Trip',
-      start_date: '08-30-2020',
-      end_date: '09-30-2020',
-    },
-    {
-      trip_uid: 234234,
-      trip_name: 'Canada Trip',
-      start_date: '12-02-2020',
-      end_date: '12-24-2020',
-    },
-    {
-      trip_uid: 2342545,
-      trip_name: 'Ecuador Trip',
-      start_date: '08-30-2019',
-      end_date: '09-30-2019',
-    },
-    {
-      trip_uid: 6575456,
-      trip_name: 'Colombia Trip',
-      start_date: '08-30-2018',
-      end_date: '09-30-2018',
-    },
-    {
-      trip_uid: 8979675,
-      trip_name: 'Mexico Trip',
-      start_date: '08-30-2017',
-      end_date: '09-30-2017',
-    },
-  ];
-
-  // Grabs and filters out all years that trip has been taken
+  // Creates an array of each year a trip as been taken without duplicates
+  // using the start date as the year - lists from most recent to past
   let tripYears = [];
-  trips.forEach((trip, index) => {
-    if (tripYears.indexOf(trip.start_date.slice(-4)) === -1)
-      tripYears.push(trip.start_date.slice(-4));
+  trips.forEach((trips) => {
+    if (tripYears.indexOf(Moment(trips.start_date).format('YYYY')) === -1)
+      tripYears.push(Moment(trips.start_date).format('YYYY'));
   });
 
   return (
     <>
-      {/* <main className={classes.content}>
-       <Toolbar />
-       <Grid container direction='column' className={classes.containerWrapper}> */}
       <Grid item>
         <Typography variant={matchXs ? 'h4' : 'h2'}>
           All Trip History
@@ -138,7 +106,7 @@ const History = () => {
                     key={year + index}
                   >
                     {trips.map((trip, index) => {
-                      if (year === trip.start_date.slice(-4)) {
+                      if (year === Moment(trips.start_date).format('YYYY')) {
                         return (
                           <ListItem
                             key={trip.trip_uid}
@@ -148,7 +116,7 @@ const History = () => {
                           >
                             <ListItemText
                               classes={classes.listItemText}
-                              primary={`${trip.trip_name}`}
+                              primary={`${trip.name}`}
                             />
                           </ListItem>
                         );
@@ -161,10 +129,16 @@ const History = () => {
           </Grid>
         </Box>
       </Container>
-      {/* </Grid> */}
-      {/* </main> */}
     </>
   );
 };
 
-export default History;
+History.propTypes = {
+  trips: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  trips: state.auth.user.trips,
+});
+
+export default connect(mapStateToProps, {getTrip})(History);

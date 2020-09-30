@@ -61,10 +61,9 @@ const Trip = ({match, getTrip, trip_data}) => {
   useEffect(() => {
     if (window.location.pathname !== '/dashboard') {
       let {trip_uid} = match.params;
-      console.log(trip_uid);
       getTrip(trip_uid);
     }
-  }, []);
+  }, [window.location.pathname]);
 
   // const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 

@@ -138,7 +138,7 @@ const TripBudgetBoxes = ({tripData}) => {
     daily_average = (total_budget_spent / (length - days_left)).toFixed(2);
 
     // edge case - if days left is zero then there is one day remaining
-    if (days_left === 0) {
+    if (days_left <= 0) {
       days_left = 1;
     }
     new_daily_average = (total_budget_remaining / days_left).toFixed(2);
