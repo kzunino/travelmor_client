@@ -116,14 +116,19 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
       length = Moment(end_date).diff(Moment(start_date), 'days') + 1;
     }
 
+    // sets the new trip with the hours adjusted to account for full days
     await newTrip({
       user,
       name,
       total_budget,
       length,
       home_currency,
-      start_date: Moment(start_date).format(format),
-      end_date: Moment(end_date).format(format),
+      start_date: Moment(start_date)
+        .set({hour: 0, minute: 0, second: 0, millisecond: 0})
+        .format(format),
+      end_date: Moment(end_date)
+        .set({hour: 23, minute: 59, second: 59, millisecond: 0})
+        .format(format),
     });
 
     history.push('/dashboard');

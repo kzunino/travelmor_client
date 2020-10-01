@@ -68,6 +68,7 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
 
   let tripDays = [];
   let dailyBudgetData = [];
+  let dailySpendingData = [];
 
   useEffect(() => {
     const {trip_uid} = match.params;
@@ -77,8 +78,8 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
   if (end_date) {
     // DaysArr creates a day for everyday of the trip
     let daysArr = [];
-    let a = Moment(start_date);
-    let b = Moment(end_date);
+    let a = Moment(start_date).utc();
+    let b = Moment(end_date).utc();
     //loops over all days from start to end date using a Moment for loop
     for (let i = Moment(a); i.isBefore(b); i.add(1, 'days')) {
       if (daysArr.indexOf(Moment(i).format('MM DD YYYY')) === -1) {
@@ -95,10 +96,34 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
       }
     });
 
+    // Daily budget Data
     let daily_budget = total_budget / length;
+    dailyBudgetData = tripDays.map(() => daily_budget);
 
-    // Daily budget
-    dailyBudgetData = tripDays.map((trip) => daily_budget);
+    // Daily Spending Data
+    /* Creates a days object filled with each day an expense occurred
+        -organizes 
+    */
+    let daysObj = {};
+    expenses.forEach((expense) => {
+      let total = parseInt(
+        daysObj[Moment(expense.purchase_date).format('MM DD YYYY')]
+      );
+      if (!daysObj[Moment(expense.purchase_date).format('MM DD YYYY')])
+        daysObj[Moment(expense.purchase_date).format('MM DD YYYY')] = parseInt(
+          expense.cost
+        );
+      else
+        daysObj[Moment(expense.purchase_date).format('MM DD YYYY')] =
+          total +
+          parseInt(daysObj[Moment(expense.purchase_date).format('MM DD YYYY')]);
+    });
+
+    // Matches Spending with trip days saved in days array or pushes 0
+    daysArr.forEach((day) => {
+      if (daysObj.hasOwnProperty(day)) dailySpendingData.push(daysObj[day]);
+      else dailySpendingData.push(0);
+    });
   }
 
   let chartData = {
@@ -106,7 +131,7 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
     datasets: [
       {
         label: 'Daily Spending',
-        data: [33, 53, 85, 41, 44, 65],
+        data: dailySpendingData,
         fill: true,
         backgroundColor: 'rgba(75,192,192,0.2)',
         borderColor: 'rgba(75,192,192,1)',
@@ -133,6 +158,7 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
           {/* Line Chart Item */}
           <Grid item xs={12}>
             <Box m={1} boxShadow={3} className={classes.tableBox}>
+              <Typography variant='h5'>Trip Spending Overview</Typography>
               <Line data={chartData} />
             </Box>
           </Grid>
