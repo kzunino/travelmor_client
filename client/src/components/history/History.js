@@ -3,7 +3,7 @@ import Moment from 'moment';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {getTrip} from '../actions/trips';
+import {getTrip} from '../../actions/trips';
 
 // import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
@@ -134,7 +134,7 @@ const History = ({trips}) => {
 };
 
 History.propTypes = {
-  trips: PropTypes.object.isRequired,
+  trips: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({

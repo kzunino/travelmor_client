@@ -1,12 +1,11 @@
 import React, {useState, forwardRef, useEffect} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {getTrip} from '../actions/trips';
+import {getTrip} from '../../actions/trips';
 import Moment from 'moment';
 
-import TripTable from './trip/tripComponents/TripTable';
+import TripTable from '../trip/tripComponents/TripTable';
 
-import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
@@ -52,16 +51,58 @@ const useStyles = makeStyles((theme) => ({
 const ExpenseHistory = ({match, getTrip, trip_data}) => {
   const theme = useTheme();
   const classes = useStyles();
+  const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const {name} = trip_data;
+  const {
+    // trip_uid,
+    // user,
+    name,
+    total_budget,
+    length,
+    // home_currency,
+    // currencies,
+    expenses,
+    start_date,
+    end_date,
+  } = trip_data;
+
+  let tripDays = [];
+  let dailyBudgetData = [];
 
   useEffect(() => {
     const {trip_uid} = match.params;
     getTrip(trip_uid);
   }, []);
 
-  const [chartData, setChartData] = useState({
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+  if (end_date) {
+    // DaysArr creates a day for everyday of the trip
+    let daysArr = [];
+    let a = Moment(start_date);
+    let b = Moment(end_date);
+    //loops over all days from start to end date using a Moment for loop
+    for (let i = Moment(a); i.isBefore(b); i.add(1, 'days')) {
+      if (daysArr.indexOf(Moment(i).format('MM DD YYYY')) === -1) {
+        daysArr.push(Moment(i).format('MM DD YYYY'));
+      }
+    }
+    // Formats the dates for the X axis on graph
+    tripDays = daysArr.map((day, index) => {
+      if (index === 0) return Moment(day).format('MMM Do');
+      else if (Moment(day).format('DD') === '1') {
+        return Moment(day).format('MMM Do');
+      } else {
+        return Moment(day).format('Do');
+      }
+    });
+
+    let daily_budget = total_budget / length;
+
+    // Daily budget
+    dailyBudgetData = tripDays.map((trip) => daily_budget);
+  }
+
+  let chartData = {
+    labels: tripDays,
     datasets: [
       {
         label: 'Daily Spending',
@@ -72,14 +113,13 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
       },
       {
         label: 'Daily Budget',
-        data: [50, 50, 50, 50, 50, 50],
+        data: dailyBudgetData,
         fill: false,
         borderColor: '#742774',
       },
     ],
-  });
+  };
 
-  const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
   return (
     <>
       <Grid item>
