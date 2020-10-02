@@ -98,6 +98,7 @@ function getStyles(name, personName, theme) {
 }
 
 const NewTrip = ({home_currency, newTrip, user, history}) => {
+  console.log(process.env.REACT_APP_EXCHANGE_KEY);
   const theme = useTheme();
   const classes = useStyles();
 
@@ -121,10 +122,10 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
     },
   };
 
-  const [personName, setPersonName] = useState([]);
+  const [currencies, setCurrencies] = useState([]);
 
   const handleCurrencyChange = (event) => {
-    setPersonName(event.target.value);
+    setCurrencies(event.target.value);
   };
 
   //start date state
@@ -224,7 +225,7 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
             <InputLabel>Foreign Currencies</InputLabel>
             <Select
               multiple
-              value={personName}
+              value={currencies}
               onChange={handleCurrencyChange}
               input={<Input id='select-multiple-chip' />}
               renderValue={(selected) => (
@@ -242,7 +243,7 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
                     <MenuItem
                       key={country.number + country.code + index}
                       value={`${country.code}`}
-                      style={getStyles(name, personName, theme)}
+                      style={getStyles(name, currencies, theme)}
                     >
                       {`${country.code} - ${place}`}
                     </MenuItem>
@@ -251,7 +252,7 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
                   <MenuItem
                     key={country.number + country.code}
                     value={`${country.code}`}
-                    style={getStyles(name, personName, theme)}
+                    style={getStyles(name, currencies, theme)}
                   >
                     {`${country.code} - ${country.countries}`}
                   </MenuItem>

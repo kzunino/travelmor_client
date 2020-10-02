@@ -33,7 +33,7 @@ export const newTrip = ({
   end_date,
 }) => async (dispatch, getState) => {
   // Request Body
-  const body = JSON.stringify({
+  const tripBody = JSON.stringify({
     user,
     name,
     total_budget,
@@ -45,10 +45,22 @@ export const newTrip = ({
   try {
     const res = await axios.post(
       `http://localhost:8000/api/trip/`,
-      body,
+      tripBody,
       tokenConfig(getState)
     );
-    if (res) dispatch({type: NEW_TRIP, payload: res.data});
+    if (res) {
+      await dispatch({type: NEW_TRIP, payload: res.data});
+
+      //makes another post request to create the currencies
+      const currencyBody = JSON.stringify({
+        currencies,
+      });
+      const currencies = await axios.post(
+        `http://localhost:8000/api/currency/`,
+        currencyBody,
+        tokenConfig(getState)
+      );
+    }
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));
   }
