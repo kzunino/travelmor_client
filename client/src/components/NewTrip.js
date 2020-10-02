@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
-// import {data as countryData} from 'currency-codes';
+import {data as countryData} from 'currency-codes';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {newTrip} from '../actions/trips';
 
 import Moment from 'moment';
 import Typography from '@material-ui/core/Typography';
-// import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
@@ -18,9 +17,13 @@ import Button from '@material-ui/core/Button';
 //Select
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-// import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+
+// Multiselect
+
+import Input from '@material-ui/core/Input';
+import Chip from '@material-ui/core/Chip';
 
 //Date
 import {KeyboardDatePicker} from '@material-ui/pickers';
@@ -67,7 +70,32 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     width: '50%',
   },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    margin: 2,
+  },
+  noLabel: {
+    marginTop: theme.spacing(3),
+  },
+  currencyField: {
+    minWidth: 100,
+    width: '50%',
+    marginTop: '2em',
+    marginBottom: '2em',
+  },
 }));
+
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
 
 const NewTrip = ({home_currency, newTrip, user, history}) => {
   const theme = useTheme();
@@ -81,6 +109,23 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
   const [end_date, setEndDate] = useState(Date.now());
 
   let {name, total_budget} = formData;
+
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 350,
+      },
+    },
+  };
+
+  const [personName, setPersonName] = useState([]);
+
+  const handleCurrencyChange = (event) => {
+    setPersonName(event.target.value);
+  };
 
   //start date state
   const handleStartDateChange = (date) => {
@@ -138,10 +183,6 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
 
   return (
     <>
-      {/* <main className={classes.content}>
-        <Toolbar />
-        <Grid container direction='column'> */}
-      {/* -----Welcome Container----- */}
       <Grid item>
         <Typography variant={matchXs ? 'h4' : 'h2'}>New Trip</Typography>
       </Grid>
@@ -177,6 +218,47 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
             InputProps={{inputProps: {min: 0}}}
             id='total_budget'
           />
+          <br />
+
+          <FormControl className={classes.currencyField}>
+            <InputLabel>Foreign Currencies</InputLabel>
+            <Select
+              multiple
+              value={personName}
+              onChange={handleCurrencyChange}
+              input={<Input id='select-multiple-chip' />}
+              renderValue={(selected) => (
+                <div className={classes.chips}>
+                  {selected.map((value) => (
+                    <Chip key={value} label={value} className={classes.chip} />
+                  ))}
+                </div>
+              )}
+              MenuProps={MenuProps}
+            >
+              {countryData.map((country) =>
+                country.countries.length > 1 ? (
+                  country.countries.map((place, index) => (
+                    <MenuItem
+                      key={country.number + country.code + index}
+                      value={`${country.code}`}
+                      style={getStyles(name, personName, theme)}
+                    >
+                      {`${country.code} - ${place}`}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem
+                    key={country.number + country.code}
+                    value={`${country.code}`}
+                    style={getStyles(name, personName, theme)}
+                  >
+                    {`${country.code} - ${country.countries}`}
+                  </MenuItem>
+                )
+              )}
+            </Select>
+          </FormControl>
 
           {/* ------ Currency Input -----
           <FormControl required className={classes.formControl}>
@@ -260,8 +342,6 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
           </Button>
         </form>
       </Container>
-      {/* </Grid>
-      </main> */}
     </>
   );
 };

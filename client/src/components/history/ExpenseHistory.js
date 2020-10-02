@@ -82,17 +82,17 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
     let b = Moment(end_date).utc();
     //loops over all days from start to end date using a Moment for loop
     for (let i = Moment(a); i.isBefore(b); i.add(1, 'days')) {
-      if (daysArr.indexOf(Moment(i).format('MM DD YYYY')) === -1) {
-        daysArr.push(Moment(i).format('MM DD YYYY'));
+      if (daysArr.indexOf(Moment(i).format('MM-DD-YYYY')) === -1) {
+        daysArr.push(Moment(i).format('MM-DD-YYYY'));
       }
     }
     // Formats the dates for the X axis on graph
     tripDays = daysArr.map((day, index) => {
-      if (index === 0) return Moment(day).format('MMM Do');
-      else if (Moment(day).format('DD') === '1') {
-        return Moment(day).format('MMM Do');
+      if (index === 0) return Moment(day, 'MM-DD-YYYY').format('MMM Do');
+      else if (Moment(day, 'MM-DD-YYYY').format('DD') === '1') {
+        return Moment(day, 'MM-DD-YYYY').format('MMM Do');
       } else {
-        return Moment(day).format('Do');
+        return Moment(day, 'MM-DD-YYYY').format('Do');
       }
     });
 
@@ -107,16 +107,16 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
     let daysObj = {};
     expenses.forEach((expense) => {
       let total = parseInt(
-        daysObj[Moment(expense.purchase_date).format('MM DD YYYY')]
+        daysObj[Moment(expense.purchase_date).format('MM-DD-YYYY')]
       );
-      if (!daysObj[Moment(expense.purchase_date).format('MM DD YYYY')])
-        daysObj[Moment(expense.purchase_date).format('MM DD YYYY')] = parseInt(
+      if (!daysObj[Moment(expense.purchase_date).format('MM-DD-YYYY')])
+        daysObj[Moment(expense.purchase_date).format('MM-DD-YYYY')] = parseInt(
           expense.cost
         );
       else
-        daysObj[Moment(expense.purchase_date).format('MM DD YYYY')] =
+        daysObj[Moment(expense.purchase_date).format('MM-DD-YYYY')] =
           total +
-          parseInt(daysObj[Moment(expense.purchase_date).format('MM DD YYYY')]);
+          parseInt(daysObj[Moment(expense.purchase_date).format('MM-DD-YYYY')]);
     });
 
     // Matches Spending with trip days saved in days array or pushes 0
