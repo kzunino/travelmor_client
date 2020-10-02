@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {data as countryData} from 'currency-codes';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {newTrip} from '../actions/trips';
+import axios from 'axios';
 
 import Moment from 'moment';
 import Typography from '@material-ui/core/Typography';
@@ -98,9 +99,10 @@ function getStyles(name, personName, theme) {
 }
 
 const NewTrip = ({home_currency, newTrip, user, history}) => {
-  console.log(process.env.REACT_APP_EXCHANGE_KEY);
   const theme = useTheme();
   const classes = useStyles();
+  const API_KEY = process.env.REACT_APP_EXCHANGE_KEY;
+  console.log(API_KEY);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -108,8 +110,30 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
   });
   const [start_date, setStartDate] = useState(Date.now());
   const [end_date, setEndDate] = useState(Date.now());
+  const [currencies, setCurrencies] = useState([]);
+  const [currencyObjects, setCurrencyObjects] = useState([]);
 
   let {name, total_budget} = formData;
+
+  //Use Effect only fires when currencies state changes
+  useEffect(() => {
+    //joins all currencies to "USD,COP" format for query string
+    // then gets all exchange rates and creat
+    if (currencies.length) {
+      const getExchangeRate = async () => {
+        let selectedCurrencies = currencies.join();
+        const res = await axios.get('http://data.fixer.io/api/latest', {
+          params: {
+            access_key: API_KEY,
+            base: home_currency,
+            symbols: selectedCurrencies,
+          },
+        });
+        console.log(res.data);
+      };
+      getExchangeRate();
+    }
+  }, [currencies]);
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -122,9 +146,9 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
     },
   };
 
-  const [currencies, setCurrencies] = useState([]);
-
-  const handleCurrencyChange = (event) => {
+  // When a currency is selected, it gets the exchange rate and sets state to
+  // an array of currency objects
+  const handleCurrencyChange = async (event) => {
     setCurrencies(event.target.value);
   };
 

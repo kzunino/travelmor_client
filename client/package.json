@@ -16,7 +16,6 @@
     "chart.js": "^2.9.3",
     "chartjs-plugin-datalabels": "^0.7.0",
     "currency-codes": "^2.1.0",
-    "currency-converter": "^0.1.12",
     "fontsource-roboto": "^3.0.3",
     "material-table": "^1.69.0",
     "moment": "^2.27.0",
