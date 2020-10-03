@@ -38,6 +38,7 @@ export const newTrip = (
     start_date,
     end_date,
   });
+  console.log(body);
   try {
     const res = await axios.post(
       `http://localhost:8000/api/trip/`,
@@ -47,8 +48,10 @@ export const newTrip = (
     if (res) {
       await dispatch({type: NEW_TRIP, payload: res.data});
       // if currencies
-      console.log(currencies, {trip_uid: res.data.trip_uid});
-      if (currencies) addCurrencies(currencies, {trip_uid: res.data.trip_uid});
+      if (currencies) {
+        console.log(currencies, {trip_uid: res.data.trip_uid});
+        dispatch(addCurrencies({currencies}, {trip_uid: res.data.trip_uid}));
+      }
     }
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));
