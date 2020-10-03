@@ -88,22 +88,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddExpense = ({currencies, name, homeCurrency, trip_uid, addExpense}) => {
+const AddExpense = ({
+  currencies,
+  name,
+  homeCurrency,
+  trip_uid,
+  addExpense,
+  user_id,
+}) => {
   const theme = useTheme();
   const classes = useStyles();
-  console.log(currencies);
 
-  //end date state
+  // date state
   const [selectedExpenseDate, setSelectedExpenseDate] = useState(Date.now());
-  const [expenseType, setExpenseType] = React.useState('');
-  const [currency, setCurrency] = useState('');
 
-  const handleCurrency = (event) => {
-    setCurrency(event.target.value);
-  };
+  // Initialize default state values
+  const [formData, setFormData] = useState({
+    expenseName: '',
+    currency: homeCurrency,
+    expenseCost: null,
+    expenseType: 'uncategorized',
+  });
 
-  const handleChange = (event) => {
-    setExpenseType(event.target.value);
+  const {expenseName, currency, expenseCost, expenseType} = formData;
+
+  const handleChange = (e) => {
+    setFormData({...formData, [e.target.name]: e.target.value});
   };
 
   const handleExpenseDate = (date) => {
@@ -116,7 +126,17 @@ const AddExpense = ({currencies, name, homeCurrency, trip_uid, addExpense}) => {
     //check if all field are filled out - send alerts
 
     //construct an expense object
-    let expenseObject = {};
+    // let expenseObject = {
+    //   name,
+    //   cost,
+    //   expense_type,
+    //   currency,
+    //   home_currency,
+    //   exchange_rate,
+    //   purchase_date,
+    //   trip,
+    //   user,
+    // };
 
     //send call to create expense
   };
@@ -145,9 +165,11 @@ const AddExpense = ({currencies, name, homeCurrency, trip_uid, addExpense}) => {
               margin='normal'
               required
               fullWidth
-              id='expense_name'
+              id='expenseName'
               label='Expense Name'
-              name='expense_name'
+              value={expenseName}
+              name='expenseName'
+              onChange={(e) => handleChange(e)}
               autoFocus
             />
 
@@ -157,7 +179,8 @@ const AddExpense = ({currencies, name, homeCurrency, trip_uid, addExpense}) => {
                 labelId='demo-simple-select-required-label'
                 id='demo-simple-select-required'
                 value={currency}
-                onChange={handleCurrency}
+                name='currency'
+                onChange={(e) => handleChange(e)}
                 className={classes.selectEmpty}
               >
                 <MenuItem value={homeCurrency}>
@@ -182,11 +205,12 @@ const AddExpense = ({currencies, name, homeCurrency, trip_uid, addExpense}) => {
               margin='normal'
               required
               fullWidth
-              name='expense_cost'
+              name='expenseCost'
+              value={expenseCost}
+              onChange={(e) => handleChange(e)}
               // step="0.01"
               label='Cost'
               type='number'
-              id='expense_cost'
             />
 
             {/* ------ Type Input ----- */}
@@ -196,7 +220,8 @@ const AddExpense = ({currencies, name, homeCurrency, trip_uid, addExpense}) => {
                 labelId='demo-simple-select-required-label'
                 id='demo-simple-select-required'
                 value={expenseType}
-                onChange={handleChange}
+                name='expenseType'
+                onChange={(e) => handleChange(e)}
                 className={classes.selectEmpty}
               >
                 <MenuItem value='uncategorized'>
