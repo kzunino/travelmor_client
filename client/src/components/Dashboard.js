@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Dashboard = ({trips, getTrip, name}) => {
+const Dashboard = ({trips, getTrip, name, location}) => {
   const theme = useTheme();
   const classes = useStyles();
 
@@ -89,6 +89,10 @@ const Dashboard = ({trips, getTrip, name}) => {
   useEffect(() => {
     if (trips.length) getTrip(trips[0].trip_uid);
   }, [trips, getTrip]);
+
+  // Acts like component did mount and fetches updated data when the location
+  // changes
+  useEffect(() => {}, [location]);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {data as countryData} from 'currency-codes';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -132,8 +132,6 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
     } catch (err) {
       console.log(err.response.data);
     }
-
-    // getExchangeRate();
   };
 
   const ITEM_HEIGHT = 48;
@@ -170,7 +168,7 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    let currencyRates = {ALL: 105.903989, AMD: 488.603986};
+    let currencyRates;
     let length;
     const format = 'YYYY-MM-DD HH:mm:ss';
 
@@ -188,9 +186,9 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
       length = Moment(end_date).diff(Moment(start_date), 'days') + 1;
     }
 
-    // if (currencies.length) {
-    //   currencyRates = await getExchangeRate();
-    // }
+    if (currencies.length) {
+      currencyRates = await getExchangeRate();
+    }
 
     // sets the new trip with the hours adjusted to account for full days
     await newTrip(
@@ -210,7 +208,7 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
       currencyRates
     );
 
-    // history.push('/dashboard');
+    history.push('/dashboard');
   };
 
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
