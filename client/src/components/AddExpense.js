@@ -1,4 +1,9 @@
 import React, {useState} from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {addExpense} from '../actions/expenses';
+import Moment from 'moment';
+
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
@@ -12,7 +17,6 @@ import Button from '@material-ui/core/Button';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-// import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
@@ -84,13 +88,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddExpense = ({currencies, name, homeCurrency}) => {
+const AddExpense = ({currencies, name, homeCurrency, trip_uid, addExpense}) => {
   const theme = useTheme();
   const classes = useStyles();
+  console.log(currencies);
 
   //end date state
   const [selectedExpenseDate, setSelectedExpenseDate] = useState(Date.now());
-  const [age, setAge] = React.useState('');
+  const [expenseType, setExpenseType] = React.useState('');
   const [currency, setCurrency] = useState('');
 
   const handleCurrency = (event) => {
@@ -98,11 +103,22 @@ const AddExpense = ({currencies, name, homeCurrency}) => {
   };
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setExpenseType(event.target.value);
   };
 
   const handleExpenseDate = (date) => {
     setSelectedExpenseDate(date);
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    //check if all field are filled out - send alerts
+
+    //construct an expense object
+    let expenseObject = {};
+
+    //send call to create expense
   };
 
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
@@ -119,7 +135,11 @@ const AddExpense = ({currencies, name, homeCurrency}) => {
         <Divider />
         <Container component='div' maxWidth='xs'>
           <CssBaseline />
-          <form className={classes.form} noValidate>
+          <form
+            className={classes.form}
+            onSubmit={(e) => onSubmit(e)}
+            noValidate
+          >
             <TextField
               variant='standard'
               margin='normal'
@@ -175,11 +195,11 @@ const AddExpense = ({currencies, name, homeCurrency}) => {
               <Select
                 labelId='demo-simple-select-required-label'
                 id='demo-simple-select-required'
-                value={age}
+                value={expenseType}
                 onChange={handleChange}
                 className={classes.selectEmpty}
               >
-                <MenuItem value='Uncategorized'>
+                <MenuItem value='uncategorized'>
                   <em>Uncategorized</em>
                 </MenuItem>
                 <MenuItem value={'lodging'}>Lodging</MenuItem>
@@ -225,4 +245,13 @@ const AddExpense = ({currencies, name, homeCurrency}) => {
   );
 };
 
-export default AddExpense;
+addExpense.propTypes = {
+  addExpense: PropTypes.func.isRequired,
+  user_id: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  user_id: state.auth.user.id,
+});
+
+export default connect(mapStateToProps, {addExpense})(AddExpense);

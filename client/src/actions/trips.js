@@ -3,7 +3,7 @@ import {returnErrors} from './alerts';
 import {tokenConfig} from './auth';
 import {addCurrencies} from './currency';
 
-import {ADD_CURRENCIES, GET_TRIP, NEW_TRIP} from './types';
+import {GET_TRIP, NEW_TRIP} from './types';
 
 // Gets a trip by its UUID
 export const getTrip = (trip_uid) => async (dispatch, getState) => {
@@ -57,20 +57,3 @@ export const newTrip = (
     dispatch(returnErrors(err.response.data, err.response.status));
   }
 };
-
-// export const addExpense = (trip_uid, data) => async (dispatch, getState) => {
-//   // Request Body
-//   const body = JSON.stringify({
-//     data,
-//   });
-//   try {
-//     const res = await axios.post(
-//       `http://localhost:8000/api/expense/${trip_uid}`,
-//       body,
-//       tokenConfig(getState)
-//     );
-//     if (res) dispatch({type: GET_TRIP, payload: res.data});
-//   } catch (err) {
-//     dispatch(returnErrors(err.response.data, err.response.status));
-//   }
-// };

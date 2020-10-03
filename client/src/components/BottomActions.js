@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 const BottomActions = ({trip_data}) => {
   const classes = useStyles();
 
-  const {name, currencies, home_currency} = trip_data;
+  const {name, currencies, home_currency, trip_uid} = trip_data;
 
   // const [value, setValue] = React.useState(0);
 
@@ -123,6 +123,7 @@ const BottomActions = ({trip_data}) => {
               name={name}
               currencies={currencies}
               homeCurrency={home_currency}
+              trip_uid={trip_uid}
             />
           </div>
         </Fade>

@@ -16,7 +16,9 @@ export const GET_ERRORS = 'GET_ERRORS';
 //Trips
 export const GET_TRIP = 'GET_TRIP';
 export const NEW_TRIP = 'NEW_TRIP';
-export const ADD_EXPENSE = 'ADD_EXPENSE';
 
 // Currencies
 export const ADD_CURRENCIES = 'ADD_CURRENCIES';
+
+// Expenses
+export const ADD_EXPENSE = 'ADD_EXPENSE';

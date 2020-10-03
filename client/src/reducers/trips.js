@@ -1,4 +1,9 @@
-import {ADD_CURRENCIES, GET_TRIP, NEW_TRIP} from '../actions/types';
+import {
+  ADD_CURRENCIES,
+  GET_TRIP,
+  NEW_TRIP,
+  ADD_EXPENSE,
+} from '../actions/types';
 
 const initialState = {};
 
@@ -11,6 +16,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         currencies: action.payload,
+      };
+    case ADD_EXPENSE:
+      return {
+        ...state,
+        expenses: action.payload,
       };
     default:
       return state;
