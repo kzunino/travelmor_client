@@ -102,7 +102,6 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
   const theme = useTheme();
   const classes = useStyles();
   const API_KEY = process.env.REACT_APP_EXCHANGE_KEY;
-  console.log(API_KEY);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -111,29 +110,31 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
   const [start_date, setStartDate] = useState(Date.now());
   const [end_date, setEndDate] = useState(Date.now());
   const [currencies, setCurrencies] = useState([]);
-  const [currencyObjects, setCurrencyObjects] = useState([]);
 
   let {name, total_budget} = formData;
 
-  //Use Effect only fires when currencies state changes
-  useEffect(() => {
-    //joins all currencies to "USD,COP" format for query string
-    // then gets all exchange rates and creat
-    if (currencies.length) {
-      const getExchangeRate = async () => {
-        let selectedCurrencies = currencies.join();
-        const res = await axios.get('http://data.fixer.io/api/latest', {
-          params: {
-            access_key: API_KEY,
-            base: home_currency,
-            symbols: selectedCurrencies,
-          },
-        });
-        console.log(res.data);
-      };
-      getExchangeRate();
+  //joins all currencies to "USD,COP" format for query string
+  // then gets all exchange rates and creat
+
+  const getExchangeRate = async () => {
+    try {
+      let selectedCurrencies = currencies.join();
+      const res = await axios.get('http://data.fixer.io/api/latest', {
+        params: {
+          access_key: API_KEY,
+          base: home_currency,
+          symbols: selectedCurrencies,
+        },
+      });
+      //return data object with currency exchange rates
+      // return  object {USD: rate, COP: rate}
+      return res.data.rates;
+    } catch (err) {
+      console.log(err.response.data);
     }
-  }, [currencies]);
+
+    // getExchangeRate();
+  };
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -169,6 +170,7 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    let currencyRates = {ALL: 105.903989, AMD: 488.603986};
     let length;
     const format = 'YYYY-MM-DD HH:mm:ss';
 
@@ -177,7 +179,7 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
       return console.log('cannot start trip after end date');
     }
 
-    // if start is same day as end day
+    // if start is same day as end day then length is 1 day
     if (Moment(end_date).isSame(Moment(start_date), 'day')) {
       length = 1;
     } else if (Moment(end_date).diff(Moment(start_date), 'days') === 1) {
@@ -186,22 +188,29 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
       length = Moment(end_date).diff(Moment(start_date), 'days') + 1;
     }
 
-    // sets the new trip with the hours adjusted to account for full days
-    await newTrip({
-      user,
-      name,
-      total_budget,
-      length,
-      home_currency,
-      start_date: Moment(start_date)
-        .set({hour: 0, minute: 0, second: 0, millisecond: 0})
-        .format(format),
-      end_date: Moment(end_date)
-        .set({hour: 23, minute: 59, second: 59, millisecond: 0})
-        .format(format),
-    });
+    // if (currencies.length) {
+    //   currencyRates = await getExchangeRate();
+    // }
 
-    history.push('/dashboard');
+    // sets the new trip with the hours adjusted to account for full days
+    await newTrip(
+      {
+        user,
+        name,
+        total_budget,
+        length,
+        home_currency,
+        start_date: Moment(start_date)
+          .set({hour: 0, minute: 0, second: 0, millisecond: 0})
+          .format(format),
+        end_date: Moment(end_date)
+          .set({hour: 23, minute: 59, second: 59, millisecond: 0})
+          .format(format),
+      },
+      currencyRates
+    );
+
+    // history.push('/dashboard');
   };
 
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));

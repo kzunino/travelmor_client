@@ -1,8 +1,9 @@
 import axios from 'axios';
 import {returnErrors} from './alerts';
 import {tokenConfig} from './auth';
+import {addCurrencies} from './currency';
 
-import {GET_TRIP, NEW_TRIP} from './types';
+import {ADD_CURRENCIES, GET_TRIP, NEW_TRIP} from './types';
 
 // Gets a trip by its UUID
 export const getTrip = (trip_uid) => async (dispatch, getState) => {
@@ -23,17 +24,12 @@ export const getTrip = (trip_uid) => async (dispatch, getState) => {
 };
 
 // Add new trip
-export const newTrip = ({
-  user,
-  name,
-  total_budget,
-  home_currency,
-  length,
-  start_date,
-  end_date,
-}) => async (dispatch, getState) => {
+export const newTrip = (
+  {user, name, total_budget, home_currency, length, start_date, end_date},
+  currencies
+) => async (dispatch, getState) => {
   // Request Body
-  const tripBody = JSON.stringify({
+  const body = JSON.stringify({
     user,
     name,
     total_budget,
@@ -45,21 +41,14 @@ export const newTrip = ({
   try {
     const res = await axios.post(
       `http://localhost:8000/api/trip/`,
-      tripBody,
+      body,
       tokenConfig(getState)
     );
     if (res) {
       await dispatch({type: NEW_TRIP, payload: res.data});
-
-      //makes another post request to create the currencies
-      const currencyBody = JSON.stringify({
-        currencies,
-      });
-      const currencies = await axios.post(
-        `http://localhost:8000/api/currency/`,
-        currencyBody,
-        tokenConfig(getState)
-      );
+      // if currencies
+      console.log(currencies, {trip_uid: res.data.trip_uid});
+      if (currencies) addCurrencies(currencies, {trip_uid: res.data.trip_uid});
     }
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));
