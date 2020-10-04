@@ -124,6 +124,7 @@ const BottomActions = ({trip_data}) => {
               currencies={currencies}
               homeCurrency={home_currency}
               trip_uid={trip_uid}
+              handleClose={handleClose}
             />
           </div>
         </Fade>

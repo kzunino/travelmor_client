@@ -36,6 +36,7 @@ export const addExpense = (data) => async (dispatch, getState) => {
       body,
       tokenConfig(getState)
     );
+
     if (res) dispatch({type: ADD_EXPENSE, payload: res.data});
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));

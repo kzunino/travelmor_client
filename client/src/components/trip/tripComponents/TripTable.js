@@ -129,6 +129,7 @@ const TripTable = ({tripData}) => {
               tours: 'Tours',
               shopping: 'Shopping',
               fees: 'Fees',
+              gifts: 'Gifts',
               emergency: 'Emergency',
               miscellaneous: 'Miscellaneous',
             },

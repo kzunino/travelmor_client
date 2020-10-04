@@ -101,8 +101,6 @@ const TripPieChart = ({tripData}) => {
         else;
       });
 
-    console.log(data);
-
     pieStateData = {
       //
       plugins: [ChartDataLabels],

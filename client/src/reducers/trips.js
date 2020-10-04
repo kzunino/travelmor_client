@@ -5,7 +5,17 @@ import {
   ADD_EXPENSE,
 } from '../actions/types';
 
-const initialState = {};
+const initialState = {
+  trip_uid: null,
+  user: null,
+  name: null,
+  total_budget: null,
+  home_currency: null,
+  currencies: [],
+  expenses: [],
+  start_date: null,
+  end_date: null,
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -15,13 +25,13 @@ export default (state = initialState, action) => {
     case ADD_CURRENCIES:
       return {
         ...state,
-        currencies: action.payload,
+        currencies: [...state.currencies, action.payload],
       };
-    // case ADD_EXPENSE:
-    //   return {
-    //     ...state,
-    //     expenses: expenses.push(action.payload),
-    //   };
+    case ADD_EXPENSE:
+      return {
+        ...state,
+        expenses: [...state.expenses, action.payload],
+      };
     default:
       return state;
   }

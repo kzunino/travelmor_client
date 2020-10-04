@@ -98,6 +98,7 @@ const AddExpense = ({
   addExpense,
   user_id,
   createAlerts,
+  handleClose,
 }) => {
   const theme = useTheme();
   const classes = useStyles();
@@ -122,8 +123,6 @@ const AddExpense = ({
   const handleExpenseDate = (date) => {
     setSelectedExpenseDate(date);
   };
-
-  console.log(currencies);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -170,12 +169,10 @@ const AddExpense = ({
       trip: trip_uid,
       user: user_id,
     };
-
-    console.log(data);
-
     //send call to create expense
-
     addExpense(data);
+    //handle close is passed from Bottom Actions Comp to close modal on submit
+    handleClose();
   };
 
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
@@ -262,13 +259,13 @@ const AddExpense = ({
                 <MenuItem value='uncategorized'>
                   <em>Uncategorized</em>
                 </MenuItem>
-                <MenuItem value={'lodging'}>Lodging</MenuItem>
                 <MenuItem value={'accommodation'}>Accommodation</MenuItem>
                 <MenuItem value={'food'}>Food</MenuItem>
                 <MenuItem value={'transportation'}>Transportation</MenuItem>
                 <MenuItem value={'entertainment'}>Entertainment</MenuItem>
                 <MenuItem value={'tours'}>Tours</MenuItem>
                 <MenuItem value={'shopping'}>Shopping</MenuItem>
+                <MenuItem value={'gifts'}>Gifts</MenuItem>
                 <MenuItem value={'fees'}>Fees</MenuItem>
                 <MenuItem value={'emergencies'}>Emergencies</MenuItem>
                 <MenuItem value={'miscellaneous'}>Miscellaneous</MenuItem>
