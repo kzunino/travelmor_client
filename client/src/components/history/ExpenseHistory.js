@@ -97,26 +97,26 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
     });
 
     // Daily budget Data
-    let daily_budget = total_budget / length;
+    let daily_budget = (total_budget / length).toFixed(2);
     dailyBudgetData = tripDays.map(() => daily_budget);
 
     // Daily Spending Data
     /* Creates a days object filled with each day an expense occurred
         -organizes 
+        - if day doesn't exist it creates day with cost, if it does exist
+        it adds the cost to the previous day totals
     */
     let daysObj = {};
     expenses.forEach((expense) => {
-      let total = parseInt(
-        daysObj[Moment(expense.purchase_date).format('MM-DD-YYYY')]
-      );
-      if (!daysObj[Moment(expense.purchase_date).format('MM-DD-YYYY')])
-        daysObj[Moment(expense.purchase_date).format('MM-DD-YYYY')] = parseInt(
-          expense.cost
-        );
-      else
-        daysObj[Moment(expense.purchase_date).format('MM-DD-YYYY')] =
-          total +
-          parseInt(daysObj[Moment(expense.purchase_date).format('MM-DD-YYYY')]);
+      if (!daysObj[Moment(expense.purchase_date).format('MM-DD-YYYY')]) {
+        daysObj[
+          Moment(expense.purchase_date).format('MM-DD-YYYY')
+        ] = parseFloat(expense.cost);
+      } else {
+        daysObj[
+          Moment(expense.purchase_date).format('MM-DD-YYYY')
+        ] += parseFloat(expense.cost);
+      }
     });
 
     // Matches Spending with trip days saved in days array or pushes 0
