@@ -244,9 +244,9 @@ const TripTable = ({tripData, deleteExpense}) => {
                     }),
                   onRowDelete: (oldData) =>
                     new Promise((resolve) => {
-                      deleteExpense(oldData.expense_uuid);
                       setTimeout(() => {
                         resolve();
+                        deleteExpense(oldData.expense_uuid);
                         setTableData((prevState) => {
                           const data = [...prevState.data];
                           data.splice(data.indexOf(oldData), 1);
