@@ -25,6 +25,7 @@ import {KeyboardDatePicker} from '@material-ui/pickers';
 
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import {publishDate} from 'currency-codes';
 
 const drawerWidth = 240;
 
@@ -106,7 +107,7 @@ const AddExpense = ({
   const [formData, setFormData] = useState({
     expenseName: '',
     currency: homeCurrency,
-    expenseCost: null,
+    expenseCost: '',
     expenseType: 'uncategorized',
   });
 
@@ -120,23 +121,43 @@ const AddExpense = ({
     setSelectedExpenseDate(date);
   };
 
+  console.log(currencies);
+
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    const format = 'YYYY-MM-DD HH:mm:ss';
+    let exchangeRate = 1;
+    let expense_cost = expenseCost;
+
+    /* If foreign currency is selected, find index of currency and assign new
+       exchange rate
+     -then calculate cost in home currency and assign it to the new expense_cost */
+    if (currency !== homeCurrency) {
+      let index = currencies.findIndex((cur) => cur.currency === currency);
+      exchangeRate = currencies[index].exchange_rate;
+
+      // calculate what percentage of home currency to find cost in home currency
+      let percentOfHomeCurrency = (1 / exchangeRate).toFixed(12);
+      expense_cost = (percentOfHomeCurrency * expenseCost).toFixed(2);
+    }
 
     //check if all field are filled out - send alerts
 
     //construct an expense object
-    // let expenseObject = {
-    //   name,
-    //   cost,
-    //   expense_type,
-    //   currency,
-    //   home_currency,
-    //   exchange_rate,
-    //   purchase_date,
-    //   trip,
-    //   user,
-    // };
+    let expenseObject = {
+      name: expenseName,
+      cost: expense_cost,
+      expense_type: expenseType,
+      currency: currency,
+      home_currency: homeCurrency,
+      exchange_rate: exchangeRate,
+      purchase_date: Moment(selectedExpenseDate).format(format),
+      trip: trip_uid,
+      user: user_id,
+    };
+
+    console.log(expenseObject);
 
     //send call to create expense
   };
@@ -215,10 +236,8 @@ const AddExpense = ({
 
             {/* ------ Type Input ----- */}
             <FormControl required className={classes.formControl}>
-              <InputLabel id='required-label'>Type</InputLabel>
+              <InputLabel>Type</InputLabel>
               <Select
-                labelId='demo-simple-select-required-label'
-                id='demo-simple-select-required'
                 value={expenseType}
                 name='expenseType'
                 onChange={(e) => handleChange(e)}

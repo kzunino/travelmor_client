@@ -292,43 +292,6 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
             </Select>
           </FormControl>
 
-          {/* ------ Currency Input -----
-          <FormControl required className={classes.formControl}>
-            <InputLabel id='required-label'>Home Currency</InputLabel>
-            <Select
-              id='currency'
-              value={currency}
-              onChange={handleCurrencyType}
-              className={classes.selectEmpty}
-              // accesses the menu styles
-              MenuProps={{classes: {list: classes.selectMenu}}}
-            >
-              <MenuItem value={'840'}>USD</MenuItem>
-              <MenuItem value={'978'}>EUR</MenuItem>
-              <MenuItem value={'036'}>AUD</MenuItem>
-              <Divider />
-              {countryData.map((country) =>
-                country.countries.length > 1 ? (
-                  country.countries.map((place, index) => (
-                    <MenuItem
-                      key={country.number + country.code + index}
-                      value={`${country.number}`}
-                    >
-                      {`${country.code} - ${place}`}
-                    </MenuItem>
-                  ))
-                ) : (
-                  <MenuItem
-                    key={country.number + country.code}
-                    value={`${country.number}`}
-                  >
-                    {`${country.code} - ${country.countries}`}
-                  </MenuItem>
-                )
-              )}
-            </Select>
-          </FormControl> */}
-
           <Grid container direction='row' spacing={2} justify='space-between'>
             <Grid xs={6} item>
               <KeyboardDatePicker
