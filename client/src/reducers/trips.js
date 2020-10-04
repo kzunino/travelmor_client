@@ -17,11 +17,11 @@ export default (state = initialState, action) => {
         ...state,
         currencies: action.payload,
       };
-    case ADD_EXPENSE:
-      return {
-        ...state,
-        expenses: action.payload,
-      };
+    // case ADD_EXPENSE:
+    //   return {
+    //     ...state,
+    //     expenses: expenses.push(action.payload),
+    //   };
     default:
       return state;
   }

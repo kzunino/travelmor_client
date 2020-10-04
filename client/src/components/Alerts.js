@@ -29,6 +29,8 @@ const Alerts = ({error, alert}) => {
 
       // Alert Success
       if (alert.success) toast.success(alert.success);
+      //alert Error
+      if (alert.validation_error) toast.error(alert.validation_error);
     };
 
     handleErrorProps();

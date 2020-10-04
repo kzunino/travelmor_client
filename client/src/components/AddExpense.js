@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {addExpense} from '../actions/expenses';
+import {createAlerts} from '../actions/alerts';
 import Moment from 'moment';
 
 import Typography from '@material-ui/core/Typography';
@@ -96,6 +97,7 @@ const AddExpense = ({
   trip_uid,
   addExpense,
   user_id,
+  createAlerts,
 }) => {
   const theme = useTheme();
   const classes = useStyles();
@@ -123,10 +125,11 @@ const AddExpense = ({
 
   console.log(currencies);
 
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
 
     const format = 'YYYY-MM-DD HH:mm:ss';
+    // default exchange rate is 1
     let exchangeRate = 1;
     let expense_cost = expenseCost;
 
@@ -142,10 +145,21 @@ const AddExpense = ({
       expense_cost = (percentOfHomeCurrency * expenseCost).toFixed(2);
     }
 
+    expense_cost = parseFloat(expense_cost);
+
     //check if all field are filled out - send alerts
+    if (
+      !expenseName ||
+      !expenseType ||
+      !currency ||
+      !expenseCost ||
+      !selectedExpenseDate
+    ) {
+      return createAlerts({validation_error: 'Please fill out all fields'});
+    }
 
     //construct an expense object
-    let expenseObject = {
+    let data = {
       name: expenseName,
       cost: expense_cost,
       expense_type: expenseType,
@@ -157,9 +171,11 @@ const AddExpense = ({
       user: user_id,
     };
 
-    console.log(expenseObject);
+    console.log(data);
 
     //send call to create expense
+
+    addExpense(data);
   };
 
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
@@ -292,10 +308,11 @@ const AddExpense = ({
 addExpense.propTypes = {
   addExpense: PropTypes.func.isRequired,
   user_id: PropTypes.string.isRequired,
+  createAlerts: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   user_id: state.auth.user.id,
 });
 
-export default connect(mapStateToProps, {addExpense})(AddExpense);
+export default connect(mapStateToProps, {addExpense, createAlerts})(AddExpense);
