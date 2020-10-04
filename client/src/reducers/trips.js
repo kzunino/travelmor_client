@@ -3,6 +3,7 @@ import {
   GET_TRIP,
   NEW_TRIP,
   ADD_EXPENSE,
+  DELETE_EXPENSE,
 } from '../actions/types';
 
 const initialState = {
@@ -31,6 +32,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         expenses: [...state.expenses, action.payload],
+      };
+    case DELETE_EXPENSE:
+      return {
+        ...state.expenses.filter((expense) => {
+          return expense.expense_uid !== action.payload;
+        }),
       };
     default:
       return state;

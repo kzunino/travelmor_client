@@ -57,6 +57,7 @@ const TripPieChart = ({tripData}) => {
       miscellaneous: 0,
       shopping: 0,
       tours: 0,
+      gifts: 0,
       transportation: 0,
       uncategorized: 0,
     };

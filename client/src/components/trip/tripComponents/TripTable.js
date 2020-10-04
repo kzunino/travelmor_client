@@ -1,5 +1,8 @@
 import React, {useState, forwardRef, useEffect} from 'react';
 // import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {deleteExpense} from '../../../actions/expenses';
 
 import Moment from 'moment';
 import Grid from '@material-ui/core/Grid';
@@ -48,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TripTable = ({tripData}) => {
+const TripTable = ({tripData, deleteExpense}) => {
   // const theme = useTheme();
   const classes = useStyles();
 
@@ -224,18 +227,6 @@ const TripTable = ({tripData}) => {
                 data={tableData.data}
                 icons={tableIcons}
                 editable={{
-                  //   onRowAdd: (newData) =>
-                  //     new Promise((resolve) => {
-                  //       setTimeout(() => {
-                  //         resolve();
-
-                  //         setTableData((prevState) => {
-                  //           const data = [...prevState.data];
-                  //           data.push(newData);
-                  //           return {...prevState, data};
-                  //         });
-                  //       }, 600);
-                  //     }),
                   onRowUpdate: (newData, oldData) =>
                     new Promise((resolve) => {
                       setTimeout(() => {
@@ -253,6 +244,7 @@ const TripTable = ({tripData}) => {
                     }),
                   onRowDelete: (oldData) =>
                     new Promise((resolve) => {
+                      deleteExpense(oldData.expense_uuid);
                       setTimeout(() => {
                         resolve();
                         setTableData((prevState) => {
@@ -272,4 +264,8 @@ const TripTable = ({tripData}) => {
   );
 };
 
-export default TripTable;
+TripTable.propTypes = {
+  deleteExpense: PropTypes.func.isRequired,
+};
+
+export default connect(null, {deleteExpense})(TripTable);
