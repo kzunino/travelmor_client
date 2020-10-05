@@ -76,6 +76,7 @@ const TripTable = ({tripData, deleteExpense}) => {
     purchase_date: '',
     exchange_rate: '',
     currency: '',
+    cost_conversion: '',
   });
 
   const [tableData, setTableData] = useState({
@@ -137,6 +138,13 @@ const TripTable = ({tripData, deleteExpense}) => {
               miscellaneous: 'Miscellaneous',
             },
           },
+          {
+            title: 'Currency',
+            field: 'currency',
+            readonly: true,
+            editable: 'never',
+            hidden: false,
+          },
 
           {
             title: 'Exchange Rate',
@@ -145,13 +153,15 @@ const TripTable = ({tripData, deleteExpense}) => {
             editable: 'never',
             hidden: false,
           },
+
           {
-            title: 'Currency',
-            field: 'currency',
+            title: 'Conversion',
+            field: 'cost_conversion',
             readonly: true,
             editable: 'never',
             hidden: false,
           },
+
           {
             title: 'Date',
             field: 'purchase_date',
@@ -173,6 +183,7 @@ const TripTable = ({tripData, deleteExpense}) => {
             expense_type: expense.expense_type,
             exchange_rate: expense.exchange_rate,
             currency: expense.currency,
+            cost_conversion: expense.cost_conversion,
             purchase_date: Moment(expense.purchase_date).format('MM-DD-YYYY'),
             expense_uuid: expense.expense_uid,
           };
