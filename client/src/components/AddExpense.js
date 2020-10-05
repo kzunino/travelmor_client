@@ -131,6 +131,8 @@ const AddExpense = ({
     // default exchange rate is 1
     let exchangeRate = 1;
     let expense_cost = expenseCost;
+    // conversion is either home currency cost or converted foreign currency
+    let conversion = expenseCost;
 
     /* If foreign currency is selected, find index of currency and assign new
        exchange rate
@@ -146,6 +148,7 @@ const AddExpense = ({
 
     expense_cost = parseFloat(expense_cost);
     exchangeRate = parseFloat(exchangeRate).toFixed(3);
+    conversion = parseFloat(conversion).toFixed(3);
 
     //check if all field are filled out - send alerts
     if (
@@ -166,6 +169,7 @@ const AddExpense = ({
       currency: currency,
       home_currency: homeCurrency,
       exchange_rate: exchangeRate,
+      cost_conversion: conversion,
       purchase_date: Moment(selectedExpenseDate).format(format),
       trip: trip_uid,
       user: user_id,
