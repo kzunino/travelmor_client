@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 // import {Link} from 'react-router-dom';
 
 import Moment from 'moment';
@@ -75,7 +75,7 @@ const TripMain = ({tripData}) => {
   // Calculates the average daily budget
   let daily_budget = (total_budget / length).toFixed(2);
 
-  let max_bar_value;
+  // let max_bar_value;
 
   //sets daily totals of money spent
   let dailyWeekTotals = {
@@ -122,11 +122,11 @@ const TripMain = ({tripData}) => {
       sevenDaysAgo: reduceExpenses(weekExpenses.sevenDaysAgoExpenses),
     };
 
-    // reduces all expenses and finds most expensive purchase
-    max_bar_value = expenses.reduce((prev, current) => {
-      return prev.cost > current.cost ? prev.cost : current.cost;
-    }, 0);
-    max_bar_value = parseInt(max_bar_value);
+    // // reduces all expenses and finds most expensive purchase
+    // max_bar_value = expenses.reduce((prev, current) => {
+    //   return prev.cost > current.cost ? prev.cost : current.cost;
+    // }, 0);
+    // max_bar_value = parseInt(max_bar_value);
   }
 
   let {

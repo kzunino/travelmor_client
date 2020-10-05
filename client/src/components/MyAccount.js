@@ -173,7 +173,6 @@ const MyAccount = ({
               className={classes.selectEmpty}
               // accesses the menu styles
               MenuProps={{classes: {list: classes.selectMenu}}}
-              value={homeCurrency}
             >
               <MenuItem value={'USD'}>USD</MenuItem>
               <MenuItem value={'EUR'}>EUR</MenuItem>

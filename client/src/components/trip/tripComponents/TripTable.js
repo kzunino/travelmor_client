@@ -137,17 +137,25 @@ const TripTable = ({tripData, deleteExpense}) => {
               miscellaneous: 'Miscellaneous',
             },
           },
+
+          {
+            title: 'Exchange Rate',
+            field: 'exchange_rate',
+            readonly: true,
+            editable: 'never',
+            hidden: false,
+          },
+          {
+            title: 'Currency',
+            field: 'currency',
+            readonly: true,
+            editable: 'never',
+            hidden: false,
+          },
           {
             title: 'Date',
             field: 'purchase_date',
             type: 'date',
-          },
-          {
-            title: 'Exchange_rate',
-            field: 'exchange_rate',
-            readonly: true,
-            editable: 'never',
-            hidden: true,
           },
           {
             title: 'ID',
@@ -163,8 +171,9 @@ const TripTable = ({tripData, deleteExpense}) => {
             name: expense.name,
             cost: expense.cost,
             expense_type: expense.expense_type,
-            purchase_date: Moment(expense.purchase_date).format('MM-DD-YYYY'),
             exchange_rate: expense.exchange_rate,
+            currency: expense.currency,
+            purchase_date: Moment(expense.purchase_date).format('MM-DD-YYYY'),
             expense_uuid: expense.expense_uid,
           };
         }),

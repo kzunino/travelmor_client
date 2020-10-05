@@ -1,5 +1,4 @@
 import React from 'react';
-
 // import {Link} from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
@@ -12,6 +11,7 @@ import {Doughnut} from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import Chart from 'chart.js';
 import {Typography} from '@material-ui/core';
+// Unregisters plugin from being globally applied to all charts
 Chart.plugins.unregister(ChartDataLabels);
 
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -77,15 +77,16 @@ const TripPieChart = ({tripData}) => {
 
     /*
    Creates an array from the expenseTypeTotalCosts with all 
-   expense types that a user has used. 
+   expense types that a user has used. Capitalizes the first letter of each used
+   expense type and returns it to the array
    */
     let labels = Object.keys(expenseTypeTotalCost)
       .filter((key) => {
         return expenseTypeTotalCost[key] > 0;
       })
       .map((key) => {
-        if (expenseTypeTotalCost[key] > 0)
-          return key.charAt(0).toLocaleUpperCase() + key.slice(1);
+        // if (expenseTypeTotalCost[key] > 0)
+        return key.charAt(0).toLocaleUpperCase() + key.slice(1);
       });
 
     /*
@@ -98,8 +99,8 @@ const TripPieChart = ({tripData}) => {
         return expenseTypeTotalCost[key] > 0;
       })
       .map((key) => {
-        if (expenseTypeTotalCost[key] > 0) return expenseTypeTotalCost[key];
-        else;
+        // if (expenseTypeTotalCost[key] > 0)
+        return expenseTypeTotalCost[key];
       });
 
     pieStateData = {
@@ -153,7 +154,7 @@ const TripPieChart = ({tripData}) => {
             let sum = 0;
             let dataArr = ctx.chart.data.datasets[0].data;
             dataArr.map((data) => {
-              sum += data;
+              return (sum += data);
             });
             let percentage = ((value * 100) / sum).toFixed(0) + '%';
             return percentage;

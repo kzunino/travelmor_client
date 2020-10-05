@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 // import {Link} from 'react-router-dom';
 
 import Moment from 'moment';
@@ -13,10 +13,8 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 
 import {makeStyles} from '@material-ui/core/styles';
-import {red} from '@material-ui/core/colors';
+//import {red} from '@material-ui/core/colors';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
-
-const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   //   toolbarMargin: {

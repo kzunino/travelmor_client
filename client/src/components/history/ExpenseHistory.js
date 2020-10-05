@@ -1,4 +1,4 @@
-import React, {useState, forwardRef, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {getTrip} from '../../actions/trips';
@@ -73,7 +73,7 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
   useEffect(() => {
     const {trip_uid} = match.params;
     getTrip(trip_uid);
-  }, []);
+  }, [getTrip, match]);
 
   if (end_date) {
     // DaysArr creates a day for everyday of the trip

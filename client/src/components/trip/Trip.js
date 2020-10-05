@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import React, {useEffect} from 'react';
+// import {makeStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {getTrip} from '../../actions/trips';
@@ -14,56 +14,55 @@ import TripPieChart from './tripComponents/TripPieChart';
 
 // MUI Componenets
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 
 // Bottom Actions
 import BottomAction from '../BottomActions';
 
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const drawerWidth = 240;
+// const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => ({
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    marginLeft: drawerWidth,
-    marginBottom: 50,
-    //backgroundColor: '#2F2F31',
-    backgroundColor: 'whitesmoke',
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: 0,
-      padding: theme.spacing(1, 1.5),
-      marginTop: '1em',
-    },
-  },
+// const useStyles = makeStyles((theme) => ({
+//   content: {
+//     flexGrow: 1,
+//     padding: theme.spacing(3),
+//     marginLeft: drawerWidth,
+//     marginBottom: 50,
+//     //backgroundColor: '#2F2F31',
+//     backgroundColor: 'whitesmoke',
+//     [theme.breakpoints.down('sm')]: {
+//       marginLeft: 0,
+//       padding: theme.spacing(1, 1.5),
+//       marginTop: '1em',
+//     },
+//   },
 
-  containerWrapper: {
-    margin: 'auto',
-  },
+//   containerWrapper: {
+//     margin: 'auto',
+//   },
 
-  // mainContentBox: {
-  //   //backgroundColor: theme.palette.secondary.light,
-  //   backgroundColor: theme.palette.background.main,
-  //   marginTop: '2em',
-  //   marginLeft: 0,
-  //   marginRight: 0,
-  //   paddingTop: '1em',
-  //   paddingBottom: '1em',
-  //   display: 'flex',
-  // },
-}));
+// mainContentBox: {
+//   //backgroundColor: theme.palette.secondary.light,
+//   backgroundColor: theme.palette.background.main,
+//   marginTop: '2em',
+//   marginLeft: 0,
+//   marginRight: 0,
+//   paddingTop: '1em',
+//   paddingBottom: '1em',
+//   display: 'flex',
+// },
+// }));
 
 const Trip = ({match, getTrip, trip_data}) => {
   // const theme = useTheme();
-  const classes = useStyles();
+  // const classes = useStyles();
 
   useEffect(() => {
     if (window.location.pathname !== '/dashboard') {
       let {trip_uid} = match.params;
       getTrip(trip_uid);
     }
-  }, [window.location.pathname]);
+  }, [getTrip, match]);
 
   // const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 

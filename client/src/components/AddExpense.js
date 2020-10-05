@@ -145,6 +145,7 @@ const AddExpense = ({
     }
 
     expense_cost = parseFloat(expense_cost);
+    exchangeRate = parseFloat(exchangeRate).toFixed(3);
 
     //check if all field are filled out - send alerts
     if (
