@@ -255,13 +255,14 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
                         if (oldData) {
                           setTableData((prevState) => {
                             const data = [...prevState.data];
-                            console.log(newData.cost);
 
                             // Calculates the home cost by converting currency spent
                             newData.cost = (
                               parseFloat(newData.cost_conversion) /
                               parseFloat(newData.exchange_rate)
                             ).toFixed(2);
+
+                            // Changes date format in table on update
                             newData.purchase_date = Moment(
                               newData.purchase_date,
                               'MM/DD/YYYY'

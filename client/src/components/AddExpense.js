@@ -170,7 +170,8 @@ const AddExpense = ({
       home_currency: homeCurrency,
       exchange_rate: exchangeRate,
       cost_conversion: conversion,
-      purchase_date: Moment(selectedExpenseDate).format(format),
+      // converts to UTC time before sending to reducer
+      purchase_date: Moment(selectedExpenseDate).toISOString(),
       trip: trip_uid,
       user: user_id,
     };

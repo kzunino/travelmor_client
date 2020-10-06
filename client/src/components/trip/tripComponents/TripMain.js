@@ -96,12 +96,18 @@ const TripMain = ({tripData}) => {
 
       Object.keys(weekExpenses).forEach((key) => {
         weekExpenses[key] = expenses.filter((expense) => {
-          return Moment(expense.purchase_date)
-            .utc()
-
-            .isSame(Moment().subtract(i, 'days'), 'day')
-            ? expense
-            : null;
+          // console.log(
+          //   expense.name,
+          //   Moment(expense.purchase_date).utc(),
+          //   Moment()
+          // );
+          return (
+            Moment(expense.purchase_date)
+              // .utc()
+              .isSame(Moment().startOf('day').subtract(i, 'days'), 'day')
+              ? expense
+              : null
+          );
         });
 
         i++;

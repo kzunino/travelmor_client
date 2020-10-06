@@ -84,9 +84,9 @@ export const updateExpense = (data) => async (dispatch, getState) => {
     cost = parseFloat(cost_conversion) / parseFloat(exchange_rate);
     cost = cost.toFixed(2);
   }
-  //Reformats the date object from MM-DD-YYYY to date object
-  const format = 'YYYY-MM-DD HH:mm:ss';
-  purchase_date = Moment(purchase_date, 'MM-DD-YYYY').format(format);
+  //Stores the date in UTC
+  purchase_date = Moment(purchase_date, 'MM-DD-YYYY').toISOString();
+  console.log(purchase_date);
 
   // Request Body
   const body = JSON.stringify({
