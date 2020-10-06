@@ -152,7 +152,7 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
             editable: 'never',
           },
           {
-            title: 'Conversion',
+            title: 'Money Spent',
             field: 'cost_conversion',
             readonly: true,
           },
@@ -278,7 +278,7 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
                     new Promise((resolve) => {
                       setTimeout(() => {
                         resolve();
-                        deleteExpense(oldData.expense_uuid);
+                        deleteExpense(oldData.expense_uid);
                         setTableData((prevState) => {
                           const data = [...prevState.data];
                           data.splice(data.indexOf(oldData), 1);

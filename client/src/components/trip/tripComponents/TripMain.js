@@ -93,11 +93,13 @@ const TripMain = ({tripData}) => {
     // each day and returns weekExpenses with updated values
     const filterWeekExpenses = (weekExpenses) => {
       let i = 0;
+
       Object.keys(weekExpenses).forEach((key) => {
         weekExpenses[key] = expenses.filter((expense) => {
           return Moment(expense.purchase_date)
             .utc()
-            .isSame(Moment(Date.now()).subtract(i, 'days'), 'days')
+
+            .isSame(Moment().subtract(i, 'days'), 'day')
             ? expense
             : null;
         });
@@ -140,12 +142,12 @@ const TripMain = ({tripData}) => {
 
   const barData = {
     labels: [
-      Moment(Date.now()).subtract(6, 'days').format('ddd'),
-      Moment(Date.now()).subtract(5, 'days').format('ddd'),
-      Moment(Date.now()).subtract(4, 'days').format('ddd'),
-      Moment(Date.now()).subtract(3, 'days').format('ddd'),
-      Moment(Date.now()).subtract(2, 'days').format('ddd'),
-      Moment(Date.now()).subtract(1, 'days').format('ddd'),
+      Moment().subtract(6, 'days').format('ddd'),
+      Moment().subtract(5, 'days').format('ddd'),
+      Moment().subtract(4, 'days').format('ddd'),
+      Moment().subtract(3, 'days').format('ddd'),
+      Moment().subtract(2, 'days').format('ddd'),
+      Moment().subtract(1, 'days').format('ddd'),
       'Today',
     ],
     datasets: [
