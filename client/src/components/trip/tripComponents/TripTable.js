@@ -146,15 +146,15 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
             editable: 'never',
           },
           {
+            title: 'Money Spent',
+            field: 'cost_conversion',
+            readonly: true,
+          },
+          {
             title: 'Exchange Rate',
             field: 'exchange_rate',
             readonly: true,
             editable: 'never',
-          },
-          {
-            title: 'Money Spent',
-            field: 'cost_conversion',
-            readonly: true,
           },
           {
             title: 'Date',

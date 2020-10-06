@@ -64,15 +64,20 @@ const TripPieChart = ({tripData}) => {
 
     // loops through expense types and filters each category and adds totals for
     // each type
+    // Returns a long float point number, set toFixed results, which returns string
+    //then we parseFloat the entire value being returned to expenseTypeTotalCost array
 
     Object.keys(expenseTypeTotalCost).forEach((key) => {
-      expenseTypeTotalCost[key] = expenses
-        .filter((expense) => {
-          return key === expense.expense_type;
-        })
-        .reduce((acc, item) => {
-          return acc + parseFloat(item.cost);
-        }, 0);
+      expenseTypeTotalCost[key] = parseFloat(
+        expenses
+          .filter((expense) => {
+            return key === expense.expense_type;
+          })
+          .reduce((acc, item) => {
+            return acc + parseFloat(item.cost);
+          }, 0)
+          .toFixed(2)
+      );
     });
 
     /*
@@ -99,7 +104,6 @@ const TripPieChart = ({tripData}) => {
         return expenseTypeTotalCost[key] > 0;
       })
       .map((key) => {
-        // if (expenseTypeTotalCost[key] > 0)
         return expenseTypeTotalCost[key];
       });
 
