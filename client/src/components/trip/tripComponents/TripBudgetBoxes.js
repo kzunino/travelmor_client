@@ -125,8 +125,8 @@ const TripBudgetBoxes = ({tripData}) => {
     day_remaining = (daily_budget - totalSpentToday).toFixed(2);
 
     // calculates total spent and remaining in budget
-    total_budget_spent = reduceExpenses(expenses);
-    total_budget_remaining = total_budget - total_budget_spent;
+    total_budget_spent = reduceExpenses(expenses).toFixed(2);
+    total_budget_remaining = (total_budget - total_budget_spent).toFixed(2);
 
     // calculates how many days left in trip not including today
     days_left = Moment(end_date).diff(Date.now(), 'days');

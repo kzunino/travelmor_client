@@ -2,7 +2,7 @@ import React, {useState, forwardRef, useEffect} from 'react';
 // import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {deleteExpense} from '../../../actions/expenses';
+import {deleteExpense, updateExpense} from '../../../actions/expenses';
 
 import Moment from 'moment';
 import Grid from '@material-ui/core/Grid';
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TripTable = ({tripData, deleteExpense}) => {
+const TripTable = ({tripData, deleteExpense, updateExpense}) => {
   // const theme = useTheme();
   const classes = useStyles();
 
@@ -115,6 +115,7 @@ const TripTable = ({tripData, deleteExpense}) => {
             title: 'Cost',
             field: 'cost',
             type: 'currency',
+            editable: 'never',
             currencySetting: {
               currencyCode: home_currency,
               minimumFractionDigits: 0,
@@ -143,21 +144,17 @@ const TripTable = ({tripData, deleteExpense}) => {
             field: 'currency',
             readonly: true,
             editable: 'never',
-            hidden: false,
           },
           {
             title: 'Exchange Rate',
             field: 'exchange_rate',
             readonly: true,
             editable: 'never',
-            hidden: false,
           },
           {
             title: 'Conversion',
             field: 'cost_conversion',
             readonly: true,
-            editable: 'never',
-            hidden: false,
           },
           {
             title: 'Date',
@@ -167,7 +164,7 @@ const TripTable = ({tripData, deleteExpense}) => {
           },
           {
             title: 'ID',
-            field: 'expense_uuid',
+            field: 'expense_uid',
             readonly: true,
             editable: 'never',
             hidden: true,
@@ -181,11 +178,11 @@ const TripTable = ({tripData, deleteExpense}) => {
             expense_type: expense.expense_type,
             exchange_rate: expense.exchange_rate,
             currency: expense.currency,
-            cost_conversion: expense.cost_conversion,
+            cost_conversion: parseFloat(expense.cost_conversion).toFixed(2),
             purchase_date: Moment(expense.purchase_date)
               .utc()
               .format('MM-DD-YYYY'),
-            expense_uuid: expense.expense_uid,
+            expense_uid: expense.expense_uid,
           };
         }),
       });
@@ -251,12 +248,27 @@ const TripTable = ({tripData, deleteExpense}) => {
                     new Promise((resolve) => {
                       setTimeout(() => {
                         resolve();
-                        let editExpenses = newData;
-                        setEditExpense({editExpenses});
+
+                        setEditExpense(newData);
+                        updateExpense(newData);
+
                         if (oldData) {
                           setTableData((prevState) => {
                             const data = [...prevState.data];
+                            console.log(newData.cost);
+
+                            // Calculates the home cost by converting currency spent
+                            newData.cost = (
+                              parseFloat(newData.cost_conversion) /
+                              parseFloat(newData.exchange_rate)
+                            ).toFixed(2);
+                            newData.purchase_date = Moment(
+                              newData.purchase_date,
+                              'MM/DD/YYYY'
+                            ).format('MM-DD-YYYY');
+
                             data[data.indexOf(oldData)] = newData;
+
                             return {...prevState, data};
                           });
                         }
@@ -286,6 +298,7 @@ const TripTable = ({tripData, deleteExpense}) => {
 
 TripTable.propTypes = {
   deleteExpense: PropTypes.func.isRequired,
+  updateExpense: PropTypes.func.isRequired,
 };
 
-export default connect(null, {deleteExpense})(TripTable);
+export default connect(null, {deleteExpense, updateExpense})(TripTable);

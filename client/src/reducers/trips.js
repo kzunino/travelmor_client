@@ -4,6 +4,7 @@ import {
   NEW_TRIP,
   ADD_EXPENSE,
   DELETE_EXPENSE,
+  UPDATE_EXPENSE,
 } from '../actions/types';
 
 const initialState = {
@@ -38,6 +39,15 @@ export default (state = initialState, action) => {
         ...state,
         expenses: state.expenses.filter((expense) => {
           return expense.expense_uid !== action.payload;
+        }),
+      };
+    case UPDATE_EXPENSE:
+      return {
+        ...state,
+        expense: state.expenses.forEach((expense, i) => {
+          if (expense.expense_uid === action.payload.expense_uid) {
+            state.expenses[i] = action.payload;
+          }
         }),
       };
     default:

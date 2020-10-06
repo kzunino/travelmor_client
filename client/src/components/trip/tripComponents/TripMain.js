@@ -95,10 +95,9 @@ const TripMain = ({tripData}) => {
       let i = 0;
       Object.keys(weekExpenses).forEach((key) => {
         weekExpenses[key] = expenses.filter((expense) => {
-          return Moment(expense.purchase_date).isSame(
-            Moment(Date.now()).subtract(i, 'days'),
-            'days'
-          )
+          return Moment(expense.purchase_date)
+            .utc()
+            .isSame(Moment(Date.now()).subtract(i, 'days'), 'days')
             ? expense
             : null;
         });
