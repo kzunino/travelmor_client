@@ -24,6 +24,7 @@ import {KeyboardDatePicker} from '@material-ui/pickers';
 
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
+import {withTheme} from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   selectEmpty: {
@@ -61,6 +62,12 @@ const useStyles = makeStyles((theme) => ({
     width: '50%',
     marginTop: '2em',
     marginBottom: '2em',
+  },
+  updateExchangeRate: {
+    backgroundColor: theme.palette.primary.main,
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: '.75em',
   },
 }));
 
@@ -165,7 +172,7 @@ const EditTrip = ({
           onSubmit={(e) => handleSubmit(e)}
           noValidate
         >
-          <Grid container spacing={3}>
+          <Grid container direction='column' spacing={0}>
             <Grid item>
               <TextField
                 variant='standard'
@@ -196,11 +203,6 @@ const EditTrip = ({
               />
             </Grid>
           </Grid>
-
-          <br />
-          <br />
-
-          <br />
 
           <Grid container direction='row' spacing={2} justify='space-between'>
             <Grid xs={6} item>
@@ -276,6 +278,7 @@ const EditTrip = ({
             </Select>
           </FormControl>
 
+          <br />
           <Button
             type='submit'
             variant='contained'
@@ -286,6 +289,26 @@ const EditTrip = ({
             Update
           </Button>
         </form>
+
+        <Divider />
+
+        <Grid container direction='column' spacing={3}>
+          <Grid item>
+            <Typography variant='h5'>USD exchange rate:</Typography>
+          </Grid>
+          <Grid item>
+            <Grid container direction='row'>
+              <Grid item>
+                <Typography>COP: 3781.00</Typography>
+              </Grid>
+              <Grid item>
+                <Button className={classes.updateExchangeRate}>
+                  Update Rate
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </Container>
     </>
   );

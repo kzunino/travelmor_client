@@ -93,7 +93,7 @@ const BottomActions = ({trip_data}) => {
     >
       <BottomNavigationAction
         classes={{wrapper: classes.wrapper, root: classes.navActionButtons}}
-        label='Trip Settings'
+        label='Edit Trip'
         icon={<SettingsIcon />}
         disableRipple
         component={Link}
