@@ -3,14 +3,19 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Container from '@material-ui/core/Container';
 
-import {useTheme} from '@material-ui/core/styles';
+import {useTheme, makeStyles} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-// const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  container: {
+    marginLeft: 0,
+    padding: 0,
+  },
+}));
 
 const About = () => {
   const theme = useTheme();
-  // const classes = useStyles();
+  const classes = useStyles();
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
   return (
@@ -19,7 +24,7 @@ const About = () => {
         <Toolbar /> */}
       <Typography variant={matchXs ? 'h4' : 'h2'}>About</Typography>
       <Divider />
-      <Container maxWidth={'lg'}>
+      <Container maxWidth={'lg'} className={classes.container}>
         <Typography variant='h5'>The Short</Typography>
         <Typography paragraph>
           Travelmor is an idea created after four years of periodic backpacking

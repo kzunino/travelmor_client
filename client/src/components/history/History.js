@@ -106,7 +106,7 @@ const History = ({trips}) => {
                     key={year + index}
                   >
                     {trips.map((trip, index) => {
-                      if (year === Moment(trips.start_date).format('YYYY')) {
+                      if (year === Moment(trip.start_date).format('YYYY')) {
                         return (
                           <ListItem
                             key={trip.trip_uid}

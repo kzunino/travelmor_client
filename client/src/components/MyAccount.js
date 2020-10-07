@@ -40,6 +40,12 @@ const useStyles = makeStyles((theme) => ({
   selectMenu: {
     maxHeight: '15em',
   },
+  container: {
+    [theme.breakpoints.up('md')]: {
+      marginLeft: 0,
+      padding: 0,
+    },
+  },
   submit: {
     margin: theme.spacing(3, 0, 2),
     color: 'white',
@@ -105,7 +111,7 @@ const MyAccount = ({
       </Grid>
       <Divider />
 
-      <Container maxWidth={'sm'}>
+      <Container maxWidth={'sm'} className={classes.container}>
         <CssBaseline />
         <form
           className={classes.form}

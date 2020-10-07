@@ -42,10 +42,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  // avatar: {
-  //   margin: theme.spacing(1),
-  //   backgroundColor: theme.palette.primary.main,
-  // },
+  container: {
+    [theme.breakpoints.up('md')]: {
+      marginLeft: 0,
+      padding: 0,
+    },
+  },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
@@ -219,7 +221,7 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
         <Typography variant={matchXs ? 'h4' : 'h2'}>New Trip</Typography>
       </Grid>
       <Divider />
-      <Container component='div' maxWidth='xs'>
+      <Container component='div' maxWidth='xs' className={classes.container}>
         <CssBaseline />
 
         <form className={classes.form} onSubmit={onSubmit} noValidate>
