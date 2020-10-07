@@ -20,6 +20,10 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import {KeyboardDatePicker} from '@material-ui/pickers';
+
+import Input from '@material-ui/core/Input';
+import Chip from '@material-ui/core/Chip';
 
 const useStyles = makeStyles((theme) => ({
   selectEmpty: {
@@ -42,34 +46,88 @@ const useStyles = makeStyles((theme) => ({
   hidden: {
     visibility: 'hidden',
   },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    margin: 2,
+  },
+  noLabel: {
+    marginTop: theme.spacing(3),
+  },
+  currencyField: {
+    minWidth: 100,
+    width: '50%',
+    marginTop: '2em',
+    marginBottom: '2em',
+  },
 }));
 
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+
 const EditTrip = ({
-  first_name,
-  last_name,
-  home_currency,
-  email,
-  updateUser,
+  trip_uid,
+  name,
+  total_budget,
+  length,
+  start_date,
+  end_date,
+  currencies,
 }) => {
   const theme = useTheme();
   const classes = useStyles();
+  const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const [userData, setUserData] = useState({
-    firstName: first_name,
-    lastName: last_name,
-    emailAddress: email,
-    homeCurrency: home_currency,
+  const [tripFormData, setTripFormData] = useState({
+    tripName: name,
+    totalBudget: total_budget,
+    tripLength: length,
   });
 
+  const [startDate, setStartDate] = useState(start_date);
+  const [endDate, setEndDate] = useState(end_date);
+
+  // Sets initial state to the country code of Each Currency
+  const [foreignCurrencies, setForeignCurrencies] = useState(
+    currencies.map((currency) => {
+      return currency.currency;
+    })
+  );
   // hides the button if no changes are made to user info
   const [hidden, setHidden] = useState(true);
 
-  const {firstName, lastName, emailAddress, homeCurrency} = userData;
+  const {tripName, totalBudget, tripLength} = tripFormData;
 
   // If state is changed  on user's information reveals the update button
   const handleUserData = (e) => {
     toggleHidden();
-    setUserData({...userData, [e.target.name]: e.target.value});
+    setTripFormData({...tripFormData, [e.target.name]: e.target.value});
+  };
+
+  //start date state
+  const handleStartDateChange = (date) => {
+    toggleHidden();
+    setStartDate(date);
+  };
+
+  //end date state
+  const handleEndDateChange = (date) => {
+    toggleHidden();
+    setEndDate(date);
+  };
+
+  // When a currency is selected, it gets the exchange rate and sets state to
+  // an array of currency objects
+  const handleCurrencyChange = (event) => {
+    setForeignCurrencies(event.target.value);
   };
 
   const toggleHidden = () => {
@@ -78,24 +136,25 @@ const EditTrip = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await updateUser({
-      firstName,
-      lastName,
-      emailAddress,
-      homeCurrency,
-    });
 
     setHidden(true);
   };
 
-  const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 350,
+      },
+    },
+  };
 
   return (
     <>
       <Grid item>
-        <Typography variant={matchXs ? 'h4' : 'h2'}>
-          Account Settings
-        </Typography>
+        <Typography variant={matchXs ? 'h4' : 'h2'}>Edit Trip</Typography>
       </Grid>
       <Divider />
 
@@ -112,10 +171,10 @@ const EditTrip = ({
                 variant='standard'
                 margin='normal'
                 required
-                id='first_name'
-                label='First Name'
-                name='firstName'
-                value={firstName}
+                id='name'
+                label='Trip Name'
+                name='tripName'
+                value={tripName}
                 onChange={(e) => {
                   handleUserData(e);
                 }}
@@ -127,10 +186,10 @@ const EditTrip = ({
                 variant='standard'
                 margin='normal'
                 required
-                id='last_name'
-                label='Last Name'
-                name='lastName'
-                value={lastName}
+                id='total_budget'
+                label='Budget Total'
+                name='totalBudget'
+                value={totalBudget}
                 onChange={(e) => {
                   handleUserData(e);
                 }}
@@ -138,49 +197,85 @@ const EditTrip = ({
             </Grid>
           </Grid>
 
-          <TextField
-            variant='standard'
-            margin='normal'
-            required
-            fullWidth
-            id='email'
-            label='Email'
-            name='emailAddress'
-            value={emailAddress}
-            onChange={(e) => {
-              handleUserData(e);
-            }}
-          />
+          <br />
+          <br />
 
           <br />
-          <br />
-          {/* ------ Currency Input ----- */}
-          <FormControl required className={classes.formControl}>
-            <InputLabel id='required-label'>Home Currency</InputLabel>
+
+          <Grid container direction='row' spacing={2} justify='space-between'>
+            <Grid xs={6} item>
+              <KeyboardDatePicker
+                disableToolbar
+                variant='inline'
+                format='MM/DD/yyyy'
+                margin='normal'
+                id='date-picker-inline'
+                label='Start Date'
+                value={startDate}
+                onChange={handleStartDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </Grid>
+
+            <Grid xs={6} item>
+              <KeyboardDatePicker
+                disableToolbar
+                variant='inline'
+                format='MM/DD/yyyy'
+                margin='normal'
+                id='date-picker-inline'
+                label='End Date'
+                value={endDate}
+                onChange={handleEndDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </Grid>
+          </Grid>
+
+          <FormControl className={classes.currencyField}>
+            <InputLabel>Foreign Currencies</InputLabel>
             <Select
-              id='currency'
-              value={homeCurrency}
-              name='homeCurrency'
-              onChange={(e) => {
-                handleUserData(e);
-              }}
-              className={classes.selectEmpty}
-              // accesses the menu styles
-              MenuProps={{classes: {list: classes.selectMenu}}}
+              multiple
+              value={foreignCurrencies}
+              onChange={handleCurrencyChange}
+              input={<Input id='select-multiple-chip' />}
+              renderValue={(selected) => (
+                <div className={classes.chips}>
+                  {selected.map((value) => (
+                    <Chip key={value} label={value} className={classes.chip} />
+                  ))}
+                </div>
+              )}
+              MenuProps={MenuProps}
             >
-              <MenuItem value={'USD'}>USD</MenuItem>
-              <MenuItem value={'EUR'}>EUR</MenuItem>
-              <MenuItem value={'AUD'}>AUD</MenuItem>
-              <Divider />
-              {countryData.map((country) => (
-                <MenuItem
-                  key={country.number + country.code}
-                  value={country.code}
-                >{`${country.code}`}</MenuItem>
-              ))}
+              {countryData.map((country) =>
+                country.countries.length > 1 ? (
+                  country.countries.map((place, index) => (
+                    <MenuItem
+                      key={country.number + country.code + index}
+                      value={`${country.code}`}
+                      style={getStyles(name, currencies, theme)}
+                    >
+                      {`${country.code} - ${place}`}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem
+                    key={country.number + country.code}
+                    value={`${country.code}`}
+                    style={getStyles(name, currencies, theme)}
+                  >
+                    {`${country.code} - ${country.countries}`}
+                  </MenuItem>
+                )
+              )}
             </Select>
           </FormControl>
-          <br />
+
           <Button
             type='submit'
             variant='contained'
@@ -196,8 +291,24 @@ const EditTrip = ({
   );
 };
 
-EditTrip.propTypes = {};
+EditTrip.propTypes = {
+  trip_uid: PropTypes.string,
+  name: PropTypes.string,
+  total_budget: PropTypes.string,
+  length: PropTypes.number,
+  start_date: PropTypes.string,
+  end_date: PropTypes.string,
+  currencies: PropTypes.array,
+};
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  trip_uid: state.trips.trip_uid,
+  name: state.trips.name,
+  total_budget: state.trips.total_budget,
+  length: state.trips.length,
+  start_date: state.trips.start_date,
+  end_date: state.trips.end_date,
+  currencies: state.trips.currencies,
+});
 
 export default connect(mapStateToProps, {})(EditTrip);

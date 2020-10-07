@@ -1,8 +1,12 @@
 import React, {useEffect} from 'react';
+import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {getTrip} from '../../actions/trips';
 import Moment from 'moment';
+
+import {makeStyles, useTheme} from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import TripTable from '../trip/tripComponents/TripTable';
 
@@ -11,9 +15,8 @@ import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-
-import {makeStyles, useTheme} from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Button from '@material-ui/core/Button';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 // Line Chart imports
 import {Line} from 'react-chartjs-2';
@@ -46,6 +49,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '2em',
     padding: 0,
   },
+
+  editTrip: {
+    color: 'grey',
+  },
 }));
 
 const ExpenseHistory = ({match, getTrip, trip_data}) => {
@@ -54,7 +61,7 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
   const {
-    // trip_uid,
+    trip_uid,
     // user,
     name,
     total_budget,
@@ -78,10 +85,14 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
   if (end_date) {
     // DaysArr creates a day for everyday of the trip
     let daysArr = [];
-    let a = Moment(start_date).utc();
-    let b = Moment(end_date).utc();
+    let firstDayOfTrip = Moment(start_date).utc();
+    let lastDayOfTrip = Moment(end_date).utc();
     //loops over all days from start to end date using a Moment for loop
-    for (let i = Moment(a); i.isBefore(b); i.add(1, 'days')) {
+    for (
+      let i = Moment(firstDayOfTrip);
+      i.isBefore(lastDayOfTrip);
+      i.add(1, 'days')
+    ) {
       if (daysArr.indexOf(Moment(i).format('MM-DD-YYYY')) === -1) {
         daysArr.push(Moment(i).format('MM-DD-YYYY'));
       }
@@ -97,8 +108,8 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
     });
 
     // Daily budget Data
-    let daily_budget = (total_budget / length).toFixed(2);
-    dailyBudgetData = tripDays.map(() => daily_budget);
+
+    dailyBudgetData = tripDays.map(() => (total_budget / length).toFixed(2));
 
     // Daily Spending Data
     /* Creates a days object filled with each day an expense occurred
@@ -132,18 +143,16 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
         {
           ticks: {
             userCallback: function (item, index) {
-              //always return first day of trip
+              //always return first day of trip to chart
               if (index === 0) return item;
               // sm-lg screen
               if (tripDays.length >= 15 && tripDays.length < 30 && !matchXs) {
-                // if ((index + 1) % 2 === 0 && matchXs) return item;
                 if ((index + 1) % 1 === 0) return item;
               } else if (
                 tripDays.length >= 30 &&
                 tripDays.length < 200 &&
                 !matchXs
               ) {
-                // if ((index + 1) % 12 === 0 && matchXs) return item;
                 if ((index + 1) % 5 === 0) return item;
               } else if (
                 tripDays.length >= 200 &&
@@ -203,7 +212,10 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
     <>
       <Grid item>
         <Typography variant={matchXs ? 'h4' : 'h2'}>
-          {name} - Expense History
+          {name} - Spending History{' '}
+          <Button component={Link} to={`/trip/edit/${trip_uid}`}>
+            <SettingsIcon className={classes.editTrip} />
+          </Button>
         </Typography>
       </Grid>
       <Divider />

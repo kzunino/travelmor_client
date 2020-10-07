@@ -5,7 +5,6 @@ import Container from '@material-ui/core/Container';
 
 import {useTheme, makeStyles} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import {mergeClasses} from '@material-ui/styles';
 
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 

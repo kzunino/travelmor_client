@@ -263,7 +263,7 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
                             className={classes.nested}
                             key={`${trip.trip_uid}${index}`}
                             component={Link}
-                            to={`/dashboard/trip/${trip.trip_uid}`}
+                            to={`/trip/${trip.trip_uid}`}
                             onClick={() => {
                               setValue(1);
                               setTripValue(trip.trip_uid);

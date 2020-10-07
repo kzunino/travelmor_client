@@ -9,9 +9,6 @@ export const addCurrencies = ({currencies}, {trip_uid}) => async (
   dispatch,
   getState
 ) => {
-  console.log(' working');
-  console.log(currencies, trip_uid);
-
   //construct a list/array of currency objects for trip
   let currencyArr = [];
   for (const currency in currencies) {

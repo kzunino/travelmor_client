@@ -146,7 +146,7 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
 
   // When a currency is selected, it gets the exchange rate and sets state to
   // an array of currency objects
-  const handleCurrencyChange = async (event) => {
+  const handleCurrencyChange = (event) => {
     setCurrencies(event.target.value);
   };
 

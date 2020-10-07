@@ -10,6 +10,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ListIcon from '@material-ui/icons/List';
 import HistoryIcon from '@material-ui/icons/History';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 //components
 import AddExpense from './AddExpense';
@@ -92,15 +93,15 @@ const BottomActions = ({trip_data}) => {
     >
       <BottomNavigationAction
         classes={{wrapper: classes.wrapper, root: classes.navActionButtons}}
-        label='Expenses'
-        icon={<ListIcon />}
+        label='Trip Settings'
+        icon={<SettingsIcon />}
         disableRipple
         component={Link}
-        to='/dashboard/history'
+        to={`/trip/edit/${trip_uid}`}
       />
       <BottomNavigationAction
         classes={{wrapper: classes.wrapper, root: classes.navActionButtons}}
-        label='Add'
+        label='Add Expense'
         icon={<AddCircleIcon />}
         disableRipple
         onClick={handleOpen}

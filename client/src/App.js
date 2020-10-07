@@ -26,6 +26,7 @@ import NewTrip from './components/NewTrip';
 import About from './components/About';
 import Contact from './components/ContactUs';
 import MyAccount from './components/MyAccount';
+import EditTrip from './components/trip/EditTrip';
 
 import {loadUser} from './actions/auth';
 import store from './store';
@@ -84,16 +85,18 @@ function App({isAuthenticated, user}) {
           >
             <Switch>
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
-              <PrivateRoute
-                exact
-                path='/dashboard/trip/:trip_uid'
-                component={Trip}
-              />
+              <PrivateRoute exact path='/trip/:trip_uid' component={Trip} />
               <PrivateRoute
                 exact
                 path='/history/:trip_uid'
                 component={ExpenseHistory}
               />
+              <PrivateRoute
+                exact
+                path='/trip/edit/:trip_uid'
+                component={EditTrip}
+              />
+
               <PrivateRoute exact path='/history' component={History} />
               <PrivateRoute exact path='/newtrip' component={NewTrip} />
               <PrivateRoute exact path='/about' component={About} />

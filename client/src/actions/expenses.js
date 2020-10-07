@@ -101,7 +101,6 @@ export const updateExpense = (data) => async (dispatch, getState) => {
     purchase_date,
   });
 
-  console.log(body);
   try {
     const res = await axios.put(
       `http://localhost:8000/api/expense/${expense_uid}`,
