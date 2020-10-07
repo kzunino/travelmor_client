@@ -26,7 +26,6 @@ import {KeyboardDatePicker} from '@material-ui/pickers';
 
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import {publishDate} from 'currency-codes';
 
 const drawerWidth = 240;
 
@@ -127,7 +126,6 @@ const AddExpense = ({
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const format = 'YYYY-MM-DD HH:mm:ss';
     // default exchange rate is 1
     let exchangeRate = 1;
     let expense_cost = expenseCost;
