@@ -89,7 +89,7 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
     // Formats the dates for the X axis on graph
     tripDays = daysArr.map((day, index) => {
       if (index === 0) return Moment(day, 'MM-DD-YYYY').format('MMM Do');
-      else if (Moment(day, 'MM-DD-YYYY').format('DD') === '1') {
+      else if (Moment(day, 'MM-DD-YYYY').format('DD') === '01') {
         return Moment(day, 'MM-DD-YYYY').format('MMM Do');
       } else {
         return Moment(day, 'MM-DD-YYYY').format('Do');
@@ -126,6 +126,60 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
     });
   }
 
+  let options = {
+    scales: {
+      xAxes: [
+        {
+          ticks: {
+            userCallback: function (item, index) {
+              //always return first day of trip
+              if (index === 0) return item;
+              // sm-lg screen
+              if (tripDays.length >= 15 && tripDays.length < 30 && !matchXs) {
+                // if ((index + 1) % 2 === 0 && matchXs) return item;
+                if ((index + 1) % 1 === 0) return item;
+              } else if (
+                tripDays.length >= 30 &&
+                tripDays.length < 200 &&
+                !matchXs
+              ) {
+                // if ((index + 1) % 12 === 0 && matchXs) return item;
+                if ((index + 1) % 5 === 0) return item;
+              } else if (
+                tripDays.length >= 200 &&
+                tripDays.length < 367 &&
+                !matchXs
+              ) {
+                if ((index + 1) % 15 === 0) return item;
+              }
+
+              //if matchXS is true
+              if (tripDays.length >= 15 && tripDays.length < 30 && matchXs) {
+                if ((index + 1) % 2 === 0) return item;
+              } else if (
+                tripDays.length >= 30 &&
+                tripDays.length < 200 &&
+                matchXs
+              ) {
+                if ((index + 1) % 15 === 0) return item;
+              } else if (
+                tripDays.length >= 200 &&
+                tripDays.length < 367 &&
+                matchXs
+              ) {
+                if ((index + 1) % 30 === 0) return item;
+              }
+            },
+            autoSkip: false,
+          },
+          gridLines: {
+            display: true,
+          },
+        },
+      ],
+    },
+  };
+
   let chartData = {
     labels: tripDays,
     datasets: [
@@ -159,7 +213,7 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
           <Grid item xs={12}>
             <Box m={1} boxShadow={3} className={classes.tableBox}>
               <Typography variant='h5'>Trip Spending Overview</Typography>
-              <Line data={chartData} />
+              <Line data={chartData} options={options} />
             </Box>
           </Grid>
           {/* Table Item */}

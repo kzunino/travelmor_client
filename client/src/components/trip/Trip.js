@@ -71,14 +71,14 @@ const Trip = ({match, getTrip, trip_data}) => {
 
   return (
     <>
-      <Grid item>
-        <Grid container justify='space-between'>
-          <TripMain tripData={trip_data} />
-          <TripBudgetBoxes tripData={trip_data} />
-          <TripTable tripData={trip_data} />
-          <TripPieChart tripData={trip_data} />
-        </Grid>
+      {/* <Grid item> */}
+      <Grid container justify='space-between'>
+        <TripMain tripData={trip_data} />
+        <TripBudgetBoxes tripData={trip_data} />
+        <TripTable tripData={trip_data} />
+        <TripPieChart tripData={trip_data} />
       </Grid>
+      {/* </Grid> */}
       <BottomAction />
     </>
   );
