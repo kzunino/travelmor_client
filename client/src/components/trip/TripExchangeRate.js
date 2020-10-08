@@ -1,4 +1,8 @@
 import React, {useState, Fragment} from 'react';
+import axios from 'axios';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {updateSingleCurrency} from '../../actions/currency';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 
 // MUI Components
@@ -8,12 +12,6 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-    color: 'white',
-    fontWeight: 'bold',
-  },
-
   submit: {
     backgroundColor: theme.palette.primary.main,
     color: 'white',
@@ -31,9 +29,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TripExchangeRate = ({currencies}) => {
+const TripExchangeRate = ({
+  currencies,
+  home_currency,
+  updateSingleCurrency,
+}) => {
   const theme = useTheme();
   const classes = useStyles();
+  const API_KEY = process.env.REACT_APP_EXCHANGE_KEY;
 
   // map function pushes update currency's button with isHidden attribute to array
   const [buttonArr, setButtonArr] = useState(
@@ -42,10 +45,37 @@ const TripExchangeRate = ({currencies}) => {
     })
   );
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const getExchangeRateSingleCurrency = async (currencyCode) => {
+    try {
+      const res = await axios.get('http://data.fixer.io/api/latest', {
+        params: {
+          access_key: API_KEY,
+          base: home_currency,
+          symbols: currencyCode,
+        },
+      });
+      //return data object with currency exchange rates
+      // return  object {USD: rate}
+      return res.data.rates;
+    } catch (err) {
+      console.log(err.response.data);
+    }
   };
 
+  const updateCurrency = async (currencyCode, index) => {
+    let updatedCurrencyRate = await getExchangeRateSingleCurrency(currencyCode);
+    if (updatedCurrencyRate) {
+      console.log(updatedCurrencyRate);
+      // fire off update currency to reducer
+
+      let currencyObj = {
+        currency_uid: currencies[index].currency_uid,
+        currency: currencyCode,
+        exchange_rate: updatedCurrencyRate[currencyCode].toFixed(4),
+      };
+      updateSingleCurrency(currencyObj);
+    }
+  };
   // takes index of the button clicked and hides it
   const hide = (index) => {
     buttonArr[index].isHidden = !buttonArr[index].isHidden;
@@ -53,7 +83,8 @@ const TripExchangeRate = ({currencies}) => {
   };
 
   return (
-    <form className={classes.form} onSubmit={(e) => handleSubmit(e)} noValidate>
+    <>
+      {' '}
       <Grid container direction='column' spacing={3}>
         <Grid item>
           <Typography variant='h5'>USD exchange rate:</Typography>
@@ -72,7 +103,11 @@ const TripExchangeRate = ({currencies}) => {
                   <Grid item>
                     <Button
                       type='submit'
-                      onClick={() => hide(index)}
+                      onClick={() => {
+                        updateCurrency(foreignCurrency.currency, index);
+                        hide(index);
+                      }}
+                      name={index}
                       className={
                         !buttonArr[index].isHidden
                           ? classes.submit
@@ -90,8 +125,12 @@ const TripExchangeRate = ({currencies}) => {
           );
         })}
       </Grid>
-    </form>
+    </>
   );
 };
 
-export default TripExchangeRate;
+TripExchangeRate.propTypes = {
+  updateSingleCurrency: PropTypes.func.isRequired,
+};
+
+export default connect(null, {updateSingleCurrency})(TripExchangeRate);

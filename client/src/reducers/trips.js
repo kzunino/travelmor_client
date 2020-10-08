@@ -5,6 +5,8 @@ import {
   ADD_EXPENSE,
   DELETE_EXPENSE,
   UPDATE_EXPENSE,
+  UPDATE_TRIP,
+  UPDATE_CURRENCY_RATE,
 } from '../actions/types';
 
 const initialState = {
@@ -23,11 +25,21 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case NEW_TRIP:
     case GET_TRIP:
+    case UPDATE_TRIP:
       return (state = action.payload);
     case ADD_CURRENCIES:
       return {
         ...state,
         currencies: [...state.currencies, action.payload],
+      };
+    case UPDATE_CURRENCY_RATE:
+      return {
+        ...state,
+        currencies: state.currencies.map((currency) => {
+          if (currency.currency_uid === action.payload.currency_uid) {
+            return action.payload;
+          } else return currency;
+        }),
       };
     case ADD_EXPENSE:
       return {

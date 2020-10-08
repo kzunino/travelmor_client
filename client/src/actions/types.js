@@ -20,6 +20,7 @@ export const UPDATE_TRIP = 'UPDATE_TRIP';
 
 // Currencies
 export const ADD_CURRENCIES = 'ADD_CURRENCIES';
+export const UPDATE_CURRENCY_RATE = 'UPDATE_CURRENCY_RATE';
 
 // Expenses
 export const ADD_EXPENSE = 'ADD_EXPENSE';

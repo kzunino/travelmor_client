@@ -82,6 +82,7 @@ const EditTrip = ({
   start_date,
   end_date,
   currencies,
+  home_currency,
 }) => {
   const theme = useTheme();
   const classes = useStyles();
@@ -137,6 +138,11 @@ const EditTrip = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // check to see if any fields are blank or if dates are messed up.
+
+    // Check to see if foreign currencies have been altered. If current ones are missing
+    // delete the currency. If extra are added, add currencies
 
     setHidden(true);
   };
@@ -284,9 +290,15 @@ const EditTrip = ({
           </Button>
         </form>
 
-        <Divider />
-
-        <TripExchangeRate currencies={currencies} />
+        {currencies.length ? (
+          <>
+            <Divider />
+            <TripExchangeRate
+              currencies={currencies}
+              homeCurrency={home_currency}
+            />
+          </>
+        ) : null}
       </Container>
     </>
   );
@@ -300,6 +312,7 @@ EditTrip.propTypes = {
   start_date: PropTypes.string,
   end_date: PropTypes.string,
   currencies: PropTypes.array,
+  home_currency: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -310,6 +323,7 @@ const mapStateToProps = (state) => ({
   start_date: state.trips.start_date,
   end_date: state.trips.end_date,
   currencies: state.trips.currencies,
+  home_currency: state.trips.home_currency,
 });
 
 export default connect(mapStateToProps, {})(EditTrip);
