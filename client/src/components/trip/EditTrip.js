@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {data as countryData} from 'currency-codes';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import TripExchangeRate from './TripExchangeRate';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
@@ -24,7 +25,6 @@ import {KeyboardDatePicker} from '@material-ui/pickers';
 
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
-import {withTheme} from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   selectEmpty: {
@@ -62,12 +62,6 @@ const useStyles = makeStyles((theme) => ({
     width: '50%',
     marginTop: '2em',
     marginBottom: '2em',
-  },
-  updateExchangeRate: {
-    backgroundColor: theme.palette.primary.main,
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: '.75em',
   },
 }));
 
@@ -292,23 +286,7 @@ const EditTrip = ({
 
         <Divider />
 
-        <Grid container direction='column' spacing={3}>
-          <Grid item>
-            <Typography variant='h5'>USD exchange rate:</Typography>
-          </Grid>
-          <Grid item>
-            <Grid container direction='row'>
-              <Grid item>
-                <Typography>COP: 3781.00</Typography>
-              </Grid>
-              <Grid item>
-                <Button className={classes.updateExchangeRate}>
-                  Update Rate
-                </Button>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+        <TripExchangeRate currencies={currencies} />
       </Container>
     </>
   );
