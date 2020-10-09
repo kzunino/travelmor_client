@@ -102,8 +102,8 @@ const EditTrip = ({
     tripLength: length,
   });
 
-  const [startDate, setStartDate] = useState(start_date);
-  const [endDate, setEndDate] = useState(end_date);
+  const [startDate, setStartDate] = useState(Moment(start_date));
+  const [endDate, setEndDate] = useState(Moment(end_date));
 
   // Sets initial state to the country code of Each Currency
   // Array of strings ['USD', 'COP']
@@ -111,7 +111,7 @@ const EditTrip = ({
   // hides the button if no changes are made to user info
   const [hidden, setHidden] = useState(true);
 
-  const {tripName, totalBudget, tripLength} = tripFormData;
+  let {tripName, totalBudget, tripLength} = tripFormData;
 
   useEffect(() => {
     setForeignCurrencies(
@@ -176,56 +176,55 @@ const EditTrip = ({
 
     let currencyRates;
     let length = tripLength;
+    totalBudget = parseFloat(totalBudget).toFixed(2);
     const format = 'YYYY-MM-DD HH:mm:ss';
 
     // Alert if trip end date is before trip start
-    if (Moment(start_date).isAfter(end_date)) {
+    if (Moment(startDate).isAfter(endDate)) {
       return console.log('cannot start trip after end date');
     }
 
     // if start is same day as end day then length is 1 day
-    if (Moment(end_date).isSame(Moment(start_date), 'day')) {
+    if (Moment(endDate).isSame(Moment(startDate), 'day')) {
       length = 1;
-    } else if (Moment(end_date).diff(Moment(start_date), 'days') === 1) {
+    } else if (Moment(endDate).diff(Moment(startDate), 'days') === 1) {
       length = 2;
     } else {
-      length = Moment(end_date).diff(Moment(start_date), 'days') + 1;
+      length = Moment(endDate).diff(Moment(startDate), 'days') + 1;
     }
 
     // sets the new trip with the hours adjusted to account for full days
-    // updateTrip(
-    //   {
-    //     user,
-    //     name,
-    //     total_budget,
-    //     length,
-    //     home_currency,
-    //     start_date: Moment(start_date)
-    //       .set({hour: 0, minute: 0, second: 0, millisecond: 0})
-    //       .format(format),
-    //     end_date: Moment(end_date)
-    //       .set({hour: 23, minute: 59, second: 59, millisecond: 0})
-    //       .format(format),
-    //   },
-    //
-    // );
+    updateTrip({
+      trip_uid,
+      user,
+      name: tripName,
+      total_budget: totalBudget,
+      length,
+      home_currency,
+      start_date: Moment(startDate)
+        .set({hour: 0, minute: 0, second: 0, millisecond: 0})
+        .format(format),
+      end_date: Moment(endDate)
+        .set({hour: 23, minute: 59, second: 59, millisecond: 0})
+        .format(format),
+    });
 
-    if (foreignCurrencies.length) {
-      // Filters new currencies from old
-      let previousCurrencies = currencies.map((curr) => curr.currency);
-      let addedCurrencies = foreignCurrencies.filter(
-        (curr) => !previousCurrencies.includes(curr)
-      );
-      console.log(addedCurrencies);
-      // Sends new currencies to get exchange rate data
-      if (addedCurrencies.length) {
-        currencyRates = {CRC: 603.44439, CUC: 1};
-        // currencyRates = await getExchangeRate(addedCurrencies);
+    // if (foreignCurrencies.length) {
+    //   // Filters new currencies from old
+    //   let previousCurrencies = currencies.map((curr) => curr.currency);
+    //   let addedCurrencies = foreignCurrencies.filter(
+    //     (curr) => !previousCurrencies.includes(curr)
+    //   );
+    //   console.log(addedCurrencies);
+    //   // Sends new currencies to get exchange rate data
+    //   if (addedCurrencies.length) {
+    //     currencyRates = {CRC: 603.44439, CUC: 1};
+    //     // currencyRates = await getExchangeRate(addedCurrencies);
 
-        // Dispatch add new currencies to database and state
-        addCurrencies({currencyRates}, {trip_uid});
-      }
-    }
+    //     // Dispatch add new currencies to database and state
+    //     addCurrencies({currencyRates}, {trip_uid});
+    //   }
+    // }
 
     // Check to see if foreign currencies have been altered. If current ones are missing
     // delete the currency. If extra are added, add currencies
@@ -279,7 +278,6 @@ const EditTrip = ({
                 variant='standard'
                 margin='normal'
                 required
-                id='total_budget'
                 label='Budget Total'
                 name='totalBudget'
                 value={totalBudget}

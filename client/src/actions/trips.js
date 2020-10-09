@@ -2,6 +2,7 @@ import axios from 'axios';
 import {returnErrors} from './alerts';
 import {tokenConfig} from './auth';
 import {addCurrencies} from './currency';
+import Moment from 'moment';
 
 import {GET_TRIP, NEW_TRIP, UPDATE_TRIP} from './types';
 
@@ -28,6 +29,10 @@ export const newTrip = (
   {user, name, total_budget, home_currency, length, start_date, end_date},
   currencyRates
 ) => async (dispatch, getState) => {
+  // Sets the dates to UTC time before saving to database
+  start_date = Moment(start_date).toISOString();
+  end_date = Moment(end_date).toISOString();
+
   // Request Body
   const body = JSON.stringify({
     user,
@@ -59,12 +64,23 @@ export const newTrip = (
 };
 
 // UPDATE trip
-export const updateTrip = (
-  {user, name, total_budget, home_currency, length, start_date, end_date},
-  currencies
-) => async (dispatch, getState) => {
+export const updateTrip = ({
+  trip_uid,
+  user,
+  name,
+  total_budget,
+  home_currency,
+  length,
+  start_date,
+  end_date,
+}) => async (dispatch, getState) => {
+  //Sets the dates to UTC
+  start_date = Moment(start_date).toISOString();
+  end_date = Moment(end_date).toISOString();
+
   // Request Body
   const body = JSON.stringify({
+    trip_uid,
     user,
     name,
     total_budget,
@@ -76,17 +92,12 @@ export const updateTrip = (
   console.log(body);
   try {
     const res = await axios.put(
-      `http://localhost:8000/api/trip/${user}`,
+      `http://localhost:8000/api/trip/${trip_uid}`,
       body,
       tokenConfig(getState)
     );
     if (res) {
       await dispatch({type: UPDATE_TRIP, payload: res.data});
-      // if currencies
-      if (currencies) {
-        console.log(currencies, {trip_uid: res.data.trip_uid});
-        dispatch(addCurrencies({currencies}, {trip_uid: res.data.trip_uid}));
-      }
     }
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));

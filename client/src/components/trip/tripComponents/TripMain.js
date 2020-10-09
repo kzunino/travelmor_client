@@ -207,7 +207,7 @@ const TripMain = ({tripData}) => {
                   align='center'
                   className={classes.budgetHeading}
                 >
-                  {Moment(start_date).utc().format('MMM Do')} &ndash;{' '}
+                  {Moment(start_date).format('MMM Do')} &ndash;{' '}
                   {Moment(end_date).format('MMM Do')}
                 </Typography>
               </Grid>
