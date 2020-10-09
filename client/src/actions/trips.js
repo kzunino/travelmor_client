@@ -4,7 +4,7 @@ import {tokenConfig} from './auth';
 import {addCurrencies} from './currency';
 import Moment from 'moment';
 
-import {GET_TRIP, NEW_TRIP, UPDATE_TRIP} from './types';
+import {GET_TRIP, NEW_TRIP, UPDATE_TRIP, DELETE_TRIP} from './types';
 
 // Gets a trip by its UUID
 export const getTrip = (trip_uid) => async (dispatch, getState) => {
@@ -98,6 +98,23 @@ export const updateTrip = ({
     );
     if (res) {
       await dispatch({type: UPDATE_TRIP, payload: res.data});
+    }
+  } catch (err) {
+    dispatch(returnErrors(err.response.data, err.response.status));
+  }
+};
+
+// Delete Trip
+
+export const deleteTrip = (trip_uid) => async (dispatch, getState) => {
+  try {
+    const res = await axios.delete(
+      `http://localhost:8000/api/trip/${trip_uid}`,
+
+      tokenConfig(getState)
+    );
+    if (res) {
+      await dispatch({type: DELETE_TRIP, payload: trip_uid});
     }
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));

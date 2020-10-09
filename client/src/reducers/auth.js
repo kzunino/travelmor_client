@@ -8,6 +8,8 @@ import {
   LOGOUT_SUCCESS,
   AUTH_ERROR,
   UPDATE_USER_SUCCESS,
+  DELETE_TRIP,
+  NEW_TRIP,
 } from '../actions/types';
 
 const initialState = {
@@ -59,6 +61,24 @@ export default (state = initialState, action) => {
         user: null,
         isAuthenticated: false,
         isLoading: false,
+      };
+    case NEW_TRIP:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          trips: [action.payload].concat(state.user.trips),
+        },
+      };
+    case DELETE_TRIP:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          trips: state.user.trips.filter(
+            (trip) => trip.trip_uid !== action.payload
+          ),
+        },
       };
 
     default:

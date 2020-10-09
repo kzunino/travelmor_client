@@ -4,8 +4,9 @@ import Moment from 'moment';
 import {data as countryData} from 'currency-codes';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {updateTrip} from '../../actions/trips';
+import {updateTrip, deleteTrip} from '../../actions/trips';
 import {addCurrencies} from '../../actions/currency';
+import {createAlerts} from '../../actions/alerts';
 import TripExchangeRate from './TripExchangeRate';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -17,7 +18,10 @@ import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Tooltip from '@material-ui/core/Tooltip';
 
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 
 //Select
@@ -30,7 +34,17 @@ import {KeyboardDatePicker} from '@material-ui/pickers';
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
 
+// Delete Dialog
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 const useStyles = makeStyles((theme) => ({
+  deleteButton: {
+    marginTop: 'auto',
+  },
   selectEmpty: {
     width: '10em',
   },
@@ -89,7 +103,10 @@ const EditTrip = ({
   home_currency,
   user,
   updateTrip,
+  deleteTrip,
   addCurrencies,
+  createAlerts,
+  history,
 }) => {
   const theme = useTheme();
   const classes = useStyles();
@@ -110,6 +127,8 @@ const EditTrip = ({
   const [foreignCurrencies, setForeignCurrencies] = useState([]);
   // hides the button if no changes are made to user info
   const [hidden, setHidden] = useState(true);
+  // State for delete dialog
+  const [open, setOpen] = React.useState(false);
 
   let {tripName, totalBudget, tripLength} = tripFormData;
 
@@ -150,6 +169,14 @@ const EditTrip = ({
     setHidden(false);
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   //joins all currencies to "USD,COP" format for query string
   // then gets all exchange rates and create
 
@@ -181,7 +208,9 @@ const EditTrip = ({
 
     // Alert if trip end date is before trip start
     if (Moment(startDate).isAfter(endDate)) {
-      return console.log('cannot start trip after end date');
+      return createAlerts({
+        validation_error: 'Cant start a trip after it ends',
+      });
     }
 
     // if start is same day as end day then length is 1 day
@@ -209,27 +238,35 @@ const EditTrip = ({
         .format(format),
     });
 
-    // if (foreignCurrencies.length) {
-    //   // Filters new currencies from old
-    //   let previousCurrencies = currencies.map((curr) => curr.currency);
-    //   let addedCurrencies = foreignCurrencies.filter(
-    //     (curr) => !previousCurrencies.includes(curr)
-    //   );
-    //   console.log(addedCurrencies);
-    //   // Sends new currencies to get exchange rate data
-    //   if (addedCurrencies.length) {
-    //     currencyRates = {CRC: 603.44439, CUC: 1};
-    //     // currencyRates = await getExchangeRate(addedCurrencies);
+    if (foreignCurrencies.length) {
+      // Filters new currencies codes from old
+      let previousCurrencies = currencies.map((curr) => curr.currency);
+      let addedCurrencies = foreignCurrencies.filter(
+        (curr) => !previousCurrencies.includes(curr)
+      );
+      console.log(addedCurrencies);
+      // Sends new currencies to get exchange rate data
+      if (addedCurrencies.length) {
+        currencyRates = {CRC: 603.44439, CUC: 1};
+        // currencyRates = await getExchangeRate(addedCurrencies);
 
-    //     // Dispatch add new currencies to database and state
-    //     addCurrencies({currencyRates}, {trip_uid});
-    //   }
-    // }
+        // Dispatch add new currencies to database and state
+        addCurrencies({currencyRates}, {trip_uid});
+      }
+    }
 
     // Check to see if foreign currencies have been altered. If current ones are missing
     // delete the currency. If extra are added, add currencies
 
     // setHidden(true);
+  };
+
+  const handleDeleteTrip = () => {
+    // delete trip
+
+    deleteTrip(trip_uid);
+    // re-route to dashboard
+    history.push('/dashboard');
   };
 
   const ITEM_HEIGHT = 48;
@@ -245,11 +282,57 @@ const EditTrip = ({
 
   return (
     <>
+      {/* Heading Content including delete dialog */}
       <Grid item>
-        <Typography variant={matchXs ? 'h4' : 'h2'}>Edit Trip</Typography>
+        <Grid container direction='row' justify='space-between'>
+          <Grid item>
+            <Typography variant={matchXs ? 'h4' : 'h2'}>Edit Trip</Typography>
+          </Grid>
+          <Grid item className={classes.deleteButton}>
+            <Tooltip title='Delete Trip'>
+              <IconButton>
+                <DeleteForeverIcon
+                  fontSize={matchXs ? 'medium' : 'large'}
+                  onClick={handleClickOpen}
+                />
+              </IconButton>
+            </Tooltip>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby='alert-dialog-title'
+              aria-describedby='alert-dialog-description'
+            >
+              <DialogTitle id='alert-dialog-title'>
+                {'Would you like to delete this trip?'}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id='alert-dialog-description'>
+                  Deleting this trip will delete it permanently.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color='primary' autoFocus>
+                  Go back
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleClose();
+                    handleDeleteTrip();
+                  }}
+                  color='primary'
+                >
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Grid>
+        </Grid>
       </Grid>
+
       <Divider />
 
+      {/* Edit Trip Form Content  */}
       <Container maxWidth={'sm'} className={classes.container}>
         <CssBaseline />
         <form
@@ -386,6 +469,10 @@ const EditTrip = ({
 };
 
 EditTrip.propTypes = {
+  updateTrip: PropTypes.func.isRequired,
+  addCurrencies: PropTypes.func.isRequired,
+  createAlerts: PropTypes.func.isRequired,
+  deleteTrip: PropTypes.func.isRequired,
   trip_uid: PropTypes.string,
   name: PropTypes.string,
   total_budget: PropTypes.string,
@@ -395,8 +482,6 @@ EditTrip.propTypes = {
   currencies: PropTypes.array,
   home_currency: PropTypes.string.isRequired,
   user: PropTypes.string,
-  updateTrip: PropTypes.func.isRequired,
-  addCurrencies: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -411,4 +496,9 @@ const mapStateToProps = (state) => ({
   user: state.trips.user,
 });
 
-export default connect(mapStateToProps, {updateTrip, addCurrencies})(EditTrip);
+export default connect(mapStateToProps, {
+  updateTrip,
+  addCurrencies,
+  createAlerts,
+  deleteTrip,
+})(EditTrip);

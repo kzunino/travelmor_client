@@ -27,6 +27,7 @@ export default (state = initialState, action) => {
     case GET_TRIP:
     case UPDATE_TRIP:
       return (state = action.payload);
+
     case ADD_CURRENCIES:
       return {
         ...state,
@@ -62,6 +63,7 @@ export default (state = initialState, action) => {
           }
         }),
       };
+
     default:
       return state;
   }

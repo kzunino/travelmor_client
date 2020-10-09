@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Alerts = ({error, alert}) => {
   useEffect(() => {
     const handleErrorProps = () => {
+      // Alerts from the database
       if (error.msg.non_field_errors)
         toast.error(`${error.msg.non_field_errors}`);
       if (error.msg.password) toast.error(`${error.msg.password}`);
@@ -26,6 +27,9 @@ const Alerts = ({error, alert}) => {
       if (error.msg.last_name) toast.error(`Last name: ${error.msg.last_name}`);
       if (error.msg.first_name)
         toast.error(`First name: ${error.msg.first_name}`);
+      if (error.msg.name) toast.error(`${error.msg.name}`);
+      if (error.msg.total_budget)
+        toast.error(`Budget Total: ${error.msg.total_budget}`);
 
       // Alert Success
       if (alert.success) toast.success(alert.success);

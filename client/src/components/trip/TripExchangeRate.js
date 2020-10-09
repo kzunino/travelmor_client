@@ -38,13 +38,12 @@ const TripExchangeRate = ({
   const classes = useStyles();
   const API_KEY = process.env.REACT_APP_EXCHANGE_KEY;
 
-  console.log(currencies);
-
+  // Creates Edit Buttons for each currency with isHidden Property to toggle
   let createButtons = (currencies) =>
     currencies.map((foreignCurrency) => {
       return {button: foreignCurrency.currency, isHidden: false};
     });
-  // map function pushes update currency's button with isHidden attribute to array
+
   const [buttonArr, setButtonArr] = useState(createButtons(currencies));
   const [currencyArr, setCurrencyArr] = useState(currencies);
 
@@ -53,8 +52,7 @@ const TripExchangeRate = ({
     setCurrencyArr(currencies);
   }, [currencies]);
 
-  console.log(buttonArr);
-
+  // GETS exchange rate for single currency to update
   const getExchangeRateSingleCurrency = async (currencyCode) => {
     try {
       const res = await axios.get('http://data.fixer.io/api/latest', {
@@ -85,7 +83,8 @@ const TripExchangeRate = ({
     }
   };
 
-  // takes index of the button clicked and hides it on click
+  // takes index of the update button clicked and sets prop to hidden
+  // this toggles the class for each button
   const hide = (index) => {
     buttonArr[index].isHidden = !buttonArr[index].isHidden;
     setButtonArr([...buttonArr, buttonArr[index].isHidden]);
