@@ -38,6 +38,7 @@ const TripExchangeRate = ({
   const classes = useStyles();
   const API_KEY = process.env.REACT_APP_EXCHANGE_KEY;
 
+  console.log(currencies);
   // map function pushes update currency's button with isHidden attribute to array
   const [buttonArr, setButtonArr] = useState(
     currencies.map((foreignCurrency) => {
@@ -62,12 +63,10 @@ const TripExchangeRate = ({
     }
   };
 
-  const updateCurrency = async (currencyCode, index) => {
+  // Updates the exchange rate for a single currency
+  const updateCurrencyExchangeRate = async (currencyCode, index) => {
     let updatedCurrencyRate = await getExchangeRateSingleCurrency(currencyCode);
     if (updatedCurrencyRate) {
-      console.log(updatedCurrencyRate);
-      // fire off update currency to reducer
-
       let currencyObj = {
         currency_uid: currencies[index].currency_uid,
         currency: currencyCode,
@@ -76,7 +75,8 @@ const TripExchangeRate = ({
       updateSingleCurrency(currencyObj);
     }
   };
-  // takes index of the button clicked and hides it
+
+  // takes index of the button clicked and hides it on click
   const hide = (index) => {
     buttonArr[index].isHidden = !buttonArr[index].isHidden;
     setButtonArr([...buttonArr, buttonArr[index].isHidden]);
@@ -90,6 +90,7 @@ const TripExchangeRate = ({
           <Typography variant='h5'>USD exchange rate:</Typography>
         </Grid>
         {currencies.map((foreignCurrency, index) => {
+          console.log(foreignCurrency);
           return (
             <Fragment key={foreignCurrency + index}>
               <Grid item>
@@ -104,7 +105,10 @@ const TripExchangeRate = ({
                     <Button
                       type='submit'
                       onClick={() => {
-                        updateCurrency(foreignCurrency.currency, index);
+                        updateCurrencyExchangeRate(
+                          foreignCurrency.currency,
+                          index
+                        );
                         hide(index);
                       }}
                       name={index}
@@ -131,6 +135,15 @@ const TripExchangeRate = ({
 
 TripExchangeRate.propTypes = {
   updateSingleCurrency: PropTypes.func.isRequired,
+  currencies: PropTypes.array,
+  home_currency: PropTypes.string,
 };
 
-export default connect(null, {updateSingleCurrency})(TripExchangeRate);
+const mapStateToProps = (state) => ({
+  currencies: state.trips.currencies,
+  home_currency: state.trips.home_currency,
+});
+
+export default connect(mapStateToProps, {updateSingleCurrency})(
+  TripExchangeRate
+);

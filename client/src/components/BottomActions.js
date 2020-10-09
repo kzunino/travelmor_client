@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import ListIcon from '@material-ui/icons/List';
 import HistoryIcon from '@material-ui/icons/History';
 import SettingsIcon from '@material-ui/icons/Settings';
 

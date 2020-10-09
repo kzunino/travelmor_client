@@ -30,7 +30,7 @@ export default (state = initialState, action) => {
     case ADD_CURRENCIES:
       return {
         ...state,
-        currencies: [...state.currencies, action.payload],
+        currencies: state.currencies.concat(action.payload),
       };
     case UPDATE_CURRENCY_RATE:
       return {

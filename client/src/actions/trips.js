@@ -26,7 +26,7 @@ export const getTrip = (trip_uid) => async (dispatch, getState) => {
 // Add new trip
 export const newTrip = (
   {user, name, total_budget, home_currency, length, start_date, end_date},
-  currencies
+  currencyRates
 ) => async (dispatch, getState) => {
   // Request Body
   const body = JSON.stringify({
@@ -47,10 +47,10 @@ export const newTrip = (
     );
     if (res) {
       await dispatch({type: NEW_TRIP, payload: res.data});
-      // if currencies
-      if (currencies) {
-        console.log(currencies, {trip_uid: res.data.trip_uid});
-        dispatch(addCurrencies({currencies}, {trip_uid: res.data.trip_uid}));
+      // if new currency rates object exists
+      if (currencyRates) {
+        console.log(currencyRates, {trip_uid: res.data.trip_uid});
+        dispatch(addCurrencies({currencyRates}, {trip_uid: res.data.trip_uid}));
       }
     }
   } catch (err) {

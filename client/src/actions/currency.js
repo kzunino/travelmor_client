@@ -5,17 +5,18 @@ import {tokenConfig} from './auth';
 import {ADD_CURRENCIES, UPDATE_CURRENCY_RATE} from './types';
 
 // Add currencies - Array of currency objects
-export const addCurrencies = ({currencies}, {trip_uid}) => async (
+export const addCurrencies = ({currencyRates}, {trip_uid}) => async (
   dispatch,
   getState
 ) => {
   //construct a list/array of currency objects for trip
+  console.log(currencyRates);
   let currencyArr = [];
-  for (const currency in currencies) {
+  for (const currency in currencyRates) {
     currencyArr.push({
       trip: trip_uid,
       currency,
-      exchange_rate: currencies[currency].toFixed(3),
+      exchange_rate: currencyRates[currency].toFixed(3),
     });
   }
 
@@ -27,7 +28,7 @@ export const addCurrencies = ({currencies}, {trip_uid}) => async (
       body,
       tokenConfig(getState)
     );
-    if (res) await dispatch({type: ADD_CURRENCIES, payload: res.data});
+    if (res) dispatch({type: ADD_CURRENCIES, payload: res.data});
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));
   }
@@ -40,7 +41,6 @@ export const updateSingleCurrency = (updateCurrencyObj) => async (
 ) => {
   let {currency_uid, currency, exchange_rate} = updateCurrencyObj;
 
-  console.log(updateCurrencyObj);
   // Request body
   const body = JSON.stringify({
     currency_uid,
@@ -48,7 +48,6 @@ export const updateSingleCurrency = (updateCurrencyObj) => async (
     exchange_rate,
   });
 
-  console.log(body);
   try {
     const res = await axios.put(
       `http://localhost:8000/api/currency/${currency_uid}`,
