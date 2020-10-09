@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState, Fragment, useEffect} from 'react';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -39,12 +39,21 @@ const TripExchangeRate = ({
   const API_KEY = process.env.REACT_APP_EXCHANGE_KEY;
 
   console.log(currencies);
-  // map function pushes update currency's button with isHidden attribute to array
-  const [buttonArr, setButtonArr] = useState(
+
+  let createButtons = (currencies) =>
     currencies.map((foreignCurrency) => {
       return {button: foreignCurrency.currency, isHidden: false};
-    })
-  );
+    });
+  // map function pushes update currency's button with isHidden attribute to array
+  const [buttonArr, setButtonArr] = useState(createButtons(currencies));
+  const [currencyArr, setCurrencyArr] = useState(currencies);
+
+  useEffect(() => {
+    setButtonArr(createButtons(currencies));
+    setCurrencyArr(currencies);
+  }, [currencies]);
+
+  console.log(buttonArr);
 
   const getExchangeRateSingleCurrency = async (currencyCode) => {
     try {
@@ -89,8 +98,7 @@ const TripExchangeRate = ({
         <Grid item>
           <Typography variant='h5'>USD exchange rate:</Typography>
         </Grid>
-        {currencies.map((foreignCurrency, index) => {
-          console.log(foreignCurrency);
+        {currencyArr.map((foreignCurrency, index) => {
           return (
             <Fragment key={foreignCurrency + index}>
               <Grid item>
@@ -111,11 +119,10 @@ const TripExchangeRate = ({
                         );
                         hide(index);
                       }}
-                      name={index}
                       className={
-                        !buttonArr[index].isHidden
-                          ? classes.submit
-                          : classes.hidden
+                        buttonArr[index].isHidden
+                          ? classes.hidden
+                          : classes.submit
                       }
                       variant='contained'
                     >
