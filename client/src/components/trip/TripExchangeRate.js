@@ -3,7 +3,7 @@ import axios from 'axios';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {updateSingleCurrency, deleteCurrency} from '../../actions/currency';
-import {makeStyles, useTheme} from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 
 // MUI Components
 import Typography from '@material-ui/core/Typography';
@@ -48,26 +48,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// Creates Edit Buttons for each currency with isHidden Property to toggle
+let createButtons = (currencies) =>
+  currencies.map((foreignCurrency) => {
+    return {
+      button: foreignCurrency.currency,
+      isHidden: false,
+      currency_uid: foreignCurrency.currency_uid,
+    };
+  });
+
 const TripExchangeRate = ({
   currencies,
   home_currency,
   updateSingleCurrency,
   deleteCurrency,
 }) => {
-  const theme = useTheme();
   const classes = useStyles();
   const API_KEY = process.env.REACT_APP_EXCHANGE_KEY;
-
-  // Creates Edit Buttons for each currency with isHidden Property to toggle
-  let createButtons = (currencies) =>
-    currencies.map((foreignCurrency) => {
-      return {button: foreignCurrency.currency, isHidden: false};
-    });
 
   const [buttonArr, setButtonArr] = useState(createButtons(currencies));
   const [currencyArr, setCurrencyArr] = useState(currencies);
   // State for delete dialog
   const [open, setOpen] = React.useState(false);
+  // Saves index of delete button clicked to pass onto delete the currency
+  const [deleteButtonIndex, setDeleteButtonIndex] = useState(null);
 
   useEffect(() => {
     setButtonArr(createButtons(currencies));
@@ -112,18 +117,18 @@ const TripExchangeRate = ({
     setButtonArr([...buttonArr, buttonArr[index].isHidden]);
   };
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (index) => {
     setOpen(true);
+    setDeleteButtonIndex(index);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setDeleteButtonIndex(null);
   };
 
-  const handleDeleteCurrency = (index) => {
-    console.log(index);
-    console.log(currencies[index].currency_uid);
-    // deleteCurrency(currency_uid);
+  const handleDeleteCurrency = (deleteButtonIndex) => {
+    deleteCurrency(buttonArr[deleteButtonIndex].currency_uid);
   };
 
   return (
@@ -146,7 +151,7 @@ const TripExchangeRate = ({
                       {foreignCurrency.exchange_rate}
                     </Typography>
                   </Grid>
-                  {/*  */}
+
                   <Grid item>
                     <Grid container>
                       <Grid item>
@@ -174,38 +179,10 @@ const TripExchangeRate = ({
                       <Grid item>
                         <Button
                           className={classes.currencyDeleteButton}
-                          onClick={handleClickOpen}
+                          onClick={() => handleClickOpen(index)}
                         >
                           <ClearIcon className={classes.deleteIcon} />
                         </Button>
-                        <Dialog
-                          open={open}
-                          onClose={handleClose}
-                          aria-labelledby='alert-dialog-title'
-                          aria-describedby='alert-dialog-description'
-                        >
-                          <DialogTitle id='alert-dialog-title'>
-                            {'Would you like to delete this currency?'}
-                          </DialogTitle>
-                          <DialogActions>
-                            <Button
-                              onClick={handleClose}
-                              color='primary'
-                              autoFocus
-                            >
-                              Go back
-                            </Button>
-                            <Button
-                              onClick={() => {
-                                handleClose();
-                                handleDeleteCurrency(index);
-                              }}
-                              color='primary'
-                            >
-                              Delete
-                            </Button>
-                          </DialogActions>
-                        </Dialog>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -215,6 +192,30 @@ const TripExchangeRate = ({
             </Fragment>
           );
         })}
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'
+        >
+          <DialogTitle id='alert-dialog-title'>
+            {'Would you like to delete this currency?'}
+          </DialogTitle>
+          <DialogActions>
+            <Button onClick={handleClose} color='primary' autoFocus>
+              Go back
+            </Button>
+            <Button
+              onClick={() => {
+                handleClose();
+                handleDeleteCurrency(deleteButtonIndex);
+              }}
+              color='primary'
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
     </>
   );
