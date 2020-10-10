@@ -58,7 +58,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    display: 'block',
+    margin: theme.spacing(0, 0, 2),
     color: 'white',
     fontWeight: 'bold',
   },
@@ -379,7 +380,7 @@ const EditTrip = ({
             </Grid>
           </Grid>
 
-          <Grid container direction='row' spacing={2} justify='space-between'>
+          <Grid container direction='row' spacing={1} justify='space-between'>
             <Grid xs={6} item>
               <KeyboardDatePicker
                 disableToolbar
@@ -453,7 +454,6 @@ const EditTrip = ({
             </Select>
           </FormControl>
 
-          <br />
           <Button
             type='submit'
             variant='contained'

@@ -94,7 +94,7 @@ const BottomActions = ({trip_data}) => {
   };
 
   return (
-    <Grid container justify={matchSm ? 'start' : 'center'}>
+    <Grid container justify={matchSm ? 'flex-start' : 'center'}>
       <Grid item>
         <BottomNavigation showLabels className={classes.root}>
           <BottomNavigationAction

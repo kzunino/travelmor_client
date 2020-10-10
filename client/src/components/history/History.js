@@ -25,10 +25,13 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 // const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+  container: {
+    marginLeft: 0,
+    padding: 0,
+  },
   root: {
     width: '100%',
   },
-
   mainContentBox: {
     //backgroundColor: theme.palette.secondary.light,
     backgroundColor: theme.palette.background.main,
@@ -56,20 +59,6 @@ const useStyles = makeStyles((theme) => ({
 const History = ({trips}) => {
   const theme = useTheme();
   const classes = useStyles();
-  // const [checked, setChecked] = React.useState(['wifi']);
-
-  // const handleToggle = (value) => () => {
-  //   const currentIndex = checked.indexOf(value);
-  //   const newChecked = [...checked];
-
-  //   if (currentIndex === -1) {
-  //     newChecked.push(value);
-  //   } else {
-  //     newChecked.splice(currentIndex, 1);
-  //   }
-
-  //   setChecked(newChecked);
-  // };
 
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
@@ -89,7 +78,7 @@ const History = ({trips}) => {
         </Typography>
       </Grid>
       <Divider />
-      <Container maxWidth={'md'}>
+      <Container maxWidth={'md'} className={classes.container}>
         <Box m={1} boxShadow={3} className={classes.mainContentBox}>
           <Grid item>
             <Grid container>

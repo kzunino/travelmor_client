@@ -18,7 +18,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles((theme) => ({
-  submit: {
+  exchangeContainerWrapper: {
+    marginTop: '1em',
+  },
+  buttonContainer: {
+    height: 25,
+  },
+  updateButton: {
     backgroundColor: theme.palette.primary.main,
     color: 'white',
     fontWeight: 'bold',
@@ -28,9 +34,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.dark,
     },
   },
-  foreignCurrencyUpdate: {
-    marginTop: 'auto',
-  },
+  // foreignCurrencyUpdate: {
+  //   marginTop: 'auto',
+  // },
   deleteIcon: {
     color: 'whitesmoke',
   },
@@ -67,6 +73,7 @@ const TripExchangeRate = ({
   const classes = useStyles();
   const API_KEY = process.env.REACT_APP_EXCHANGE_KEY;
 
+  // Creates buttons with props for each currency
   const [buttonArr, setButtonArr] = useState(createButtons(currencies));
   const [currencyArr, setCurrencyArr] = useState(currencies);
   // State for delete dialog
@@ -75,7 +82,6 @@ const TripExchangeRate = ({
   const [deleteButtonIndex, setDeleteButtonIndex] = useState(null);
 
   useEffect(() => {
-    setButtonArr(createButtons(currencies));
     setCurrencyArr(currencies);
   }, [currencies]);
 
@@ -134,7 +140,12 @@ const TripExchangeRate = ({
   return (
     <>
       {' '}
-      <Grid container direction='column' spacing={3}>
+      <Grid
+        container
+        direction='column'
+        spacing={3}
+        className={classes.exchangeContainerWrapper}
+      >
         <Grid item>
           <Typography variant='h5'>USD exchange rate:</Typography>
         </Grid>
@@ -144,7 +155,12 @@ const TripExchangeRate = ({
           return (
             <Fragment key={foreignCurrency + index}>
               <Grid item>
-                <Grid container direction='row' justify='space-between'>
+                <Grid
+                  container
+                  direction='row'
+                  justify='space-between'
+                  alignItems='flex-end'
+                >
                   <Grid item className={classes.foreignCurrencyUpdate}>
                     <Typography>
                       <strong>{foreignCurrency.currency}</strong>:{' '}
@@ -153,21 +169,21 @@ const TripExchangeRate = ({
                   </Grid>
 
                   <Grid item>
-                    <Grid container>
+                    <Grid container className={classes.buttonContainer}>
                       <Grid item>
                         <Button
                           type='submit'
                           onClick={() => {
-                            updateCurrencyExchangeRate(
-                              foreignCurrency.currency,
-                              index
-                            );
+                            // updateCurrencyExchangeRate(
+                            //   foreignCurrency.currency,
+                            //   index
+                            // );
                             hide(index);
                           }}
                           className={
                             buttonArr[index].isHidden
                               ? classes.hidden
-                              : classes.submit
+                              : classes.updateButton
                           }
                           variant='contained'
                         >
