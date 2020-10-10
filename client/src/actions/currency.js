@@ -2,7 +2,7 @@ import axios from 'axios';
 import {returnErrors} from './alerts';
 import {tokenConfig} from './auth';
 
-import {ADD_CURRENCIES, UPDATE_CURRENCY_RATE} from './types';
+import {ADD_CURRENCIES, DELETE_CURRENCY, UPDATE_CURRENCY_RATE} from './types';
 
 // Add currencies - Array of currency objects
 export const addCurrencies = ({currencyRates}, {trip_uid}) => async (
@@ -55,6 +55,20 @@ export const updateSingleCurrency = (updateCurrencyObj) => async (
       tokenConfig(getState)
     );
     if (res) await dispatch({type: UPDATE_CURRENCY_RATE, payload: res.data});
+  } catch (err) {
+    dispatch(returnErrors(err.response.data, err.response.status));
+  }
+};
+
+// DELETE CURRENCY
+export const deleteCurrency = (currency_uid) => async (dispatch, getState) => {
+  try {
+    console.log(currency_uid);
+    const res = await axios.delete(
+      `http://localhost:8000/api/currency/${currency_uid}`,
+      tokenConfig(getState)
+    );
+    if (res) await dispatch({type: DELETE_CURRENCY, payload: currency_uid});
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));
   }

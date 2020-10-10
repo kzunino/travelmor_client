@@ -22,6 +22,7 @@ export const DELETE_TRIP = 'DELETE_TRIP';
 // Currencies
 export const ADD_CURRENCIES = 'ADD_CURRENCIES';
 export const UPDATE_CURRENCY_RATE = 'UPDATE_CURRENCY_RATE';
+export const DELETE_CURRENCY = 'DELETE_CURRENCY';
 
 // Expenses
 export const ADD_EXPENSE = 'ADD_EXPENSE';

@@ -2,7 +2,7 @@ import React, {useState, Fragment, useEffect} from 'react';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {updateSingleCurrency} from '../../actions/currency';
+import {updateSingleCurrency, deleteCurrency} from '../../actions/currency';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 
 // MUI Components
@@ -10,12 +10,19 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
+import ClearIcon from '@material-ui/icons/Clear';
+
+// Delete Dialog Components
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles((theme) => ({
   submit: {
     backgroundColor: theme.palette.primary.main,
     color: 'white',
     fontWeight: 'bold',
+    height: 25,
     fontSize: '.75em',
     '&:hover': {
       backgroundColor: theme.palette.primary.dark,
@@ -23,6 +30,18 @@ const useStyles = makeStyles((theme) => ({
   },
   foreignCurrencyUpdate: {
     marginTop: 'auto',
+  },
+  deleteIcon: {
+    color: 'whitesmoke',
+  },
+  currencyDeleteButton: {
+    marginLeft: '1em',
+    backgroundColor: '#D61A3C',
+    height: 25,
+    width: 25,
+    '&:hover': {
+      backgroundColor: '#d11a2a',
+    },
   },
   hidden: {
     visibility: 'hidden',
@@ -33,6 +52,7 @@ const TripExchangeRate = ({
   currencies,
   home_currency,
   updateSingleCurrency,
+  deleteCurrency,
 }) => {
   const theme = useTheme();
   const classes = useStyles();
@@ -46,6 +66,8 @@ const TripExchangeRate = ({
 
   const [buttonArr, setButtonArr] = useState(createButtons(currencies));
   const [currencyArr, setCurrencyArr] = useState(currencies);
+  // State for delete dialog
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     setButtonArr(createButtons(currencies));
@@ -90,6 +112,20 @@ const TripExchangeRate = ({
     setButtonArr([...buttonArr, buttonArr[index].isHidden]);
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDeleteCurrency = (index) => {
+    console.log(index);
+    console.log(currencies[index].currency_uid);
+    // deleteCurrency(currency_uid);
+  };
+
   return (
     <>
       {' '}
@@ -97,6 +133,8 @@ const TripExchangeRate = ({
         <Grid item>
           <Typography variant='h5'>USD exchange rate:</Typography>
         </Grid>
+
+        {/* Currency Items  */}
         {currencyArr.map((foreignCurrency, index) => {
           return (
             <Fragment key={foreignCurrency + index}>
@@ -108,25 +146,68 @@ const TripExchangeRate = ({
                       {foreignCurrency.exchange_rate}
                     </Typography>
                   </Grid>
+                  {/*  */}
                   <Grid item>
-                    <Button
-                      type='submit'
-                      onClick={() => {
-                        updateCurrencyExchangeRate(
-                          foreignCurrency.currency,
-                          index
-                        );
-                        hide(index);
-                      }}
-                      className={
-                        buttonArr[index].isHidden
-                          ? classes.hidden
-                          : classes.submit
-                      }
-                      variant='contained'
-                    >
-                      Update Rate
-                    </Button>
+                    <Grid container>
+                      <Grid item>
+                        <Button
+                          type='submit'
+                          onClick={() => {
+                            updateCurrencyExchangeRate(
+                              foreignCurrency.currency,
+                              index
+                            );
+                            hide(index);
+                          }}
+                          className={
+                            buttonArr[index].isHidden
+                              ? classes.hidden
+                              : classes.submit
+                          }
+                          variant='contained'
+                        >
+                          Update Rate
+                        </Button>
+                      </Grid>
+
+                      {/* Delete Button and Dialog */}
+                      <Grid item>
+                        <Button
+                          className={classes.currencyDeleteButton}
+                          onClick={handleClickOpen}
+                        >
+                          <ClearIcon className={classes.deleteIcon} />
+                        </Button>
+                        <Dialog
+                          open={open}
+                          onClose={handleClose}
+                          aria-labelledby='alert-dialog-title'
+                          aria-describedby='alert-dialog-description'
+                        >
+                          <DialogTitle id='alert-dialog-title'>
+                            {'Would you like to delete this currency?'}
+                          </DialogTitle>
+                          <DialogActions>
+                            <Button
+                              onClick={handleClose}
+                              color='primary'
+                              autoFocus
+                            >
+                              Go back
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                handleClose();
+                                handleDeleteCurrency(index);
+                              }}
+                              color='primary'
+                            >
+                              Delete
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
@@ -140,6 +221,7 @@ const TripExchangeRate = ({
 };
 
 TripExchangeRate.propTypes = {
+  deleteCurrency: PropTypes.func.isRequired,
   updateSingleCurrency: PropTypes.func.isRequired,
   currencies: PropTypes.array,
   home_currency: PropTypes.string,
@@ -150,6 +232,6 @@ const mapStateToProps = (state) => ({
   home_currency: state.trips.home_currency,
 });
 
-export default connect(mapStateToProps, {updateSingleCurrency})(
+export default connect(mapStateToProps, {updateSingleCurrency, deleteCurrency})(
   TripExchangeRate
 );

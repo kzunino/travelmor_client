@@ -34,7 +34,7 @@ import {KeyboardDatePicker} from '@material-ui/pickers';
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
 
-// Delete Dialog
+// Delete Dialog Components
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -223,20 +223,20 @@ const EditTrip = ({
     }
 
     // sets the new trip with the hours adjusted to account for full days
-    updateTrip({
-      trip_uid,
-      user,
-      name: tripName,
-      total_budget: totalBudget,
-      length,
-      home_currency,
-      start_date: Moment(startDate)
-        .set({hour: 0, minute: 0, second: 0, millisecond: 0})
-        .format(format),
-      end_date: Moment(endDate)
-        .set({hour: 23, minute: 59, second: 59, millisecond: 0})
-        .format(format),
-    });
+    // updateTrip({
+    //   trip_uid,
+    //   user,
+    //   name: tripName,
+    //   total_budget: totalBudget,
+    //   length,
+    //   home_currency,
+    //   start_date: Moment(startDate)
+    //     .set({hour: 0, minute: 0, second: 0, millisecond: 0})
+    //     .format(format),
+    //   end_date: Moment(endDate)
+    //     .set({hour: 23, minute: 59, second: 59, millisecond: 0})
+    //     .format(format),
+    // });
 
     if (foreignCurrencies.length) {
       // Filters new currencies codes from old
@@ -257,6 +257,17 @@ const EditTrip = ({
 
     // Check to see if foreign currencies have been altered. If current ones are missing
     // delete the currency. If extra are added, add currencies
+
+    // if (currencies.length) {
+    //   // filter to find if currency from original array is missing
+    //   // ["USD", "COP"]
+    //   let previousCurrencies = currencies.map((curr) => curr.currency);
+    //   let removedCurrencies = previousCurrencies.filter(
+    //     (curr) => !foreignCurrencies.includes(curr)
+    //   );
+
+    //   // Delete Currencies
+    // }
 
     // setHidden(true);
   };
@@ -290,11 +301,8 @@ const EditTrip = ({
           </Grid>
           <Grid item className={classes.deleteButton}>
             <Tooltip title='Delete Trip'>
-              <IconButton>
-                <DeleteForeverIcon
-                  fontSize={matchXs ? 'medium' : 'large'}
-                  onClick={handleClickOpen}
-                />
+              <IconButton onClick={handleClickOpen}>
+                <DeleteForeverIcon fontSize={matchXs ? 'default' : 'large'} />
               </IconButton>
             </Tooltip>
             <Dialog
