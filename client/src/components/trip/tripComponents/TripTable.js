@@ -1,5 +1,4 @@
 import React, {useState, forwardRef, useEffect} from 'react';
-// import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {deleteExpense, updateExpense} from '../../../actions/expenses';
@@ -12,7 +11,6 @@ import Box from '@material-ui/core/Box';
 
 import MaterialTable from 'material-table';
 
-import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
@@ -36,16 +34,6 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 300,
     maxWidth: 700,
   },
-  // mainContentBox: {
-  //   //backgroundColor: theme.palette.secondary.light,
-  //   backgroundColor: theme.palette.background.main,
-  //   marginTop: '2em',
-  //   marginLeft: 0,
-  //   marginRight: 0,
-  //   paddingTop: '1em',
-  //   paddingBottom: '1em',
-  //   display: 'flex',
-  // },
   tableBox: {
     padding: 8,
   },
@@ -68,16 +56,16 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
     // end_date,
   } = tripData;
 
-  const [editExpense, setEditExpense] = useState({
-    name: '',
-    cost: '',
-    expense_type: '',
-    expense_uuid: '',
-    purchase_date: '',
-    exchange_rate: '',
-    currency: '',
-    cost_conversion: '',
-  });
+  // const [editExpense, setEditExpense] = useState({
+  //   name: '',
+  //   cost: '',
+  //   expense_type: '',
+  //   expense_uuid: '',
+  //   purchase_date: '',
+  //   exchange_rate: '',
+  //   currency: '',
+  //   cost_conversion: '',
+  // });
 
   const [tableData, setTableData] = useState({
     columns: [
@@ -249,7 +237,7 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
                       setTimeout(() => {
                         resolve();
 
-                        setEditExpense(newData);
+                        // setEditExpense(newData);
                         updateExpense(newData);
 
                         if (oldData) {

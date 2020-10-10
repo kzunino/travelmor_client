@@ -22,28 +22,36 @@ import Fade from '@material-ui/core/Fade';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+  bottomNavigationWrapper: {
+    width: '100%',
+  },
   root: {
     backgroundColor: theme.palette.secondary.main,
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-      marginLeft: -12,
-    },
-    // marginLeft: drawerWidth,
-    marginLeft: -25,
-    width: '100%',
+    marginLeft: drawerWidth,
+    width: 500,
     position: 'fixed',
     bottom: 0,
     zIndex: 100,
+    // margin: 'auto',
+    // [theme.breakpoints.down('sm')]: {
+    //   width: 500,
+    // },
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
   },
 
   navActionButtons: {
-    marginRight: drawerWidth,
-
+    // marginRight: drawerWidth,
     [theme.breakpoints.down('sm')]: {
       marginRight: 0,
       '& > :first-child': {
         marginRight: 0,
       },
+    },
+
+    [theme.breakpoints.down('lg')]: {
+      margin: 'auto',
     },
   },
 
@@ -69,8 +77,6 @@ const BottomActions = ({trip_data}) => {
 
   const {name, currencies, home_currency, trip_uid} = trip_data;
 
-  // const [value, setValue] = React.useState(0);
-
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -82,14 +88,7 @@ const BottomActions = ({trip_data}) => {
   };
 
   return (
-    <BottomNavigation
-      // value={value}
-      // onChange={(event, newValue) => {
-      //   setValue(newValue);
-      // }}
-      showLabels
-      className={classes.root}
-    >
+    <BottomNavigation showLabels className={classes.root}>
       <BottomNavigationAction
         classes={{wrapper: classes.wrapper, root: classes.navActionButtons}}
         label='Edit Trip'

@@ -10,6 +10,7 @@ import {
   UPDATE_USER_SUCCESS,
   DELETE_TRIP,
   NEW_TRIP,
+  UPDATE_TRIP,
 } from '../actions/types';
 
 const initialState = {
@@ -68,6 +69,25 @@ export default (state = initialState, action) => {
         user: {
           ...state.user,
           trips: [action.payload].concat(state.user.trips),
+        },
+      };
+    case UPDATE_TRIP:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          trips: state.user.trips.map((trip) => {
+            if (trip.trip_uid === action.payload.trip_uid) {
+              return (trip = {
+                trip_uid: action.payload.trip_uid,
+                name: action.payload.name,
+                start_date: action.payload.start_date,
+                end_date: action.payload.end_date,
+              });
+            } else {
+              return trip;
+            }
+          }),
         },
       };
     case DELETE_TRIP:

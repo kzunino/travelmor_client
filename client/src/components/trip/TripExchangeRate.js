@@ -192,6 +192,8 @@ const TripExchangeRate = ({
             </Fragment>
           );
         })}
+
+        {/* Dialog component */}
         <Dialog
           open={open}
           onClose={handleClose}

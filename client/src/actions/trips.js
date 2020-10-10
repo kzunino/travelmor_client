@@ -2,6 +2,7 @@ import axios from 'axios';
 import {returnErrors} from './alerts';
 import {tokenConfig} from './auth';
 import {addCurrencies} from './currency';
+import {createAlerts} from './alerts';
 import Moment from 'moment';
 
 import {GET_TRIP, NEW_TRIP, UPDATE_TRIP, DELETE_TRIP} from './types';
@@ -51,7 +52,7 @@ export const newTrip = (
       tokenConfig(getState)
     );
     if (res) {
-      await dispatch({type: NEW_TRIP, payload: res.data});
+      dispatch({type: NEW_TRIP, payload: res.data});
       // if new currency rates object exists
       if (currencyRates) {
         console.log(currencyRates, {trip_uid: res.data.trip_uid});
@@ -97,7 +98,8 @@ export const updateTrip = ({
       tokenConfig(getState)
     );
     if (res) {
-      await dispatch({type: UPDATE_TRIP, payload: res.data});
+      dispatch({type: UPDATE_TRIP, payload: res.data});
+      dispatch(createAlerts({success: 'Trip Updated!'}));
     }
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));
@@ -114,7 +116,8 @@ export const deleteTrip = (trip_uid) => async (dispatch, getState) => {
       tokenConfig(getState)
     );
     if (res) {
-      await dispatch({type: DELETE_TRIP, payload: trip_uid});
+      dispatch({type: DELETE_TRIP, payload: trip_uid});
+      dispatch(createAlerts({success: 'Trip Deleted!'}));
     }
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));

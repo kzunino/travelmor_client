@@ -223,20 +223,20 @@ const EditTrip = ({
     }
 
     // sets the new trip with the hours adjusted to account for full days
-    // updateTrip({
-    //   trip_uid,
-    //   user,
-    //   name: tripName,
-    //   total_budget: totalBudget,
-    //   length,
-    //   home_currency,
-    //   start_date: Moment(startDate)
-    //     .set({hour: 0, minute: 0, second: 0, millisecond: 0})
-    //     .format(format),
-    //   end_date: Moment(endDate)
-    //     .set({hour: 23, minute: 59, second: 59, millisecond: 0})
-    //     .format(format),
-    // });
+    updateTrip({
+      trip_uid,
+      user,
+      name: tripName,
+      total_budget: totalBudget,
+      length,
+      home_currency,
+      start_date: Moment(startDate)
+        .set({hour: 0, minute: 0, second: 0, millisecond: 0})
+        .format(format),
+      end_date: Moment(endDate)
+        .set({hour: 23, minute: 59, second: 59, millisecond: 0})
+        .format(format),
+    });
 
     if (foreignCurrencies.length) {
       // Filters new currencies codes from old
@@ -247,8 +247,8 @@ const EditTrip = ({
       console.log(addedCurrencies);
       // Sends new currencies to get exchange rate data
       if (addedCurrencies.length) {
-        currencyRates = {CRC: 603.44439, CUC: 1};
-        // currencyRates = await getExchangeRate(addedCurrencies);
+        // currencyRates = {CRC: 603.44439, CUC: 1};
+        currencyRates = await getExchangeRate(addedCurrencies);
 
         // Dispatch add new currencies to database and state
         addCurrencies({currencyRates}, {trip_uid});
@@ -269,7 +269,7 @@ const EditTrip = ({
     //   // Delete Currencies
     // }
 
-    // setHidden(true);
+    setHidden(true);
   };
 
   const handleDeleteTrip = () => {

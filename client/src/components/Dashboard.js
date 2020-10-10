@@ -7,12 +7,12 @@ import {getTrip} from '../actions/trips';
 import Trip from './trip/Trip';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import {TextareaAutosize} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -32,45 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     padding: 0,
-  },
-  mainContentBox: {
-    //backgroundColor: theme.palette.secondary.light,
-    backgroundColor: theme.palette.background.main,
-    marginTop: '2em',
-    marginLeft: 0,
-    marginRight: 0,
-    paddingTop: '1em',
-    paddingBottom: '1em',
-    display: 'flex',
-  },
-
-  overallSpendingItems: {
-    padding: '1em',
-    textAlign: 'left',
-  },
-  dailySpendingItems: {
-    padding: '1em',
-    textAlign: 'left',
-  },
-  averageSpendingItems: {
-    // marginRight: 'auto',
-    padding: '1em',
-    textAlign: 'left',
-  },
-  underBudgetColor: {
-    color: '#56a655',
-  },
-  overBudgetColor: {
-    color: '#ce4c52',
-  },
-  box: {
-    backgroundColor: '#4a4a4a',
-  },
-  budgetData: {
-    color: theme.palette.boxContentBudgetData.main,
-  },
-  budgetHeading: {
-    color: theme.palette.boxContentBudgetHeading.main,
+    marginRight: 'auto',
   },
 }));
 
@@ -102,7 +64,6 @@ const Dashboard = ({trips, getTrip, name, location}) => {
           Welcome, {name}!
         </Typography>
       </Grid>
-      <Divider />
       <Container maxWidth={'lg'} className={classes.container}>
         {!trips.length ? (
           <Grid item>
