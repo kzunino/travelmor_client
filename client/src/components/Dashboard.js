@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
   container: {
     padding: 0,
     marginRight: 'auto',
+    [theme.breakpoints.up('lg')]: {
+      marginLeft: 0,
+    },
   },
 }));
 
