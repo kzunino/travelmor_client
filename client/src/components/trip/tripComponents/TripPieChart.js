@@ -155,7 +155,7 @@ const TripPieChart = ({tripData}) => {
       plugins: {
         // Change options for ALL labels of THIS CHART
         datalabels: {
-          color: 'black',
+          color: '#fff',
           formatter: (value, ctx) => {
             let sum = 0;
             let dataArr = ctx.chart.data.datasets[0].data;
@@ -166,7 +166,7 @@ const TripPieChart = ({tripData}) => {
             return percentage;
           },
           align: 'start',
-          offset: 38,
+          offset: 43,
           display: 'auto',
         },
       },

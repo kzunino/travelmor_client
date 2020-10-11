@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   navActionButtons: {
+    color: 'black',
     // marginRight: drawerWidth,
     [theme.breakpoints.down('sm')]: {
       marginRight: 0,

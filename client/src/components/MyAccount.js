@@ -34,6 +34,16 @@ import Select from '@material-ui/core/Select';
 //import {KeyboardDatePicker} from '@material-ui/pickers';
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    color: '#fff',
+  },
+  inputs: {
+    color: '#fff',
+    // backgroundColor: theme.palette.boxBackground.main,
+  },
+  email: {
+    width: '50%',
+  },
   selectEmpty: {
     width: '10em',
   },
@@ -41,9 +51,12 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '15em',
   },
   container: {
+    backgroundColor: theme.palette.boxBackground.main,
+    borderRadius: 5,
+    marginTop: '1em',
+    padding: 5,
     [theme.breakpoints.up('md')]: {
       marginLeft: 0,
-      padding: 0,
     },
   },
   submit: {
@@ -105,11 +118,11 @@ const MyAccount = ({
   return (
     <>
       <Grid item>
-        <Typography variant={matchXs ? 'h4' : 'h2'}>
+        <Typography className={classes.heading} variant={matchXs ? 'h4' : 'h2'}>
           Account Settings
         </Typography>
       </Grid>
-      <Divider />
+      <Divider style={{backgroundColor: 'white'}} />
 
       <Container maxWidth={'sm'} className={classes.container}>
         <CssBaseline />
@@ -121,7 +134,11 @@ const MyAccount = ({
           <Grid container spacing={3}>
             <Grid item>
               <TextField
+                className={classes.inputs}
                 variant='standard'
+                InputProps={{
+                  className: classes.inputs,
+                }}
                 margin='normal'
                 required
                 id='first_name'
@@ -138,6 +155,9 @@ const MyAccount = ({
               <TextField
                 variant='standard'
                 margin='normal'
+                InputProps={{
+                  className: classes.inputs,
+                }}
                 required
                 id='last_name'
                 label='Last Name'
@@ -153,8 +173,11 @@ const MyAccount = ({
           <TextField
             variant='standard'
             margin='normal'
+            InputProps={{
+              className: classes.inputs,
+            }}
             required
-            fullWidth
+            className={classes.email}
             id='email'
             label='Email'
             name='emailAddress'

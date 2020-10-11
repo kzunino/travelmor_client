@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.modal + 1,
     //changes appbar color opacity
-    // backgroundColor: 'rgba(75,176,248, .01)',
+    backgroundColor: 'rgba(75,176,248, .01)',
   },
   toolbar: {
     padding: 0,
@@ -107,6 +107,7 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
   const theme = useTheme();
   const classes = useStyles();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
+  const matchSm = useMediaQuery(theme.breakpoints.down('sm'));
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   //Component State Management
@@ -173,7 +174,6 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
     {
       text: 'Logout',
       icon: <ExitToAppIcon />,
-      // link: '/logout',
       activeIndex: 8,
     },
   ];
@@ -187,16 +187,6 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
       activeIndex: 0,
     };
   });
-
-  //Routes
-  // const routes = [
-  //   {name: 'dashboard', link: '/dashboard', activeIndex: 0},
-  //   {name: 'new trip', link: '/newtrip', activeIndex: 2},
-  //   {name: 'about us', link: '/about', activeIndex: 4},
-  //   {name: 'contact us', link: '/contact', activeIndex: 5},
-  //   {name: 'my account', link: '/myaccount', activeIndex: 7},
-  //   {name: 'logout', link: '/logout', activeIndex: 8},
-  // ];
 
   useEffect(() => {
     // checks window URL, and renders the selected prop to the correct
@@ -343,7 +333,7 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
       <AppBar
         position='fixed'
         className={classes.appBar}
-        style={{background: 'transparent', boxShadow: 'none'}}
+        style={matchSm ? null : {background: 'transparent', boxShadow: 'none'}}
       >
         <Toolbar className={classes.toolbar}>
           <Button
