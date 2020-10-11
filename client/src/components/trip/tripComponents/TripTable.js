@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 
 // Table
 
-import MaterialTable, {MTablePagination} from 'material-table';
+import MaterialTable, {MTableEditField, MTablePagination} from 'material-table';
 
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -30,20 +30,23 @@ import {makeStyles, useTheme} from '@material-ui/core/styles';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
-  // table: {
-  //   minWidth: 300,
-  //   maxWidth: 700,
-  // },
-
   tableBox: {
     padding: 8,
   },
   icon: {
     color: 'grey',
   },
-  // background: {
-  //   backgroundColor: theme.palette.boxContentBudgetData.main,
-  // },
+  pagination: {
+    '& .MTablePaginationInner-root-74': {
+      color: '#fff',
+    },
+    '& .MuiTypography-root': {
+      color: '#fff',
+    },
+    '& .MuiButtonBase-root': {
+      color: '#fff',
+    },
+  },
 }));
 
 const TripTable = ({tripData, deleteExpense, updateExpense}) => {
@@ -189,22 +192,38 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
 
   let options = {
     search: false,
-    headerStyle: {backgroundColor: 'rgb(39, 41, 59)', color: '#6e757c'},
+    headerStyle: {
+      backgroundColor: 'rgb(39, 41, 59)',
+      color: '#6e757c',
+      tr: {
+        th: {
+          '&:hover': {
+            color: '#fff',
+          },
+        },
+      },
+    },
     cellStyle: {color: '#fff'},
-    // headerStyle: theme.palette.boxContentBudgetData.main,
+    // rowStyle: {borderStyle: 'solid, grey'},
   };
 
-  let components = {};
-  // let components = {
-  //   Pagination: (props) => (
-  //     <div style={{color: '#e8eaf5'}}>
-  //       <MTablePagination {...props} />
-  //     </div>
-  //   ),
-  // };
-
-  const editHandler = (e) => {
-    e.preventDefault();
+  // let components = {};
+  let components = {
+    Pagination: (props) => (
+      <div className={classes.pagination}>
+        <MTablePagination {...props} />
+      </div>
+    ),
+    EditField: (props) => (
+      <div
+        style={{
+          backgroundColor: '#fff',
+          paddingLeft: 2,
+        }}
+      >
+        <MTableEditField {...props} />
+      </div>
+    ),
   };
 
   // const matchXs = useMediaQuery(theme.breakpoints.down('xs'));

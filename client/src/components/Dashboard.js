@@ -15,6 +15,9 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {TextareaAutosize} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
+  header: {
+    color: '#fff',
+  },
   table: {
     minWidth: 300,
     maxWidth: 700,
@@ -63,7 +66,7 @@ const Dashboard = ({trips, getTrip, name, location}) => {
     <>
       {/* -----Welcome Container----- */}
       <Grid item>
-        <Typography variant={matchXs ? 'h4' : 'h2'}>
+        <Typography className={classes.header} variant={matchXs ? 'h4' : 'h2'}>
           Welcome, {name}!
         </Typography>
       </Grid>
