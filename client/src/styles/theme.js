@@ -99,17 +99,13 @@ const theme = createMuiTheme({
         color: lightGray,
       },
       iconDirectionDesc: {
-        color: lightGray,
+        fill: lightGray,
       },
       iconDirectionAsc: {
-        color: lightGray,
-      },
-    },
-    MuiSvgIcon: {
-      root: {
         fill: lightGray,
       },
     },
+
     Component: {
       horizontalScrollContainer: {
         '&:72': {

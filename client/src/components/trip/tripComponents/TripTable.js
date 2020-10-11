@@ -195,13 +195,6 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
     headerStyle: {
       backgroundColor: 'rgb(39, 41, 59)',
       color: '#6e757c',
-      tr: {
-        th: {
-          '&:hover': {
-            color: '#fff',
-          },
-        },
-      },
     },
     cellStyle: {color: '#fff'},
     // rowStyle: {borderStyle: 'solid, grey'},
