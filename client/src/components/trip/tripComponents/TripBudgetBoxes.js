@@ -13,32 +13,15 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 
 import {makeStyles} from '@material-ui/core/styles';
-//import {red} from '@material-ui/core/colors';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
-  //   toolbarMargin: {
-  //     ...theme.mixins.toolbar,
-  //     marginBottom: '1em',
-  //   },
-
   container: {
     padding: 0,
   },
   containerWrapper: {
     margin: 'auto',
   },
-
-  // mainContentBox: {
-  //   //backgroundColor: theme.palette.secondary.light,
-  //   backgroundColor: theme.palette.background.main,
-  //   marginTop: '2em',
-  //   marginLeft: 0,
-  //   marginRight: 0,
-  //   paddingTop: '1em',
-  //   paddingBottom: '1em',
-  //   display: 'flex',
-  // },
 
   icon: {
     marginLeft: 15,
@@ -74,9 +57,11 @@ const useStyles = makeStyles((theme) => ({
     padding: 15,
     borderRadius: 3,
   },
-  spendingInfoWidgetBox: {
+  boxContentSpendingInfo: {
     padding: 10,
     borderRadius: 3,
+    backgroundColor: theme.palette.boxBackground.main,
+    color: theme.palette.boxContentBudgetData.main,
   },
   budgetBox: {
     padding: 15,
@@ -154,7 +139,7 @@ const TripBudgetBoxes = ({tripData}) => {
       <Grid item xs={12}>
         <Grid container>
           <Grid item xs={12} sm={4} md={4}>
-            <Box m={1} boxShadow={3} className={classes.spendingInfoWidgetBox}>
+            <Box m={1} boxShadow={3} className={classes.boxContentSpendingInfo}>
               <Grid container direction='column'>
                 <Grid item>
                   <Grid container justify='space-between'>
@@ -203,7 +188,7 @@ const TripBudgetBoxes = ({tripData}) => {
           </Grid>
 
           <Grid item xs={12} sm={4} md={4}>
-            <Box m={1} boxShadow={3} className={classes.spendingInfoWidgetBox}>
+            <Box m={1} boxShadow={3} className={classes.boxContentSpendingInfo}>
               <Grid container direction='column'>
                 <Grid item>
                   <Grid container justify='space-between'>
@@ -249,7 +234,7 @@ const TripBudgetBoxes = ({tripData}) => {
 
           {/* Total Widget */}
           <Grid item xs={12} sm={4} md={4}>
-            <Box m={1} boxShadow={3} className={classes.spendingInfoWidgetBox}>
+            <Box m={1} boxShadow={3} className={classes.boxContentSpendingInfo}>
               <Grid container direction='column'>
                 <Grid item>
                   <Grid container justify='space-between'>

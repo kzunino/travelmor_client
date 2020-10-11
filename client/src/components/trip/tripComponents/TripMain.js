@@ -32,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
   headingBox: {
     padding: 15,
     borderRadius: 3,
+    backgroundColor: theme.palette.boxBackground.main,
+    color: theme.palette.boxContentBudgetData.main,
   },
 }));
 

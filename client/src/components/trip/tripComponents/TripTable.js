@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 
 // Table
 
-import MaterialTable from 'material-table';
+import MaterialTable, {MTablePagination} from 'material-table';
 
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -26,21 +26,28 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 // import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
-import {makeStyles} from '@material-ui/core/styles';
+import {makeStyles, useTheme} from '@material-ui/core/styles';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
-  table: {
-    minWidth: 300,
-    maxWidth: 700,
-  },
+  // table: {
+  //   minWidth: 300,
+  //   maxWidth: 700,
+  // },
+
   tableBox: {
     padding: 8,
   },
+  icon: {
+    color: 'grey',
+  },
+  // background: {
+  //   backgroundColor: theme.palette.boxContentBudgetData.main,
+  // },
 }));
 
 const TripTable = ({tripData, deleteExpense, updateExpense}) => {
-  // const theme = useTheme();
+  const theme = useTheme();
   const classes = useStyles();
 
   const {
@@ -98,7 +105,10 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
     if (expenses) {
       setTableData({
         columns: [
-          {title: 'Name', field: 'name'},
+          {
+            title: 'Name',
+            field: 'name',
+          },
           {
             title: 'Cost',
             field: 'cost',
@@ -177,6 +187,22 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
     }
   }, [expenses]);
 
+  let options = {
+    search: false,
+    headerStyle: {backgroundColor: 'rgb(39, 41, 59)', color: '#6e757c'},
+    cellStyle: {color: '#fff'},
+    // headerStyle: theme.palette.boxContentBudgetData.main,
+  };
+
+  let components = {};
+  // let components = {
+  //   Pagination: (props) => (
+  //     <div style={{color: '#e8eaf5'}}>
+  //       <MTablePagination {...props} />
+  //     </div>
+  //   ),
+  // };
+
   const editHandler = (e) => {
     e.preventDefault();
   };
@@ -190,13 +216,21 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
 
   const tableIcons = {
     // Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-    Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-    Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+    Check: forwardRef((props, ref) => (
+      <Check {...props} className={classes.icon} ref={ref} />
+    )),
+    Clear: forwardRef((props, ref) => (
+      <Clear {...props} className={classes.icon} ref={ref} />
+    )),
+    Delete: forwardRef((props, ref) => (
+      <DeleteOutline {...props} className={classes.icon} ref={ref} />
+    )),
     DetailPanel: forwardRef((props, ref) => (
       <ChevronRight {...props} ref={ref} />
     )),
-    Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+    Edit: forwardRef((props, ref) => (
+      <Edit {...props} className={classes.icon} ref={ref} />
+    )),
     Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
     Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
     FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
@@ -224,10 +258,13 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
           <Grid item xs={12}>
             <Box m={0} boxShadow={0} className={classes.tableBox}>
               <MaterialTable
-                title={`${name} Expenses`}
-                options={{
-                  search: false,
+                style={{
+                  backgroundColor: 'rgb(39, 41, 59)',
+                  color: '#fff',
                 }}
+                components={components}
+                title={`${name} Expenses`}
+                options={options}
                 columns={tableData.columns}
                 data={tableData.data}
                 icons={tableIcons}

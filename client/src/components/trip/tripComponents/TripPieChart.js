@@ -19,6 +19,8 @@ Chart.plugins.unregister(ChartDataLabels);
 const useStyles = makeStyles((theme) => ({
   budgetBox: {
     padding: 15,
+    backgroundColor: theme.palette.boxBackground.main,
+    color: theme.palette.boxContentBudgetData.main,
     borderRadius: 3,
     [theme.breakpoints.down('xs')]: {
       padding: 5,

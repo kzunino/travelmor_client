@@ -5,7 +5,9 @@ const mainBlue = '#4bb0f8';
 const softWheat = '#dbe9f4';
 const lightBeige = '#faf8f4';
 const lightGray = '#6e757c';
-const white = '#ffffff';
+const white = '#fff';
+const darkPurple = 'rgb(30, 30, 54)';
+const purple = 'rgb(39, 41, 59)';
 //const offWhite = '#f8f8ff';
 
 const theme = createMuiTheme({
@@ -17,7 +19,10 @@ const theme = createMuiTheme({
       main: softWheat,
     },
     background: {
-      main: lightBeige,
+      main: darkPurple,
+    },
+    boxBackground: {
+      main: purple,
     },
     boxContentBudgetHeading: {
       main: lightGray,
