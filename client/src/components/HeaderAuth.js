@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.modal + 1,
     //changes appbar color opacity
-    backgroundColor: 'rgba(219, 233, 244, .90)',
+    // backgroundColor: 'rgba(75,176,248, .01)',
   },
   toolbar: {
     padding: 0,
@@ -69,8 +69,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    //backgroundColor: theme.palette.secondary.main,
-    background: `linear-gradient( ${theme.palette.secondary.main}, ${theme.palette.secondary.light})`,
+    background: `linear-gradient( rgb(75,176,248), rgb(55,94,235))`,
   },
   drawerContainer: {
     overflow: 'auto',
@@ -341,7 +340,11 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position='fixed' className={classes.appBar}>
+      <AppBar
+        position='fixed'
+        className={classes.appBar}
+        style={{background: 'transparent', boxShadow: 'none'}}
+      >
         <Toolbar className={classes.toolbar}>
           <Button
             component={Link}

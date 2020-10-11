@@ -8,7 +8,8 @@ import PropTypes from 'prop-types';
 // Material UI components
 import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
-import {makeStyles} from '@material-ui/core/styles';
+import {makeStyles, useTheme} from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 //Components
 import PrivateRoute from './PrivateRoute';
@@ -59,7 +60,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App({isAuthenticated, user}) {
+  const theme = useTheme();
   const classes = useStyles();
+  const matchSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   // Loads user to maintain authentication
   useEffect(() => {
@@ -77,7 +80,7 @@ function App({isAuthenticated, user}) {
 
         {isAuthenticated && user ? <AuthHeader /> : null}
         <main className={!isAuthenticated ? classes.hide : classes.content}>
-          <Toolbar />
+          {matchSm ? <Toolbar /> : null}
           <Grid
             container
             direction='column'

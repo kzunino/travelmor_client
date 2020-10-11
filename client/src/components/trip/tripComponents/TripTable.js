@@ -192,15 +192,14 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
 
   let options = {
     search: false,
+    pageSize: 7,
     headerStyle: {
       backgroundColor: 'rgb(39, 41, 59)',
       color: '#6e757c',
     },
     cellStyle: {color: '#fff'},
-    // rowStyle: {borderStyle: 'solid, grey'},
   };
 
-  // let components = {};
   let components = {
     Pagination: (props) => (
       <div className={classes.pagination}>
@@ -227,7 +226,6 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
   //Table Data
 
   const tableIcons = {
-    // Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
     Check: forwardRef((props, ref) => (
       <Check {...props} className={classes.icon} ref={ref} />
     )),
@@ -252,7 +250,6 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
       <ChevronLeft {...props} ref={ref} />
     )),
     ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    //Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
     SortArrow: forwardRef((props, ref) => (
       <ArrowDownward {...props} ref={ref} />
     )),

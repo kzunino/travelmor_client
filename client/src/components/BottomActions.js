@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   root: {
-    backgroundColor: theme.palette.secondary.main,
+    background: `linear-gradient( 45deg, rgb(55,94,235), rgb(75,176,248))`,
     marginLeft: -drawerWidth,
     width: 500,
     position: 'fixed',
@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   paper: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.secondary.main,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
