@@ -40,11 +40,26 @@ const useStyles = makeStyles((theme) => ({
   inputs: {
     color: '#fff',
     // backgroundColor: theme.palette.boxBackground.main,
+    '&:before': {
+      borderColor: 'grey',
+    },
+    '&:hover': {
+      color: 'white',
+    },
+  },
+  inputLabels: {
+    color: 'grey',
   },
   email: {
-    width: '50%',
+    width: 200,
   },
   selectEmpty: {
+    '&:before': {
+      borderColor: 'grey',
+    },
+    // '&:after': {
+    //   borderColor: 'grey',
+    // },
     width: '10em',
   },
   selectMenu: {
@@ -134,10 +149,14 @@ const MyAccount = ({
           <Grid container spacing={3}>
             <Grid item>
               <TextField
+                autoFocus
                 className={classes.inputs}
                 variant='standard'
                 InputProps={{
                   className: classes.inputs,
+                }}
+                InputLabelProps={{
+                  className: classes.inputLabels,
                 }}
                 margin='normal'
                 required
@@ -158,6 +177,9 @@ const MyAccount = ({
                 InputProps={{
                   className: classes.inputs,
                 }}
+                InputLabelProps={{
+                  className: classes.inputLabels,
+                }}
                 required
                 id='last_name'
                 label='Last Name'
@@ -176,6 +198,9 @@ const MyAccount = ({
             InputProps={{
               className: classes.inputs,
             }}
+            InputLabelProps={{
+              className: classes.inputLabels,
+            }}
             required
             className={classes.email}
             id='email'
@@ -191,7 +216,9 @@ const MyAccount = ({
           <br />
           {/* ------ Currency Input ----- */}
           <FormControl required className={classes.formControl}>
-            <InputLabel id='required-label'>Home Currency</InputLabel>
+            <InputLabel id='required-label' className={classes.inputLabels}>
+              Home Currency
+            </InputLabel>
             <Select
               id='currency'
               value={homeCurrency}
@@ -200,7 +227,9 @@ const MyAccount = ({
                 handleUserData(e);
               }}
               className={classes.selectEmpty}
-              // accesses the menu styles
+              inputProps={{
+                className: classes.inputs,
+              }} // accesses the menu styles
               MenuProps={{classes: {list: classes.selectMenu}}}
             >
               <MenuItem value={'USD'}>USD</MenuItem>

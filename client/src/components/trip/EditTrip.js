@@ -435,7 +435,7 @@ const EditTrip = ({
                   country.countries.map((place, index) => (
                     <MenuItem
                       key={country.number + country.code + index}
-                      value={`${country.code}`}
+                      value={country.code}
                       style={getStyles(name, currencies, theme)}
                     >
                       {`${country.code} - ${place}`}
