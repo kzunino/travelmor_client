@@ -33,6 +33,12 @@ import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    color: theme.palette.mainHeading.main,
+  },
+  divider: {
+    backgroundColor: theme.palette.boxContentBudgetData.main,
+  },
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -40,14 +46,21 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   container: {
+    backgroundColor: theme.palette.boxBackground.form,
+    borderRadius: 5,
+    marginTop: '1em',
+    padding: 10,
     [theme.breakpoints.up('md')]: {
       marginLeft: 0,
-      padding: 0,
     },
   },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
+  },
+
+  tripNameField: {
+    width: '50%',
   },
   budgetField: {
     width: '50%',
@@ -65,10 +78,10 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '15em',
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(3, 1, 2),
     color: 'white',
     fontWeight: 'bold',
-    width: '50%',
+    width: 200,
   },
   chips: {
     display: 'flex',
@@ -215,125 +228,147 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
   return (
     <>
       <Grid item>
-        <Typography variant={matchXs ? 'h4' : 'h2'}>New Trip</Typography>
+        <Typography className={classes.heading} variant={matchXs ? 'h4' : 'h2'}>
+          New Trip
+        </Typography>
       </Grid>
-      <Divider />
-      <Container component='div' maxWidth='xs' className={classes.container}>
+      <Divider className={classes.divider} />
+      <Container maxWidth='sm' className={classes.container}>
         <CssBaseline />
 
         <form className={classes.form} onSubmit={onSubmit} noValidate>
-          <TextField
-            variant='standard'
-            margin='normal'
-            required
-            fullWidth
-            id='name'
-            label='Trip Name'
-            name='name'
-            value={name}
-            onChange={(e) => handleChange(e)}
-            autoFocus
-          />
-          <TextField
-            className={classes.budgetField}
-            variant='standard'
-            margin='normal'
-            required
-            fullWidth
-            name='total_budget'
-            value={total_budget}
-            onChange={(e) => handleChange(e)}
-            label='Budget Total'
-            type='number'
-            placeholder='0.00'
-            InputProps={{inputProps: {min: 0}}}
-            id='total_budget'
-          />
-          <br />
+          <Grid container direction='column' spacing={2}>
+            <Grid item>
+              <TextField
+                variant='standard'
+                margin='normal'
+                required
+                placeholder='Name'
+                className={classes.tripNameField}
+                id='name'
+                label='Trip Name'
+                name='name'
+                value={name}
+                onChange={(e) => handleChange(e)}
+                autoFocus
+              />
+            </Grid>
 
-          <FormControl className={classes.currencyField}>
-            <InputLabel>Foreign Currencies</InputLabel>
-            <Select
-              multiple
-              value={currencies}
-              onChange={handleCurrencyChange}
-              input={<Input id='select-multiple-chip' />}
-              renderValue={(selected) => (
-                <div className={classes.chips}>
-                  {selected.map((value) => (
-                    <Chip key={value} label={value} className={classes.chip} />
-                  ))}
-                </div>
-              )}
-              MenuProps={MenuProps}
+            <Grid item>
+              <TextField
+                className={classes.budgetField}
+                variant='standard'
+                margin='normal'
+                required
+                fullWidth
+                name='total_budget'
+                value={total_budget}
+                onChange={(e) => handleChange(e)}
+                label='Budget Total'
+                type='number'
+                placeholder='0.00'
+                InputProps={{inputProps: {min: 0}}}
+                id='total_budget'
+              />
+            </Grid>
+
+            <Grid item>
+              <FormControl className={classes.currencyField}>
+                <InputLabel>Foreign Currencies</InputLabel>
+                <Select
+                  multiple
+                  value={currencies}
+                  onChange={handleCurrencyChange}
+                  input={<Input id='select-multiple-chip' />}
+                  renderValue={(selected) => (
+                    <div className={classes.chips}>
+                      {selected.map((value) => (
+                        <Chip
+                          key={value}
+                          label={value}
+                          className={classes.chip}
+                        />
+                      ))}
+                    </div>
+                  )}
+                  MenuProps={MenuProps}
+                >
+                  {countryData.map((country) =>
+                    country.countries.length > 1 ? (
+                      country.countries.map((place, index) => (
+                        <MenuItem
+                          key={country.number + country.code + index}
+                          value={`${country.code}`}
+                          style={getStyles(name, currencies, theme)}
+                        >
+                          {`${country.code} - ${place}`}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem
+                        key={country.number + country.code}
+                        value={`${country.code}`}
+                        style={getStyles(name, currencies, theme)}
+                      >
+                        {`${country.code} - ${country.countries}`}
+                      </MenuItem>
+                    )
+                  )}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item>
+              <Grid
+                container
+                direction='row'
+                spacing={2}
+                justify='space-between'
+              >
+                <Grid xs={6} item>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant='inline'
+                    format='MM/DD/yyyy'
+                    margin='normal'
+                    id='date-picker-inline'
+                    label='Start Date'
+                    value={start_date}
+                    onChange={handleStartDateChange}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                </Grid>
+
+                <Grid xs={6} item>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant='inline'
+                    format='MM/DD/yyyy'
+                    margin='normal'
+                    id='date-picker-inline'
+                    label='End Date'
+                    value={end_date}
+                    onChange={handleEndDateChange}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Button
+              type='submit'
+              variant='contained'
+              color='primary'
+              className={classes.submit}
+              disableRipple
             >
-              {countryData.map((country) =>
-                country.countries.length > 1 ? (
-                  country.countries.map((place, index) => (
-                    <MenuItem
-                      key={country.number + country.code + index}
-                      value={`${country.code}`}
-                      style={getStyles(name, currencies, theme)}
-                    >
-                      {`${country.code} - ${place}`}
-                    </MenuItem>
-                  ))
-                ) : (
-                  <MenuItem
-                    key={country.number + country.code}
-                    value={`${country.code}`}
-                    style={getStyles(name, currencies, theme)}
-                  >
-                    {`${country.code} - ${country.countries}`}
-                  </MenuItem>
-                )
-              )}
-            </Select>
-          </FormControl>
-
-          <Grid container direction='row' spacing={2} justify='space-between'>
-            <Grid xs={6} item>
-              <KeyboardDatePicker
-                disableToolbar
-                variant='inline'
-                format='MM/DD/yyyy'
-                margin='normal'
-                id='date-picker-inline'
-                label='Start Date'
-                value={start_date}
-                onChange={handleStartDateChange}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
-              />
-            </Grid>
-
-            <Grid xs={6} item>
-              <KeyboardDatePicker
-                disableToolbar
-                variant='inline'
-                format='MM/DD/yyyy'
-                margin='normal'
-                id='date-picker-inline'
-                label='End Date'
-                value={end_date}
-                onChange={handleEndDateChange}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
-              />
-            </Grid>
+              Create Trip
+            </Button>
           </Grid>
-
-          <Button
-            type='submit'
-            variant='contained'
-            color='primary'
-            className={classes.submit}
-            disableRipple
-          >
-            Create Trip
-          </Button>
         </form>
       </Container>
     </>

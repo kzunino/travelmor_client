@@ -25,6 +25,12 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 // const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    color: theme.palette.mainHeading.main,
+  },
+  divider: {
+    backgroundColor: theme.palette.boxContentBudgetData.main,
+  },
   container: {
     marginLeft: 0,
     padding: 0,
@@ -34,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
   },
   mainContentBox: {
     //backgroundColor: theme.palette.secondary.light,
-    backgroundColor: theme.palette.background.main,
+    backgroundColor: theme.palette.boxBackground.form,
+    borderRadius: 8,
     marginTop: '2em',
     marginLeft: 0,
     marginRight: 0,
@@ -73,12 +80,12 @@ const History = ({trips}) => {
   return (
     <>
       <Grid item>
-        <Typography variant={matchXs ? 'h4' : 'h2'}>
+        <Typography className={classes.heading} variant={matchXs ? 'h4' : 'h2'}>
           All Trip History
         </Typography>
       </Grid>
-      <Divider />
-      <Container maxWidth={'md'} className={classes.container}>
+      <Divider className={classes.divider} />
+      <Container maxWidth={'sm'} className={classes.container}>
         <Box m={1} boxShadow={3} className={classes.mainContentBox}>
           <Grid item>
             <Grid container>

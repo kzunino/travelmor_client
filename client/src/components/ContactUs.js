@@ -11,9 +11,16 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 // const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    color: theme.palette.mainHeading.main,
+  },
+  divider: {
+    backgroundColor: theme.palette.boxContentBudgetData.main,
+  },
   container: {
     marginLeft: 0,
     padding: 0,
+    marginTop: '1em',
   },
 }));
 
@@ -24,10 +31,14 @@ const ContactUs = () => {
 
   return (
     <>
-      <Typography variant={matchXs ? 'h4' : 'h2'}>Contact</Typography>
-      <Divider />
+      <Typography className={classes.heading} variant={matchXs ? 'h4' : 'h2'}>
+        Contact
+      </Typography>
+      <Divider className={classes.divider} />
       <Container maxWidth={'lg'} className={classes.container}>
-        <Typography paragraph>Travelmor@gmail.com</Typography>
+        <Typography className={classes.heading} paragraph>
+          Travelmor@gmail.com
+        </Typography>
       </Container>{' '}
     </>
   );

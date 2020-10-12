@@ -33,6 +33,7 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   containerWrapper: {
+    backgroundColor: theme.palette.boxBackground.form,
     border: 'grey solid thin',
     marginTop: theme.spacing(4),
     padding: 15,

@@ -43,16 +43,19 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
     marginLeft: drawerWidth,
-    marginBottom: 50,
+    // marginBottom: 50,
     backgroundColor: theme.palette.background.main,
     [theme.breakpoints.down('sm')]: {
       marginLeft: 0,
       padding: theme.spacing(1, 1.5),
-      marginTop: '1em',
+      // marginTop: '1em',
     },
   },
   containerWrapper: {
     margin: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '1em',
+    },
   },
   hide: {
     marginBottom: 0,

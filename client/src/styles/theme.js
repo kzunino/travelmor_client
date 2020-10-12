@@ -5,7 +5,9 @@ const mainBlue = '#4bb0f8';
 const softWheat = '#dbe9f4';
 const lightBeige = '#faf8f4';
 const lightGray = '#6e757c';
+const grey = 'grey';
 const white = '#fff';
+const offWhite = 'rgb(212,212,216)';
 const darkPurple = 'rgb(30, 30, 54)';
 const purple = 'rgb(39, 41, 59)';
 //const offWhite = '#f8f8ff';
@@ -23,12 +25,26 @@ const theme = createMuiTheme({
     },
     boxBackground: {
       main: purple,
+      form: offWhite,
+    },
+    mainHeading: {
+      main: white,
     },
     boxContentBudgetHeading: {
       main: lightGray,
     },
     boxContentBudgetData: {
       main: white,
+    },
+    paragraph: {
+      main: offWhite,
+    },
+    formInputs: {
+      text: white,
+      border: grey,
+    },
+    inputLabels: {
+      color: grey,
     },
   },
   typography: {

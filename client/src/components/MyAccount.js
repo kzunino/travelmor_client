@@ -27,49 +27,46 @@ import Button from '@material-ui/core/Button';
 //Select
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-// import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-//import {KeyboardDatePicker} from '@material-ui/pickers';
-
 const useStyles = makeStyles((theme) => ({
   heading: {
-    color: '#fff',
+    color: theme.palette.mainHeading.main,
   },
-  inputs: {
-    color: '#fff',
-    // backgroundColor: theme.palette.boxBackground.main,
-    '&:before': {
-      borderColor: 'grey',
-    },
-    '&:hover': {
-      color: 'white',
-    },
+  divider: {
+    backgroundColor: theme.palette.boxContentBudgetData.main,
   },
-  inputLabels: {
-    color: 'grey',
-  },
+  // inputs: {
+  //   color: '#fff',
+  //   '&:before': {
+  //     borderColor: theme.palette.formInputs.border,
+  //   },
+  //   '&:hover': {
+  //     color: theme.palette.formInputs.text,
+  //   },
+  // },
+  // inputLabels: {
+  //   color: theme.palette.formInputs.border,
+  // },
+
   email: {
-    width: 200,
+    width: 300,
   },
   selectEmpty: {
     '&:before': {
-      borderColor: 'grey',
+      borderColor: theme.palette.formInputs.border,
     },
-    // '&:after': {
-    //   borderColor: 'grey',
-    // },
     width: '10em',
   },
   selectMenu: {
     maxHeight: '15em',
   },
   container: {
-    backgroundColor: theme.palette.boxBackground.main,
+    backgroundColor: theme.palette.boxBackground.form,
     borderRadius: 5,
     marginTop: '1em',
-    padding: 5,
+    padding: 10,
     [theme.breakpoints.up('md')]: {
       marginLeft: 0,
     },
@@ -137,7 +134,7 @@ const MyAccount = ({
           Account Settings
         </Typography>
       </Grid>
-      <Divider style={{backgroundColor: 'white'}} />
+      <Divider className={classes.divider} />
 
       <Container maxWidth={'sm'} className={classes.container}>
         <CssBaseline />
@@ -146,7 +143,7 @@ const MyAccount = ({
           onSubmit={(e) => handleSubmit(e)}
           noValidate
         >
-          <Grid container spacing={3}>
+          <Grid container direction='column' spacing={2}>
             <Grid item>
               <TextField
                 autoFocus
@@ -190,70 +187,74 @@ const MyAccount = ({
                 }}
               />
             </Grid>
+
+            <Grid item>
+              <TextField
+                variant='standard'
+                margin='normal'
+                InputProps={{
+                  className: classes.inputs,
+                }}
+                InputLabelProps={{
+                  className: classes.inputLabels,
+                }}
+                required
+                className={classes.email}
+                id='email'
+                label='Email'
+                name='emailAddress'
+                value={emailAddress}
+                onChange={(e) => {
+                  handleUserData(e);
+                }}
+              />
+            </Grid>
+
+            <Grid item>
+              {/* ------ Currency Input ----- */}
+              <FormControl required className={classes.formControl}>
+                <InputLabel id='required-label' className={classes.inputLabels}>
+                  Home Currency
+                </InputLabel>
+                <Select
+                  id='currency'
+                  value={homeCurrency}
+                  name='homeCurrency'
+                  onChange={(e) => {
+                    handleUserData(e);
+                  }}
+                  className={classes.selectEmpty}
+                  inputProps={{
+                    className: classes.inputs,
+                  }} // accesses the menu styles
+                  MenuProps={{classes: {list: classes.selectMenu}}}
+                >
+                  <MenuItem value={'USD'}>USD</MenuItem>
+                  <MenuItem value={'EUR'}>EUR</MenuItem>
+                  <MenuItem value={'AUD'}>AUD</MenuItem>
+                  <Divider />
+                  {countryData.map((country) => (
+                    <MenuItem
+                      key={country.number + country.code}
+                      value={country.code}
+                    >{`${country.code}`}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item>
+              <Button
+                type='submit'
+                variant='contained'
+                color='primary'
+                className={hidden ? classes.hidden : classes.submit}
+                disableRipple
+              >
+                Update
+              </Button>
+            </Grid>
           </Grid>
-
-          <TextField
-            variant='standard'
-            margin='normal'
-            InputProps={{
-              className: classes.inputs,
-            }}
-            InputLabelProps={{
-              className: classes.inputLabels,
-            }}
-            required
-            className={classes.email}
-            id='email'
-            label='Email'
-            name='emailAddress'
-            value={emailAddress}
-            onChange={(e) => {
-              handleUserData(e);
-            }}
-          />
-
-          <br />
-          <br />
-          {/* ------ Currency Input ----- */}
-          <FormControl required className={classes.formControl}>
-            <InputLabel id='required-label' className={classes.inputLabels}>
-              Home Currency
-            </InputLabel>
-            <Select
-              id='currency'
-              value={homeCurrency}
-              name='homeCurrency'
-              onChange={(e) => {
-                handleUserData(e);
-              }}
-              className={classes.selectEmpty}
-              inputProps={{
-                className: classes.inputs,
-              }} // accesses the menu styles
-              MenuProps={{classes: {list: classes.selectMenu}}}
-            >
-              <MenuItem value={'USD'}>USD</MenuItem>
-              <MenuItem value={'EUR'}>EUR</MenuItem>
-              <MenuItem value={'AUD'}>AUD</MenuItem>
-              <Divider />
-              {countryData.map((country) => (
-                <MenuItem
-                  key={country.number + country.code}
-                  value={country.code}
-                >{`${country.code}`}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <br />
-          <Button
-            type='submit'
-            variant='contained'
-            color='primary'
-            className={hidden ? classes.hidden : classes.submit}
-            disableRipple
-          >
-            Update
-          </Button>
         </form>
       </Container>
     </>

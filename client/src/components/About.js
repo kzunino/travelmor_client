@@ -7,9 +7,24 @@ import {useTheme, makeStyles} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    color: theme.palette.mainHeading.main,
+  },
+  divider: {
+    backgroundColor: theme.palette.boxContentBudgetData.main,
+  },
+  subheading: {
+    color: 'rgb(212,212,216)',
+    lineHeight: 1.5,
+  },
   container: {
-    marginLeft: 0,
-    padding: 0,
+    backgroundColor: theme.palette.boxBackground.main,
+    borderRadius: 5,
+    marginTop: '1em',
+    padding: 5,
+    [theme.breakpoints.up('md')]: {
+      marginLeft: 0,
+    },
   },
 }));
 
@@ -22,11 +37,15 @@ const About = () => {
     <>
       {/* <main className={classes.content}>
         <Toolbar /> */}
-      <Typography variant={matchXs ? 'h4' : 'h2'}>About</Typography>
-      <Divider />
+      <Typography className={classes.heading} variant={matchXs ? 'h4' : 'h2'}>
+        About
+      </Typography>
+      <Divider className={classes.divider} />
       <Container maxWidth={'lg'} className={classes.container}>
-        <Typography variant='h5'>The Short</Typography>
-        <Typography paragraph>
+        <Typography className={classes.heading} variant='h5'>
+          The Short
+        </Typography>
+        <Typography paragraph className={classes.subheading}>
           Travelmor is an idea created after four years of periodic backpacking
           around South America. In order to prepare for an extended journey, I
           always saved a large sum of money and then divided my money by the
@@ -35,8 +54,10 @@ const About = () => {
           that let me input my spending to keep an eye on my finances without
           all complicated bells and whistles.
         </Typography>
-        <Typography variant='h5'>The Long</Typography>
-        <Typography paragraph>
+        <Typography className={classes.heading} variant='h5'>
+          The Long
+        </Typography>
+        <Typography paragraph className={classes.subheading}>
           My name is Kyle Zunino and I am from the San Francisco Bay Area. After
           graduating from college I decided to save money and go on a long
           backpacking journey through Latin America. To prepare for this

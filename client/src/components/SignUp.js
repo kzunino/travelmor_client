@@ -43,8 +43,10 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   containerWrapper: {
+    backgroundColor: theme.palette.boxBackground.form,
+    marginTop: theme.spacing(2),
     border: 'grey solid thin',
-    marginTop: theme.spacing(4),
+
     padding: 15,
     [theme.breakpoints.down('xs')]: {
       border: 'none',
@@ -57,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -72,6 +74,9 @@ const useStyles = makeStyles((theme) => ({
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
+  },
+  formControl: {
+    marginTop: '2em',
   },
   selectEmpty: {
     width: '10em',
