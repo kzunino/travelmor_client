@@ -3,9 +3,11 @@ import {data as countryData} from 'currency-codes';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {newTrip} from '../actions/trips';
+import {createAlerts} from '../actions/alerts';
 import axios from 'axios';
-
 import Moment from 'moment';
+
+// MUI Components
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
@@ -110,7 +112,7 @@ function getStyles(name, personName, theme) {
   };
 }
 
-const NewTrip = ({home_currency, newTrip, user, history}) => {
+const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
   const theme = useTheme();
   const classes = useStyles();
   const API_KEY = process.env.REACT_APP_EXCHANGE_KEY;
@@ -186,7 +188,8 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
 
     // Alert if trip end date is before trip start
     if (Moment(start_date).isAfter(Moment(end_date), 'days')) {
-      return console.log('cannot start trip after end date');
+      return createAlerts({errors: 'End date is before Start'});
+      //return console.log('cannot start trip after end date');
     }
 
     // if start is same day as end day then length is 1 day
@@ -377,6 +380,7 @@ const NewTrip = ({home_currency, newTrip, user, history}) => {
 
 NewTrip.propTypes = {
   newTrip: PropTypes.func.isRequired,
+  createAlerts: PropTypes.func.isRequired,
   home_currency: PropTypes.string.isRequired,
   user: PropTypes.string.isRequired,
 };
@@ -386,4 +390,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user.id,
 });
 
-export default connect(mapStateToProps, {newTrip})(NewTrip);
+export default connect(mapStateToProps, {newTrip, createAlerts})(NewTrip);

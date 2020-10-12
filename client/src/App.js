@@ -43,12 +43,11 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
     marginLeft: drawerWidth,
-    // marginBottom: 50,
     backgroundColor: theme.palette.background.main,
+    minHeight: '100vh',
     [theme.breakpoints.down('sm')]: {
       marginLeft: 0,
       padding: theme.spacing(1, 1.5),
-      // marginTop: '1em',
     },
   },
   containerWrapper: {

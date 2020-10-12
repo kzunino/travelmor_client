@@ -60,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     textDecoration: 'none',
     color: 'black',
+    '&:hover': {
+      color: theme.palette.primary.main,
+    },
   },
 }));
 

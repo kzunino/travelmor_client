@@ -174,10 +174,10 @@ const TripExchangeRate = ({
                         <Button
                           type='submit'
                           onClick={() => {
-                            // updateCurrencyExchangeRate(
-                            //   foreignCurrency.currency,
-                            //   index
-                            // );
+                            updateCurrencyExchangeRate(
+                              foreignCurrency.currency,
+                              index
+                            );
                             hide(index);
                           }}
                           className={

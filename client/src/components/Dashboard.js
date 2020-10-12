@@ -12,7 +12,6 @@ import Container from '@material-ui/core/Container';
 
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import {TextareaAutosize} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   header: {

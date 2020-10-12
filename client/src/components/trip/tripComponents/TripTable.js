@@ -36,46 +36,23 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     color: 'grey',
   },
-  pagination: {
-    '& .MTablePaginationInner-root-74': {
-      color: '#fff',
-    },
-    '& .MuiTypography-root': {
-      color: '#fff',
-    },
-    '& .MuiButtonBase-root': {
-      color: '#fff',
-    },
-  },
+  // pagination: {
+  //   '& .MTablePaginationInner-root-74': {
+  //     color: '#fff',
+  //   },
+  //   '& .MuiTypography-root': {
+  //     color: '#fff',
+  //   },
+  //   '& .MuiButtonBase-root': {
+  //     color: '#fff',
+  //   },
+  // },
 }));
 
 const TripTable = ({tripData, deleteExpense, updateExpense}) => {
-  const theme = useTheme();
   const classes = useStyles();
 
-  const {
-    // trip_uid,
-    // user,
-    name,
-    // total_budget,
-    // length,
-    home_currency,
-    // currencies,
-    expenses,
-    // start_date,
-    // end_date,
-  } = tripData;
-
-  // const [editExpense, setEditExpense] = useState({
-  //   name: '',
-  //   cost: '',
-  //   expense_type: '',
-  //   expense_uuid: '',
-  //   purchase_date: '',
-  //   exchange_rate: '',
-  //   currency: '',
-  //   cost_conversion: '',
-  // });
+  const {name, home_currency, expenses} = tripData;
 
   const [tableData, setTableData] = useState({
     columns: [
@@ -192,7 +169,7 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
 
   let options = {
     search: false,
-    pageSize: 7,
+    pageSize: 5,
     headerStyle: {
       backgroundColor: 'rgb(39, 41, 59)',
       color: '#6e757c',
@@ -201,11 +178,6 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
   };
 
   let components = {
-    Pagination: (props) => (
-      <div className={classes.pagination}>
-        <MTablePagination {...props} />
-      </div>
-    ),
     EditField: (props) => (
       <div
         style={{
@@ -217,11 +189,6 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
       </div>
     ),
   };
-
-  // const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
-
-  //prevents table from exceeding boundaries
-  // const matchesTable = useMediaQuery('(max-width:648px)');
 
   //Table Data
 

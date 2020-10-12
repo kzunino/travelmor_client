@@ -25,6 +25,9 @@ import Fade from '@material-ui/core/Fade';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+  actionsContainer: {
+    marginTop: 50,
+  },
   bottomNavigationWrapper: {
     width: '100%',
   },
@@ -95,7 +98,11 @@ const BottomActions = ({trip_data}) => {
   };
 
   return (
-    <Grid container justify={matchSm ? 'flex-start' : 'center'}>
+    <Grid
+      container
+      className={classes.actionsContainer}
+      justify={matchSm ? 'flex-start' : 'center'}
+    >
       <Grid item>
         <BottomNavigation showLabels className={classes.root}>
           <BottomNavigationAction
