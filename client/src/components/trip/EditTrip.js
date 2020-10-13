@@ -42,6 +42,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    color: theme.palette.mainHeading.main,
+  },
+  divider: {
+    backgroundColor: theme.palette.boxContentBudgetData.main,
+  },
   deleteButton: {
     marginTop: 'auto',
   },
@@ -52,9 +58,12 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '15em',
   },
   container: {
+    backgroundColor: theme.palette.boxBackground.form,
+    borderRadius: 5,
+    marginTop: '1em',
+    padding: 10,
     [theme.breakpoints.up('md')]: {
       marginLeft: 0,
-      padding: 0,
     },
   },
   submit: {
@@ -274,10 +283,7 @@ const EditTrip = ({
   };
 
   const handleDeleteTrip = () => {
-    // delete trip
-
     deleteTrip(trip_uid);
-    // re-route to dashboard
     history.push('/dashboard');
   };
 
@@ -298,7 +304,12 @@ const EditTrip = ({
       <Grid item>
         <Grid container direction='row' justify='space-between'>
           <Grid item>
-            <Typography variant={matchXs ? 'h4' : 'h2'}>Edit Trip</Typography>
+            <Typography
+              className={classes.heading}
+              variant={matchXs ? 'h4' : 'h2'}
+            >
+              Edit Trip
+            </Typography>
           </Grid>
           <Grid item className={classes.deleteButton}>
             <Tooltip title='Delete Trip'>
@@ -339,7 +350,7 @@ const EditTrip = ({
         </Grid>
       </Grid>
 
-      <Divider />
+      <Divider className={classes.divider} />
 
       {/* Edit Trip Form Content  */}
       <Container maxWidth={'sm'} className={classes.container}>

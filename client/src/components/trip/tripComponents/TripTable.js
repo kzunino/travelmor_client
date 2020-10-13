@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 
 // Table
 
-import MaterialTable, {MTableEditField, MTablePagination} from 'material-table';
+import MaterialTable, {MTableEditField} from 'material-table';
 
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -178,6 +178,8 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
       color: '#6e757c',
     },
     cellStyle: {color: '#fff'},
+    exportButton: true,
+    exportAllData: true,
   };
 
   let components = {
@@ -211,7 +213,9 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
     Edit: forwardRef((props, ref) => (
       <Edit {...props} className={classes.icon} ref={ref} />
     )),
-    Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+    Export: forwardRef((props, ref) => (
+      <SaveAlt {...props} className={classes.paginationIcon} ref={ref} />
+    )),
     Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
     FirstPage: forwardRef((props, ref) => (
       <FirstPage {...props} className={classes.paginationIcon} ref={ref} />
@@ -246,9 +250,6 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
                 style={{
                   backgroundColor: 'rgb(39, 41, 59)',
                   color: '#fff',
-                }}
-                localization={{
-                  pagination: {},
                 }}
                 components={components}
                 title={`${name} Expenses`}
