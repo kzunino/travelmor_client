@@ -24,27 +24,18 @@ import {Line} from 'react-chartjs-2';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
-  toolbarMargin: {
-    ...theme.mixins.toolbar,
-    marginBottom: '1em',
+  heading: {
+    color: theme.palette.mainHeading.main,
   },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    marginLeft: drawerWidth,
-    marginBottom: 50,
-    backgroundColor: theme.palette.background.main,
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: 0,
-      padding: theme.spacing(1, 1.5),
-      marginTop: '1em',
-    },
+  divider: {
+    backgroundColor: theme.palette.boxContentBudgetData.main,
   },
   containerWrapper: {
     margin: 'auto',
   },
-  //table styles
-
+  spendingChartContainer: {
+    backgroundColor: theme.palette.boxBackground.main,
+  },
   tableWrapper: {
     marginTop: '2em',
     padding: 0,
@@ -211,20 +202,22 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
   return (
     <>
       <Grid item>
-        <Typography variant={matchXs ? 'h4' : 'h2'}>
+        <Typography className={classes.heading} variant={matchXs ? 'h4' : 'h2'}>
           {name} - Spending History{' '}
           <Button component={Link} to={`/trip/edit/${trip_uid}`}>
             <SettingsIcon className={classes.editTrip} />
           </Button>
         </Typography>
       </Grid>
-      <Divider />
+      <Divider className={classes.divider} />
       <Container component='div' maxWidth='lg' className={classes.tableWrapper}>
         <Grid container direction='column'>
           {/* Line Chart Item */}
           <Grid item xs={12}>
-            <Box m={1} boxShadow={3} className={classes.tableBox}>
-              <Typography variant='h5'>Trip Spending Overview</Typography>
+            <Box m={1} boxShadow={3} className={classes.spendingChartContainer}>
+              <Typography className={classes.heading} variant='h5'>
+                Trip Spending Overview
+              </Typography>
               <Line data={chartData} options={options} />
             </Box>
           </Grid>
