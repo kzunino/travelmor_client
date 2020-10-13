@@ -36,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     color: 'grey',
   },
+  paginationIcon: {
+    color: 'white',
+  },
   // pagination: {
   //   '& .MTablePaginationInner-root-74': {
   //     color: '#fff',
@@ -210,11 +213,17 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
     )),
     Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
     Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-    FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-    LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-    NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    FirstPage: forwardRef((props, ref) => (
+      <FirstPage {...props} className={classes.paginationIcon} ref={ref} />
+    )),
+    LastPage: forwardRef((props, ref) => (
+      <LastPage {...props} className={classes.paginationIcon} ref={ref} />
+    )),
+    NextPage: forwardRef((props, ref) => (
+      <ChevronRight {...props} className={classes.paginationIcon} ref={ref} />
+    )),
     PreviousPage: forwardRef((props, ref) => (
-      <ChevronLeft {...props} ref={ref} />
+      <ChevronLeft {...props} className={classes.paginationIcon} ref={ref} />
     )),
     ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
     SortArrow: forwardRef((props, ref) => (
@@ -237,6 +246,9 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
                 style={{
                   backgroundColor: 'rgb(39, 41, 59)',
                   color: '#fff',
+                }}
+                localization={{
+                  pagination: {},
                 }}
                 components={components}
                 title={`${name} Expenses`}

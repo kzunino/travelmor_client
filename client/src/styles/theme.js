@@ -1,7 +1,6 @@
 import {createMuiTheme} from '@material-ui/core/styles';
 
 const mainBlue = '#4bb0f8';
-//const softWheat = '#dfd8c8';
 const softWheat = '#dbe9f4';
 const lightGray = '#6e757c';
 const grey = 'grey';
@@ -9,7 +8,6 @@ const white = '#fff';
 const offWhite = 'rgb(212,212,216)';
 const darkPurple = 'rgb(30, 30, 54)';
 const purple = 'rgb(39, 41, 59)';
-//const offWhite = '#f8f8ff';
 
 const theme = createMuiTheme({
   palette: {
@@ -118,6 +116,19 @@ const theme = createMuiTheme({
       },
       iconDirectionAsc: {
         fill: lightGray,
+      },
+    },
+
+    //color of select
+    MuiTablePagination: {
+      root: {
+        color: white,
+      },
+    },
+    //Pagination expenses per page
+    MuiTypography: {
+      caption: {
+        color: white,
       },
     },
   },

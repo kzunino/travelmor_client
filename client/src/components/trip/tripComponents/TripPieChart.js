@@ -31,8 +31,17 @@ const useStyles = makeStyles((theme) => ({
 const TripPieChart = ({tripData}) => {
   // const theme = useTheme();
   const classes = useStyles();
-
   const {expenses} = tripData;
+
+  const red = '#ea6992';
+  const green = '#6decc4';
+  const orange = '#f19379';
+  const blue = '#3f8bee';
+  const purple = '#b353ad';
+  const yellow = '#e6e600';
+  const brown = '#a87043';
+  const turquoise = '#3ec9c2';
+  const grey = '#a9a9b0';
 
   //initial state of pie chart is greyed out
   let pieStateData = {
@@ -118,16 +127,16 @@ const TripPieChart = ({tripData}) => {
           //map over expense type if over 0 spent
           data: data,
           backgroundColor: [
-            'red',
-            'blue',
-            'green',
-            'black',
-            'purple',
-            'orange',
-            'tomato',
-            'violet',
-            'yellow',
-            'grey',
+            red,
+            blue,
+            green,
+            orange,
+            purple,
+            blue,
+            yellow,
+            grey,
+            brown,
+            turquoise,
           ],
           //   hoverBackgroundColor: ['#FF6384', '#36A2EB'],
         },
