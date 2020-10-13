@@ -62,9 +62,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App({isAuthenticated, user}) {
-  const theme = useTheme();
   const classes = useStyles();
-  const matchSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   // Loads user to maintain authentication
   useEffect(() => {
@@ -82,7 +80,7 @@ function App({isAuthenticated, user}) {
 
         {isAuthenticated && user ? <AuthHeader /> : null}
         <main className={!isAuthenticated ? classes.hide : classes.content}>
-          {matchSm ? <Toolbar /> : null}
+          <Toolbar />
           <Grid
             container
             direction='column'

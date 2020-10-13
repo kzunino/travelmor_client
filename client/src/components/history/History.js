@@ -32,8 +32,11 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.boxContentBudgetData.main,
   },
   container: {
-    marginLeft: 0,
-    padding: 0,
+    borderRadius: 5,
+
+    [theme.breakpoints.up('md')]: {
+      marginLeft: 0,
+    },
   },
   root: {
     width: '100%',

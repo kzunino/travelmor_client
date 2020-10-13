@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.modal + 1,
     //changes appbar color opacity
-    backgroundColor: 'rgba(75,176,248, .01)',
+    backgroundColor: 'rgba(30, 30, 54, .8)',
   },
   toolbar: {
     padding: 0,
@@ -106,7 +106,6 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
   const theme = useTheme();
   const classes = useStyles();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
-  const matchSm = useMediaQuery(theme.breakpoints.down('sm'));
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   //Component State Management
@@ -329,11 +328,7 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position='fixed'
-        className={classes.appBar}
-        style={matchSm ? null : {background: 'transparent', boxShadow: 'none'}}
-      >
+      <AppBar position='fixed' className={classes.appBar}>
         <Toolbar className={classes.toolbar}>
           <Button
             component={Link}

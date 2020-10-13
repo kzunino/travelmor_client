@@ -188,7 +188,7 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
 
     // Alert if trip end date is before trip start
     if (Moment(start_date).isAfter(Moment(end_date), 'days')) {
-      return createAlerts({errors: 'End date is before Start'});
+      return createAlerts({validation_error: 'End date is before start date!'});
       //return console.log('cannot start trip after end date');
     }
 
