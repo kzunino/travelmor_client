@@ -10,6 +10,7 @@ import Box from '@material-ui/core/Box';
 import {Bar} from 'react-chartjs-2';
 
 import {makeStyles} from '@material-ui/core/styles';
+import {deleteCurrency} from '../../../actions/currency';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
       height: '12em',
     },
   },
-
   mainBoxBudgetItems: {
     padding: '1em',
     textAlign: 'left',
@@ -142,54 +142,65 @@ const TripMain = ({tripData}) => {
     sevenDaysAgo,
   } = dailyWeekTotals;
 
-  const barData = {
-    labels: [
-      Moment().subtract(6, 'days').format('ddd'),
-      Moment().subtract(5, 'days').format('ddd'),
-      Moment().subtract(4, 'days').format('ddd'),
-      Moment().subtract(3, 'days').format('ddd'),
-      Moment().subtract(2, 'days').format('ddd'),
-      Moment().subtract(1, 'days').format('ddd'),
-      'Today',
-    ],
-    datasets: [
-      {
-        label: '$',
-        backgroundColor: [
-          //changes colors of bar based on overspending
-          sevenDaysAgo < daily_budget
-            ? 'rgba(75,192,192,1)'
-            : 'rgba(217, 30, 24, 1)',
-          sixDaysAgo < daily_budget
-            ? 'rgba(75,192,192,1)'
-            : 'rgba(217, 30, 24, 1)',
-          fiveDaysAgo < daily_budget
-            ? 'rgba(75,192,192,1)'
-            : 'rgba(217, 30, 24, 1)',
-          fourDaysAgo < daily_budget
-            ? 'rgba(75,192,192,1)'
-            : 'rgba(217, 30, 24, 1)',
-          threeDaysAgo < daily_budget
-            ? 'rgba(75,192,192,1)'
-            : 'rgba(217, 30, 24, 1)',
-          yesterday < daily_budget
-            ? 'rgba(75,192,192,1)'
-            : 'rgba(217, 30, 24, 1)',
-          today < daily_budget ? 'rgba(75,192,192,1)' : 'rgba(217, 30, 24, 1)',
-        ],
-        borderColor: 'rgba(0,0,0,1)',
-        borderWidth: 2,
-        data: [
-          sevenDaysAgo,
-          sixDaysAgo,
-          fiveDaysAgo,
-          fourDaysAgo,
-          threeDaysAgo,
-          yesterday,
-          today,
-        ],
-      },
-    ],
+  const barData = (canvas) => {
+    // const ctx = canvas.getContext('2d');
+    // const gradient = ctx.createLinearGradient(0, 0, 0, 450);
+    // gradient.addColorStop(0, 'rgba(75,192,192)');
+    // gradient.addColorStop(1, 'rgba(75,192,192)');
+    // ctx.fillStyle = gradient;
+    // ctx.fillRect(20, 20, 150, 100);
+
+    return {
+      labels: [
+        Moment().subtract(6, 'days').format('ddd'),
+        Moment().subtract(5, 'days').format('ddd'),
+        Moment().subtract(4, 'days').format('ddd'),
+        Moment().subtract(3, 'days').format('ddd'),
+        Moment().subtract(2, 'days').format('ddd'),
+        Moment().subtract(1, 'days').format('ddd'),
+        'Today',
+      ],
+      datasets: [
+        {
+          label: '$',
+          backgroundColor: [
+            //changes colors of bar based on overspending
+            sevenDaysAgo < daily_budget
+              ? 'rgba(75,192,192,1)'
+              : 'rgba(217, 30, 24, 1)',
+            sixDaysAgo < daily_budget
+              ? 'rgba(75,192,192,1)'
+              : 'rgba(217, 30, 24, 1)',
+            fiveDaysAgo < daily_budget
+              ? 'rgba(75,192,192,1)'
+              : 'rgba(217, 30, 24, 1)',
+            fourDaysAgo < daily_budget
+              ? 'rgba(75,192,192,1)'
+              : 'rgba(217, 30, 24, 1)',
+            threeDaysAgo < daily_budget
+              ? 'rgba(75,192,192,1)'
+              : 'rgba(217, 30, 24, 1)',
+            yesterday < daily_budget
+              ? 'rgba(75,192,192,1)'
+              : 'rgba(217, 30, 24, 1)',
+            today < daily_budget
+              ? 'rgba(75,192,192,1)'
+              : 'rgba(217, 30, 24, 1)',
+          ],
+          borderColor: 'rgba(0,0,0,1)',
+          borderWidth: 2,
+          data: [
+            sevenDaysAgo,
+            sixDaysAgo,
+            fiveDaysAgo,
+            fourDaysAgo,
+            threeDaysAgo,
+            yesterday,
+            today,
+          ],
+        },
+      ],
+    };
   };
 
   // const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
@@ -256,17 +267,17 @@ const TripMain = ({tripData}) => {
                   xAxes: [
                     {
                       gridLines: {
-                        display: false,
+                        display: true,
                       },
                     },
                   ],
                   yAxes: [
                     {
                       gridLines: {
-                        display: false,
+                        display: true,
                       },
                       ticks: {
-                        display: false,
+                        display: true,
                         beginAtZero: true,
                       },
                     },
