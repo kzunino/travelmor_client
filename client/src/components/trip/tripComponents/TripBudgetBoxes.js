@@ -176,7 +176,11 @@ const TripBudgetBoxes = ({tripData}) => {
                     </Typography>
                     <Typography
                       variant='h6'
-                      className={classes.underBudgetColor}
+                      className={
+                        day_remaining > 0
+                          ? classes.underBudgetColor
+                          : classes.overBudgetColor
+                      }
                       align='right'
                     >
                       ${day_remaining}
@@ -271,7 +275,11 @@ const TripBudgetBoxes = ({tripData}) => {
                     </Typography>
                     <Typography
                       variant='h6'
-                      className={classes.underBudgetColor}
+                      className={
+                        total_budget_remaining > 0
+                          ? classes.underBudgetColor
+                          : classes.overBudgetColor
+                      }
                       align='right'
                     >
                       ${total_budget_remaining}

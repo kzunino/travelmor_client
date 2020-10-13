@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     backgroundColor: theme.palette.boxContentBudgetData.main,
   },
-  deleteButton: {
+  deleteButtonContainer: {
     marginTop: 'auto',
   },
   selectEmpty: {
@@ -311,10 +311,13 @@ const EditTrip = ({
               Edit Trip
             </Typography>
           </Grid>
-          <Grid item className={classes.deleteButton}>
+          <Grid item className={classes.deleteButtonContainer}>
             <Tooltip title='Delete Trip'>
               <IconButton onClick={handleClickOpen}>
-                <DeleteForeverIcon fontSize={matchXs ? 'default' : 'large'} />
+                <DeleteForeverIcon
+                  style={{color: 'grey'}}
+                  fontSize={matchXs ? 'default' : 'large'}
+                />
               </IconButton>
             </Tooltip>
             <Dialog

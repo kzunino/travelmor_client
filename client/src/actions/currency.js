@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {returnErrors} from './alerts';
 import {tokenConfig} from './auth';
+import {createAlerts} from './alerts';
 
 import {ADD_CURRENCIES, DELETE_CURRENCY, UPDATE_CURRENCY_RATE} from './types';
 
@@ -54,7 +55,10 @@ export const updateSingleCurrency = (updateCurrencyObj) => async (
       body,
       tokenConfig(getState)
     );
-    if (res) await dispatch({type: UPDATE_CURRENCY_RATE, payload: res.data});
+    if (res) {
+      dispatch({type: UPDATE_CURRENCY_RATE, payload: res.data});
+      dispatch(createAlerts({success: 'Currency Updated'}));
+    }
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));
   }
@@ -68,7 +72,7 @@ export const deleteCurrency = (currency_uid) => async (dispatch, getState) => {
       `http://localhost:8000/api/currency/${currency_uid}`,
       tokenConfig(getState)
     );
-    if (res) await dispatch({type: DELETE_CURRENCY, payload: currency_uid});
+    if (res) dispatch({type: DELETE_CURRENCY, payload: currency_uid});
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));
   }
