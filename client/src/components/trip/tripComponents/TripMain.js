@@ -1,5 +1,6 @@
 import React from 'react';
-// import {Link} from 'react-router-dom';
+import {makeStyles, useTheme} from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import Moment from 'moment';
 import Typography from '@material-ui/core/Typography';
@@ -9,10 +10,6 @@ import Box from '@material-ui/core/Box';
 //Charts
 import {Bar} from 'react-chartjs-2';
 
-import {makeStyles} from '@material-ui/core/styles';
-import {deleteCurrency} from '../../../actions/currency';
-// import useMediaQuery from '@material-ui/core/useMediaQuery';
-
 const useStyles = makeStyles((theme) => ({
   chartContainer: {
     height: '15em',
@@ -20,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     [theme.breakpoints.down('xs')]: {
       height: '12em',
+      padding: 0,
     },
   },
   mainBoxBudgetItems: {
@@ -48,8 +46,9 @@ const reduceExpenses = (obj) => {
 };
 
 const TripMain = ({tripData}) => {
-  // const theme = useTheme();
+  const theme = useTheme();
   const classes = useStyles();
+  const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
   const {
     // trip_uid,
@@ -203,7 +202,6 @@ const TripMain = ({tripData}) => {
     };
   };
 
-  // const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
   //prevents table from exceeding boundaries
   // const matchesTable = useMediaQuery('(max-width:648px)');
   return (
@@ -214,7 +212,7 @@ const TripMain = ({tripData}) => {
           <Grid item>
             <Grid container justify='center'>
               <Grid item>
-                <Typography variant='h3'>{name}</Typography>
+                <Typography variant={matchXs ? 'h4' : 'h3'}>{name}</Typography>
                 <Typography
                   variant='subtitle2'
                   align='center'
@@ -268,6 +266,7 @@ const TripMain = ({tripData}) => {
                     {
                       gridLines: {
                         display: true,
+                        color: 'rgba(75,192,192,.1)',
                       },
                     },
                   ],
@@ -275,6 +274,7 @@ const TripMain = ({tripData}) => {
                     {
                       gridLines: {
                         display: true,
+                        color: 'rgba(75,192,192,.1)',
                       },
                       ticks: {
                         display: true,

@@ -4,6 +4,7 @@ import {makeStyles, useTheme} from '@material-ui/core/styles';
 import {logout} from '../actions/auth';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 // Components
 import Button from '@material-ui/core/Button';
@@ -20,8 +21,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import IconButton from '@material-ui/core/IconButton';
