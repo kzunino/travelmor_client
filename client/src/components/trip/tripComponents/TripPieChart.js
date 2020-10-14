@@ -163,6 +163,7 @@ const TripPieChart = ({tripData}) => {
       },
       plugins: {
         // Change options for ALL labels of THIS CHART
+        // Adds the percentages of spending for each type
         datalabels: {
           color: '#fff',
           formatter: (value, ctx) => {
@@ -181,11 +182,6 @@ const TripPieChart = ({tripData}) => {
       },
     };
   }
-
-  // const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
-
-  //prevents table from exceeding boundaries
-  // const matchesTable = useMediaQuery('(max-width:648px)');
 
   return (
     <>

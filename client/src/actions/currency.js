@@ -11,7 +11,7 @@ export const addCurrencies = ({currencyRates}, {trip_uid}) => async (
   getState
 ) => {
   //construct a list/array of currency objects for trip
-  console.log(currencyRates);
+
   let currencyArr = [];
   for (const currency in currencyRates) {
     currencyArr.push({
@@ -67,7 +67,6 @@ export const updateSingleCurrency = (updateCurrencyObj) => async (
 // DELETE CURRENCY
 export const deleteCurrency = (currency_uid) => async (dispatch, getState) => {
   try {
-    console.log(currency_uid);
     const res = await axios.delete(
       `http://localhost:8000/api/currency/${currency_uid}`,
       tokenConfig(getState)

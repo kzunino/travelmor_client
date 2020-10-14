@@ -126,7 +126,6 @@ export const updateUser = ({
   axios
     .put('http://localhost:8000/api/user/me', body, tokenConfig(getState))
     .then((res) => {
-      console.log(res.data);
       dispatch({
         type: UPDATE_USER_SUCCESS,
         payload: res.data,
@@ -134,7 +133,6 @@ export const updateUser = ({
       dispatch(createAlerts({success: 'User updated!'}));
     })
     .catch((err) => {
-      console.log(err.response.data);
       dispatch(returnErrors(err.response.data, err.response.status));
     });
 };

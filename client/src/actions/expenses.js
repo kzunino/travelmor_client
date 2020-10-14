@@ -32,7 +32,6 @@ export const addExpense = (data) => async (dispatch, getState) => {
     user,
   });
 
-  console.log(body);
   try {
     const res = await axios.post(
       `http://localhost:8000/api/expense/`,
@@ -86,7 +85,6 @@ export const updateExpense = (data) => async (dispatch, getState) => {
   }
   //Stores the date in UTC
   purchase_date = Moment(purchase_date, 'MM-DD-YYYY').toISOString();
-  console.log(purchase_date);
 
   // Request Body
   const body = JSON.stringify({

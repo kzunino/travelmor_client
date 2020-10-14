@@ -95,38 +95,46 @@ const History = ({trips}) => {
         <Box m={1} boxShadow={3} className={classes.mainContentBox}>
           <Grid item>
             <Grid container>
-              <Grid item>
-                {/* map over trips to get years then map over trips in that year to list them */}
-                {tripYears.map((year, index) => (
-                  <List
-                    subheader={
-                      <ListSubheader>
-                        {Moment(year).format('YYYY')}
-                      </ListSubheader>
-                    }
-                    className={classes.root}
-                    key={year + index}
-                  >
-                    {trips.map((trip, index) => {
-                      if (year === Moment(trip.start_date).format('YYYY')) {
-                        return (
-                          <ListItem
-                            key={trip.trip_uid}
-                            component={Link}
-                            to={`/history/${trip.trip_uid}`}
-                            classes={{root: classes.listItem}}
-                          >
-                            <ListItemText
-                              classes={classes.listItemText}
-                              primary={`${trip.name}`}
-                            />
-                          </ListItem>
-                        );
-                      } else return null;
-                    })}
-                  </List>
-                ))}
-              </Grid>
+              {tripYears.length ? (
+                <Grid item>
+                  {/* map over trips to get years then map over trips in that year to list them */}
+                  {tripYears.map((year, index) => (
+                    <List
+                      subheader={
+                        <ListSubheader>
+                          {Moment(year).format('YYYY')}
+                        </ListSubheader>
+                      }
+                      className={classes.root}
+                      key={year + index}
+                    >
+                      {trips.map((trip, index) => {
+                        if (year === Moment(trip.start_date).format('YYYY')) {
+                          return (
+                            <ListItem
+                              key={trip.trip_uid}
+                              component={Link}
+                              to={`/history/${trip.trip_uid}`}
+                              classes={{root: classes.listItem}}
+                            >
+                              <ListItemText
+                                classes={classes.listItemText}
+                                primary={`${trip.name}`}
+                              />
+                            </ListItem>
+                          );
+                        } else return null;
+                      })}
+                    </List>
+                  ))}
+                </Grid>
+              ) : (
+                <Grid item>
+                  <Typography paragraph style={{paddingLeft: 15}}>
+                    No trips yet!
+                  </Typography>
+                </Grid>
+              )}
             </Grid>
           </Grid>
         </Box>

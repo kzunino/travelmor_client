@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(0),
-    backgroundColor: theme.palette.background.main,
+    backgroundColor: theme.palette.secondary.main,
   },
   mainContainer: {
     marginTop: '5em',

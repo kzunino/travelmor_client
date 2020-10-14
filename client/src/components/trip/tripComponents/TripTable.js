@@ -1,4 +1,6 @@
 import React, {useState, forwardRef, useEffect} from 'react';
+import {makeStyles} from '@material-ui/core/styles';
+
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {deleteExpense, updateExpense} from '../../../actions/expenses';
@@ -8,7 +10,6 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
 // Table
-
 import MaterialTable, {MTableEditField} from 'material-table';
 
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -23,11 +24,7 @@ import FirstPage from '@material-ui/icons/FirstPage';
 import LastPage from '@material-ui/icons/LastPage';
 import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
-// import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-
-import {makeStyles, useTheme} from '@material-ui/core/styles';
-// import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
   tableBox: {
@@ -39,17 +36,6 @@ const useStyles = makeStyles((theme) => ({
   paginationIcon: {
     color: 'white',
   },
-  // pagination: {
-  //   '& .MTablePaginationInner-root-74': {
-  //     color: '#fff',
-  //   },
-  //   '& .MuiTypography-root': {
-  //     color: '#fff',
-  //   },
-  //   '& .MuiButtonBase-root': {
-  //     color: '#fff',
-  //   },
-  // },
 }));
 
 const TripTable = ({tripData, deleteExpense, updateExpense}) => {
@@ -168,7 +154,7 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
         }),
       });
     }
-  }, [expenses]);
+  }, [expenses, home_currency]);
 
   let options = {
     search: false,

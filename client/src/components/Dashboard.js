@@ -14,7 +14,7 @@ import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
-  header: {
+  heading: {
     color: '#fff',
   },
   table: {
@@ -65,7 +65,7 @@ const Dashboard = ({trips, getTrip, name, location}) => {
     <>
       {/* -----Welcome Container----- */}
       <Grid item>
-        <Typography className={classes.header} variant={matchXs ? 'h4' : 'h2'}>
+        <Typography className={classes.heading} variant={matchXs ? 'h4' : 'h2'}>
           Welcome, {name}!
         </Typography>
       </Grid>
@@ -74,7 +74,10 @@ const Dashboard = ({trips, getTrip, name, location}) => {
           <Grid item>
             <Grid container direction='column'>
               <Grid item>
-                <Typography variant={matchXs ? 'h5' : 'h4'}>
+                <Typography
+                  className={classes.heading}
+                  variant={matchXs ? 'h5' : 'h4'}
+                >
                   Create a trip to get started!
                 </Typography>
               </Grid>

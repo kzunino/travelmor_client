@@ -44,7 +44,7 @@ export const newTrip = (
     start_date,
     end_date,
   });
-  console.log(body);
+
   try {
     const res = await axios.post(
       `http://localhost:8000/api/trip/`,
@@ -55,7 +55,6 @@ export const newTrip = (
       dispatch({type: NEW_TRIP, payload: res.data});
       // if new currency rates object exists
       if (currencyRates) {
-        console.log(currencyRates, {trip_uid: res.data.trip_uid});
         dispatch(addCurrencies({currencyRates}, {trip_uid: res.data.trip_uid}));
       }
     }
@@ -90,7 +89,7 @@ export const updateTrip = ({
     start_date,
     end_date,
   });
-  console.log(body);
+
   try {
     const res = await axios.put(
       `http://localhost:8000/api/trip/${trip_uid}`,

@@ -481,7 +481,7 @@ const EditTrip = ({
 
         {currencies.length ? (
           <>
-            <Divider />
+            <Divider style={{marginTop: '3em'}} />
             <TripExchangeRate />
           </>
         ) : null}

@@ -21,8 +21,6 @@ import SettingsIcon from '@material-ui/icons/Settings';
 // Line Chart imports
 import {Line} from 'react-chartjs-2';
 
-const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
   heading: {
     color: theme.palette.mainHeading.main,

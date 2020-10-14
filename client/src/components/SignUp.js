@@ -43,13 +43,14 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   containerWrapper: {
-    backgroundColor: theme.palette.boxBackground.form,
+    backgroundColor: theme.palette.secondary.main,
     marginTop: theme.spacing(2),
     border: 'grey solid thin',
 
     padding: 15,
     [theme.breakpoints.down('xs')]: {
       border: 'none',
+      margin: 0,
     },
   },
   spinner: {
@@ -117,8 +118,9 @@ const SignUp = ({register, isAuthenticated, isLoading}) => {
   };
 
   const onSubmit = async (e) => {
-    console.log('i work');
     e.preventDefault();
+
+    email = email.toLowerCase();
 
     //passes info to register action passed in from props
     register({

@@ -1,10 +1,10 @@
 import {createMuiTheme} from '@material-ui/core/styles';
 
 const mainBlue = '#4bb0f8';
-const softWheat = '#dbe9f4';
 const lightGray = '#6e757c';
 const grey = 'grey';
 const white = '#fff';
+// const ghostWhite = '#f8f8ff';
 const offWhite = 'rgb(212,212,216)';
 const darkPurple = 'rgb(30, 30, 54)';
 const purple = 'rgb(39, 41, 59)';
@@ -15,7 +15,7 @@ const theme = createMuiTheme({
       main: mainBlue,
     },
     secondary: {
-      main: softWheat,
+      main: white,
     },
     background: {
       main: darkPurple,

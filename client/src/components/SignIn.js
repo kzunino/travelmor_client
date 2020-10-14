@@ -33,7 +33,7 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   containerWrapper: {
-    backgroundColor: theme.palette.boxBackground.form,
+    backgroundColor: theme.palette.secondary.main,
     border: 'grey solid thin',
     marginTop: theme.spacing(4),
     padding: 15,
@@ -87,6 +87,8 @@ const SignIn = ({isAuthenticated, login, isLoading}) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    email = email.toLowerCase();
 
     //passes info to register action passed in from props
     login({
