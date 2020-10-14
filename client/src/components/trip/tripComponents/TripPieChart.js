@@ -60,7 +60,7 @@ const TripPieChart = ({tripData}) => {
 
   if (expenses) {
     let expenseTypeTotalCost = {
-      accomodation: 0,
+      accommodation: 0,
       emergency: 0,
       entertainment: 0,
       fees: 0,

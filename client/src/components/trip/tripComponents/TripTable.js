@@ -94,7 +94,7 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
             field: 'expense_type',
             lookup: {
               uncategorized: 'Uncategorized',
-              accomodation: 'Accomodation',
+              accommodation: 'Accommodation',
               food: 'Food',
               transportation: 'Transportation',
               entertainment: 'Entertainment',
