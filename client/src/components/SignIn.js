@@ -22,7 +22,7 @@ function Copyright() {
   return (
     <Typography variant='body2' color='textSecondary' align='center'>
       {'Copyright © '}
-      <Link color='inherit' to='https://www.travelmor.com'>
+      <Link color='inherit' to='/'>
         Travelmor.
       </Link>{' '}
       {new Date().getFullYear()}
@@ -108,7 +108,7 @@ const SignIn = ({isAuthenticated, login, isLoading}) => {
     </div>
   ) : (
     <Container
-      component='main'
+      component='div'
       maxWidth='xs'
       className={classes.containerWrapper}
     >

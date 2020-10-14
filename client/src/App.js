@@ -56,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   hide: {
+    display: 'none',
     marginBottom: 0,
     backgroundColor: 'white',
     height: 0,
@@ -74,6 +75,10 @@ function App({isAuthenticated, user}) {
     <>
       <Router>
         <Alerts />
+        <Route exact path='/' component={LandingPage} />
+        <Route exact path='/signin' component={SignIn} />
+        <Route exact path='/signup' component={SignUp} />
+        <Route exact path='/verification' component={Verification} />
         {isAuthenticated && user ? <AuthHeader /> : null}
         <main className={!isAuthenticated ? classes.hide : classes.content}>
           <Toolbar />
@@ -106,11 +111,6 @@ function App({isAuthenticated, user}) {
             </Switch>
           </Grid>
         </main>
-
-        <Route exact path='/' component={LandingPage} />
-        <Route exact path='/signin' component={SignIn} />
-        <Route exact path='/signup' component={SignUp} />
-        <Route exact path='/verification' component={Verification} />
       </Router>
     </>
   );

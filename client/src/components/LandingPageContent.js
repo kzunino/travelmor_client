@@ -120,7 +120,7 @@ const LandingPageContent = () => {
   const matchesXs = useMediaQuery(theme.breakpoints.down('xs'));
 
   return (
-    <main className={classes.content}>
+    <div className={classes.content}>
       {/* ------------- Hero Block ---------- */}
       <Grid
         container
@@ -361,7 +361,7 @@ const LandingPageContent = () => {
           </Grid>
         </Grid>
       </Container>
-    </main>
+    </div>
   );
 };
 
