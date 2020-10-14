@@ -6,16 +6,17 @@ import {createAlerts} from './alerts';
 import {ADD_CURRENCIES, DELETE_CURRENCY, UPDATE_CURRENCY_RATE} from './types';
 
 // Add currencies - Array of currency objects
-export const addCurrencies = ({currencyRates}, {trip_uid}) => async (
+export const addCurrencies = ({currencyRates}, {trip_uid}, {user}) => async (
   dispatch,
   getState
 ) => {
   //construct a list/array of currency objects for trip
-
+  console.log(user);
   let currencyArr = [];
   for (const currency in currencyRates) {
     currencyArr.push({
       trip: trip_uid,
+      user: user,
       currency,
       exchange_rate: currencyRates[currency].toFixed(3),
     });

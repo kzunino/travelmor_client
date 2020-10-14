@@ -140,14 +140,6 @@ export const updateUser = ({
 // LOGOUT USER
 // Must send null as the body
 export const logout = () => async (dispatch, getState) => {
-  // Headers
-  // const config = {
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  // };
-  // config.headers['Authorization'] = `Token ${localStorage.token}`;
-
   try {
     await axios.post(
       'http://localhost:8000/logout/',

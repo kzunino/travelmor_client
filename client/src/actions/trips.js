@@ -55,7 +55,13 @@ export const newTrip = (
       dispatch({type: NEW_TRIP, payload: res.data});
       // if new currency rates object exists
       if (currencyRates) {
-        dispatch(addCurrencies({currencyRates}, {trip_uid: res.data.trip_uid}));
+        dispatch(
+          addCurrencies(
+            {currencyRates},
+            {trip_uid: res.data.trip_uid},
+            {user: user}
+          )
+        );
       }
     }
   } catch (err) {

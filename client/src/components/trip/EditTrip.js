@@ -261,7 +261,7 @@ const EditTrip = ({
         currencyRates = await getExchangeRate(addedCurrencies);
 
         // Dispatch add new currencies to database and state
-        addCurrencies({currencyRates}, {trip_uid});
+        addCurrencies({currencyRates}, {trip_uid}, {user});
       }
     }
 

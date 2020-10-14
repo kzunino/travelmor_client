@@ -1,13 +1,19 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Alerts = ({error, alert}) => {
+  // Acts like componentDidUpdate
+  // If old error is same as current error, will not fire a repeat alert if
+  // a new message is fired
+  let oldError = useRef(error);
+  let oldAlert = useRef(alert);
+
   useEffect(() => {
-    const handleErrorProps = () => {
-      // Alerts from the database
+    // Alerts from the database
+    if (oldError.current !== error) {
       if (error.msg.non_field_errors)
         toast.error(`${error.msg.non_field_errors}`);
       if (error.msg.password) toast.error(`${error.msg.password}`);
@@ -31,13 +37,17 @@ const Alerts = ({error, alert}) => {
       if (error.msg.total_budget)
         toast.error(`Budget Total: ${error.msg.total_budget}`);
 
+      oldError.current = error;
+    }
+
+    if (oldAlert.current !== alert) {
       // Alert Success
       if (alert.success) toast.success(alert.success);
       //alert Error
       if (alert.validation_error) toast.error(alert.validation_error);
-    };
 
-    handleErrorProps();
+      oldAlert.current = alert;
+    }
   }, [error, alert]);
 
   return (
