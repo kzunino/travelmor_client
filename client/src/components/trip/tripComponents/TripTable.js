@@ -146,9 +146,7 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
             exchange_rate: expense.exchange_rate,
             currency: expense.currency,
             cost_conversion: parseFloat(expense.cost_conversion).toFixed(2),
-            purchase_date: Moment(expense.purchase_date)
-              .utc()
-              .format('MM-DD-YYYY'),
+            purchase_date: Moment(expense.purchase_date).format('MM-DD-YYYY'),
             expense_uid: expense.expense_uid,
           };
         }),

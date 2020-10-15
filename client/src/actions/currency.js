@@ -11,7 +11,7 @@ export const addCurrencies = ({currencyRates}, {trip_uid}, {user}) => async (
   getState
 ) => {
   //construct a list/array of currency objects for trip
-  console.log(user);
+
   let currencyArr = [];
   for (const currency in currencyRates) {
     currencyArr.push({
@@ -30,6 +30,7 @@ export const addCurrencies = ({currencyRates}, {trip_uid}, {user}) => async (
       body,
       tokenConfig(getState)
     );
+
     if (res) dispatch({type: ADD_CURRENCIES, payload: res.data});
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));

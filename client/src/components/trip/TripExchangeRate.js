@@ -83,6 +83,7 @@ const TripExchangeRate = ({
 
   useEffect(() => {
     setCurrencyArr(currencies);
+    setButtonArr(currencies);
   }, [currencies]);
 
   // GETS exchange rate for single currency to update
