@@ -34,9 +34,6 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.dark,
     },
   },
-  // foreignCurrencyUpdate: {
-  //   marginTop: 'auto',
-  // },
   deleteIcon: {
     color: 'whitesmoke',
   },
@@ -73,9 +70,9 @@ const TripExchangeRate = ({
   const classes = useStyles();
   const API_KEY = process.env.REACT_APP_EXCHANGE_KEY;
 
-  // Creates buttons with props for each currency
-  const [buttonArr, setButtonArr] = useState(createButtons(currencies));
   const [currencyArr, setCurrencyArr] = useState(currencies);
+  // Creates buttons with props for each currency
+  const [buttonArr, setButtonArr] = useState(createButtons(currencyArr));
   // State for delete dialog
   const [open, setOpen] = React.useState(false);
   // Saves index of delete button clicked to pass onto delete the currency
@@ -83,7 +80,7 @@ const TripExchangeRate = ({
 
   useEffect(() => {
     setCurrencyArr(currencies);
-    setButtonArr(currencies);
+    setButtonArr(createButtons(currencies));
   }, [currencies]);
 
   // GETS exchange rate for single currency to update
