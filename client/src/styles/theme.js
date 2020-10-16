@@ -131,6 +131,11 @@ const theme = createMuiTheme({
         color: white,
       },
     },
+    MuiTableCell: {
+      body: {
+        color: white,
+      },
+    },
   },
 });
 

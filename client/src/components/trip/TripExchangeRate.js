@@ -116,6 +116,7 @@ const TripExchangeRate = ({
 
   // takes index of the update button clicked and sets prop to hidden
   // this toggles the class for each button
+  // when component is updated button reappears
   const hide = (index) => {
     buttonArr[index].isHidden = !buttonArr[index].isHidden;
     setButtonArr([...buttonArr, buttonArr[index].isHidden]);

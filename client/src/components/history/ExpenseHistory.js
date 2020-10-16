@@ -17,6 +17,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import SettingsIcon from '@material-ui/icons/Settings';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 
 // Line Chart imports
 import {Line} from 'react-chartjs-2';
@@ -202,9 +204,11 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
       <Grid item>
         <Typography className={classes.heading} variant={matchXs ? 'h4' : 'h2'}>
           {name} - Spending History{' '}
-          <Button component={Link} to={`/trip/edit/${trip_uid}`}>
-            <SettingsIcon className={classes.editTrip} />
-          </Button>
+          <Tooltip title='Edit Trip'>
+            <IconButton component={Link} to={`/trip/edit/${trip_uid}`}>
+              <SettingsIcon className={classes.editTrip} />
+            </IconButton>
+          </Tooltip>
         </Typography>
       </Grid>
       <Divider className={classes.divider} />
