@@ -5,6 +5,12 @@ import {createAlerts} from './alerts';
 
 import {ADD_CURRENCIES, DELETE_CURRENCY, UPDATE_CURRENCY_RATE} from './types';
 
+// Devops happy - loads URI based on production or development
+let databaseURI;
+process.env.NODE_ENV === 'development'
+  ? (databaseURI = process.env.REACT_APP_DEV_URI)
+  : (databaseURI = process.env.REACT_APP_URI);
+
 // Add currencies - Array of currency objects
 export const addCurrencies = ({currencyRates}, {trip_uid}, {user}) => async (
   dispatch,
@@ -26,7 +32,7 @@ export const addCurrencies = ({currencyRates}, {trip_uid}, {user}) => async (
   const body = JSON.stringify(currencyArr);
   try {
     const res = await axios.post(
-      `http://localhost:8000/api/currency/`,
+      `${databaseURI}/api/currency/`,
       body,
       tokenConfig(getState)
     );
@@ -53,7 +59,7 @@ export const updateSingleCurrency = (updateCurrencyObj) => async (
 
   try {
     const res = await axios.put(
-      `http://localhost:8000/api/currency/${currency_uid}`,
+      `${databaseURI}/api/currency/${currency_uid}`,
       body,
       tokenConfig(getState)
     );
@@ -70,7 +76,7 @@ export const updateSingleCurrency = (updateCurrencyObj) => async (
 export const deleteCurrency = (currency_uid) => async (dispatch, getState) => {
   try {
     const res = await axios.delete(
-      `http://localhost:8000/api/currency/${currency_uid}`,
+      `${databaseURI}/api/currency/${currency_uid}`,
       tokenConfig(getState)
     );
     if (res) dispatch({type: DELETE_CURRENCY, payload: currency_uid});

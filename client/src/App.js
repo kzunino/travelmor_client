@@ -31,6 +31,8 @@ import EditTrip from './components/trip/EditTrip';
 import {loadUser} from './actions/auth';
 import store from './store';
 
+console.log(process.env.NODE_ENV);
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({

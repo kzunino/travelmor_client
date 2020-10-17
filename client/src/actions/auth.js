@@ -13,6 +13,12 @@ import {
   UPDATE_USER_SUCCESS,
 } from './types';
 
+// Devops happy - loads URI based on production or development
+let databaseURI;
+process.env.NODE_ENV === 'development'
+  ? (databaseURI = process.env.REACT_APP_DEV_URI)
+  : (databaseURI = process.env.REACT_APP_URI);
+
 // Checks Token and Loads the User
 export const loadUser = () => async (dispatch, getState) => {
   if (localStorage.getItem('token')) {
@@ -21,7 +27,7 @@ export const loadUser = () => async (dispatch, getState) => {
       dispatch({type: USER_LOADING});
       //Get request for user information
       const res = await axios.get(
-        'http://localhost:8000/api/user/me',
+        `${databaseURI}/api/user/me`,
         tokenConfig(getState)
       );
       if (res) {
@@ -66,7 +72,7 @@ export const register = ({
   });
 
   axios
-    .post('http://localhost:8000/auth/registration/', body, config)
+    .post(`${databaseURI}/auth/registration/`, body, config)
     .then((res) => {
       dispatch({
         type: REGISTER_SUCCESS,
@@ -94,11 +100,7 @@ export const login = ({email, password}) => async (dispatch) => {
     password,
   });
   try {
-    const res = await axios.post(
-      'http://localhost:8000/auth/login/',
-      body,
-      config
-    );
+    const res = await axios.post(`${databaseURI}/auth/login/`, body, config);
     if (res) {
       dispatch({type: LOGIN_SUCCESS, payload: res.data});
     }
@@ -124,7 +126,7 @@ export const updateUser = ({
   });
 
   axios
-    .put('http://localhost:8000/api/user/me', body, tokenConfig(getState))
+    .put(`${databaseURI}/api/user/me`, body, tokenConfig(getState))
     .then((res) => {
       dispatch({
         type: UPDATE_USER_SUCCESS,
@@ -141,11 +143,7 @@ export const updateUser = ({
 // Must send null as the body
 export const logout = () => async (dispatch, getState) => {
   try {
-    await axios.post(
-      'http://localhost:8000/logout/',
-      null,
-      tokenConfig(getState)
-    );
+    await axios.post(`${databaseURI}/logout/`, null, tokenConfig(getState));
     dispatch({type: LOGOUT_SUCCESS});
   } catch (err) {
     //dispatch({type: 'CLEAR_LEADS'});

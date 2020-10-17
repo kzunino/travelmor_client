@@ -7,6 +7,12 @@ import Moment from 'moment';
 
 import {GET_TRIP, NEW_TRIP, UPDATE_TRIP, DELETE_TRIP} from './types';
 
+// Devops happy - loads URI based on production or development
+let databaseURI;
+process.env.NODE_ENV === 'development'
+  ? (databaseURI = process.env.REACT_APP_DEV_URI)
+  : (databaseURI = process.env.REACT_APP_URI);
+
 // Gets a trip by its UUID
 export const getTrip = (trip_uid) => async (dispatch, getState) => {
   // Request Body
@@ -15,7 +21,7 @@ export const getTrip = (trip_uid) => async (dispatch, getState) => {
   });
   try {
     const res = await axios.post(
-      `http://localhost:8000/api/trip/${trip_uid}`,
+      `${databaseURI}/api/trip/${trip_uid}`,
       body,
       tokenConfig(getState)
     );
@@ -47,7 +53,7 @@ export const newTrip = (
 
   try {
     const res = await axios.post(
-      `http://localhost:8000/api/trip/`,
+      `${databaseURI}/api/trip/`,
       body,
       tokenConfig(getState)
     );
@@ -98,7 +104,7 @@ export const updateTrip = ({
 
   try {
     const res = await axios.put(
-      `http://localhost:8000/api/trip/${trip_uid}`,
+      `${databaseURI}/api/trip/${trip_uid}`,
       body,
       tokenConfig(getState)
     );
@@ -116,7 +122,7 @@ export const updateTrip = ({
 export const deleteTrip = (trip_uid) => async (dispatch, getState) => {
   try {
     const res = await axios.delete(
-      `http://localhost:8000/api/trip/${trip_uid}`,
+      `${databaseURI}/api/trip/${trip_uid}`,
 
       tokenConfig(getState)
     );

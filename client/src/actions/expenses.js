@@ -5,6 +5,12 @@ import Moment from 'moment';
 
 import {ADD_EXPENSE, DELETE_EXPENSE, UPDATE_EXPENSE} from './types';
 
+// Devops happy - loads URI based on production or development
+let databaseURI;
+process.env.NODE_ENV === 'development'
+  ? (databaseURI = process.env.REACT_APP_DEV_URI)
+  : (databaseURI = process.env.REACT_APP_URI);
+
 export const addExpense = (data) => async (dispatch, getState) => {
   let {
     name,
@@ -34,7 +40,7 @@ export const addExpense = (data) => async (dispatch, getState) => {
 
   try {
     const res = await axios.post(
-      `http://localhost:8000/api/expense/`,
+      `${databaseURI}/api/expense/`,
       body,
       tokenConfig(getState)
     );
@@ -51,7 +57,7 @@ export const addExpense = (data) => async (dispatch, getState) => {
 export const deleteExpense = (expense_uid) => async (dispatch, getState) => {
   try {
     const res = await axios.delete(
-      `http://localhost:8000/api/expense/${expense_uid}`,
+      `${databaseURI}/api/expense/${expense_uid}`,
       tokenConfig(getState)
     );
 
@@ -101,7 +107,7 @@ export const updateExpense = (data) => async (dispatch, getState) => {
 
   try {
     const res = await axios.put(
-      `http://localhost:8000/api/expense/${expense_uid}`,
+      `${databaseURI}/api/expense/${expense_uid}`,
       body,
       tokenConfig(getState)
     );
