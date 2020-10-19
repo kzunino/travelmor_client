@@ -280,7 +280,7 @@ const LandingPageContent = () => {
                       Forecasting
                     </Typography>
                     <Typography variant='body1'>
-                      Clear data that helps you make the most of your spending.
+                      Data that helps you make the most of your spending.
                     </Typography>
                   </Grid>
                 </Grid>
@@ -337,8 +337,8 @@ const LandingPageContent = () => {
                       Exportable spreadsheets
                     </Typography>
                     <Typography variant='body1'>
-                      Want a physical copy of your budget? Export as CSV and use
-                      in Excel or Google Sheets!
+                      Want a physical copy of your budget? Export as CSV or PDF
+                      and use in Excel or Google Sheets!
                     </Typography>
 
                     <Typography variant='h6' className={classes.subheading}>
