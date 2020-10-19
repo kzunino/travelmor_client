@@ -27,6 +27,7 @@ import About from './components/About';
 import Contact from './components/ContactUs';
 import MyAccount from './components/MyAccount';
 import EditTrip from './components/trip/EditTrip';
+// import NotFound from './components/NotFound';
 
 import {loadUser} from './actions/auth';
 import store from './store';
@@ -110,6 +111,7 @@ function App({isAuthenticated, user}) {
               <PrivateRoute exact path='/account' component={MyAccount} />
 
               <PrivateRoute exact path='/trip' component={Trip} />
+              {/* <Route component={NotFound} /> */}
             </Switch>
           </Grid>
         </main>
