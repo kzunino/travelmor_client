@@ -86,7 +86,7 @@ const TripExchangeRate = ({
   // GETS exchange rate for single currency to update
   const getExchangeRateSingleCurrency = async (currencyCode) => {
     try {
-      const res = await axios.get('http://data.fixer.io/api/latest', {
+      const res = await axios.get('https://data.fixer.io/api/latest', {
         params: {
           access_key: API_KEY,
           base: home_currency,

@@ -133,7 +133,7 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
   const getExchangeRate = async () => {
     try {
       let selectedCurrencies = currencies.join();
-      const res = await axios.get('http://data.fixer.io/api/latest', {
+      const res = await axios.get('https://data.fixer.io/api/latest', {
         params: {
           access_key: API_KEY,
           base: home_currency,
