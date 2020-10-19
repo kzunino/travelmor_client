@@ -193,7 +193,7 @@ const EditTrip = ({
   const getExchangeRate = async (addedCurrencies) => {
     try {
       let selectedCurrencies = addedCurrencies.join();
-      const res = await axios.get('http://data.fixer.io/api/latest', {
+      const res = await axios.get('https://data.fixer.io/api/latest', {
         params: {
           access_key: API_KEY,
           base: home_currency,

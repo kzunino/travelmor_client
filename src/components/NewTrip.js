@@ -206,7 +206,7 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
     }
 
     // sets the new trip with the hours adjusted to account for full days
-    await newTrip(
+    newTrip(
       {
         user,
         name,
