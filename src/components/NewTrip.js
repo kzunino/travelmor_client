@@ -204,7 +204,6 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
     if (currencies.length) {
       currencyRates = await getExchangeRate();
     }
-    console.log(currencyRates);
 
     // sets the new trip with the hours adjusted to account for full days
     newTrip(

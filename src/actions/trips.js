@@ -60,7 +60,6 @@ export const newTrip = (
     if (res) {
       dispatch({type: NEW_TRIP, payload: res.data});
       // if new currency rates object exists
-      console.log(currencyRates);
       if (currencyRates) {
         dispatch(
           addCurrencies(

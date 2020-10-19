@@ -254,7 +254,7 @@ const EditTrip = ({
       let addedCurrencies = foreignCurrencies.filter(
         (curr) => !previousCurrencies.includes(curr)
       );
-      console.log(addedCurrencies);
+
       // Sends new currencies to get exchange rate data
       if (addedCurrencies.length) {
         // currencyRates = {CRC: 603.44439, CUC: 1};
