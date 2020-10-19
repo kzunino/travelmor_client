@@ -19,6 +19,8 @@ process.env.NODE_ENV === 'development'
   ? (databaseURI = process.env.REACT_APP_DEV_URI)
   : (databaseURI = process.env.REACT_APP_URI);
 
+console.log(process.env.REACT_APP_URI);
+
 // Checks Token and Loads the User
 export const loadUser = () => async (dispatch, getState) => {
   if (localStorage.getItem('token')) {
