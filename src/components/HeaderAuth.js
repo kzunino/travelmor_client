@@ -87,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
   drawerIcon: {
     height: ' 50px',
     width: '50px',
+    color: theme.palette.primary.main,
   },
   list: {
     [theme.breakpoints.up('sm')]: {

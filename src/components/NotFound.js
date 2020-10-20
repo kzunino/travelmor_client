@@ -5,18 +5,18 @@ import Container from '@material-ui/core/Container';
 
 import {useTheme, makeStyles} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import {black} from 'color-name';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
     color: theme.palette.mainHeading.main,
+    marginLeft: 15,
   },
   notAuthHeading: {
-    color: black,
+    color: theme.palette.mainHeading.main,
     marginLeft: 15,
   },
   divider: {
-    backgroundColor: theme.palette.boxContentBudgetData.main,
+    backgroundColor: theme.palette.mainHeading.main,
   },
   container: {
     marginLeft: 0,
@@ -25,16 +25,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NotFound = ({isAuthenticated}) => {
+const NotFound = (auth) => {
   const theme = useTheme();
   const classes = useStyles();
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
-  console.log(isAuthenticated);
+
   return (
     <>
       <Typography
         className={
-          isAuthenticated === undefined || isAuthenticated === false
+          auth === undefined || auth === false
             ? classes.notAuthHeading
             : classes.heading
         }
@@ -44,7 +44,7 @@ const NotFound = ({isAuthenticated}) => {
       </Typography>
       <Divider
         className={
-          isAuthenticated === undefined || isAuthenticated === false
+          auth === undefined || auth === false
             ? classes.notAuthHeading
             : classes.divider
         }
@@ -52,7 +52,7 @@ const NotFound = ({isAuthenticated}) => {
       <Container maxWidth={'lg'} className={classes.container}>
         <Typography
           className={
-            isAuthenticated === undefined || isAuthenticated === false
+            auth === undefined || auth === false
               ? classes.notAuthHeading
               : classes.heading
           }

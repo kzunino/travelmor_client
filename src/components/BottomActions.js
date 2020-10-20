@@ -147,11 +147,11 @@ const BottomActions = ({trip_data}) => {
 
           <BottomNavigationAction
             classes={{wrapper: classes.wrapper, root: classes.navActionButtons}}
-            label='Trips'
+            label='History'
             icon={<HistoryIcon />}
             disableRipple
             component={Link}
-            to='/history'
+            to={`/history/${trip_uid}`}
           />
         </BottomNavigation>
       </Grid>
