@@ -28,7 +28,7 @@ const theme = createMuiTheme({
       main: white,
     },
     boxContentBudgetHeading: {
-      main: lightGray,
+      main: offWhite,
     },
     boxContentBudgetData: {
       main: white,
@@ -46,31 +46,31 @@ const theme = createMuiTheme({
   },
   typography: {
     h2: {
-      fontFamily: 'Raleway',
+      fontFamily: 'Roboto',
       fontWeight: 700,
       fontSize: '2.5rem',
       lineHeight: 1.5,
     },
     h3: {
-      fontFamily: 'Raleway',
+      fontFamily: 'Roboto',
       fontSize: '2rem',
       fontWeight: 700,
       lineHeight: 1.5,
     },
     h4: {
-      fontFamily: 'Raleway',
+      fontFamily: 'Roboto',
       fontSize: '1.75rem',
       fontWeight: 700,
       lineHeight: 1.5,
     },
     h5: {
-      fontFamily: 'Raleway',
+      fontFamily: 'Roboto',
       fontSize: '1.50rem',
       fontWeight: 700,
       lineHeight: 1.5,
     },
     h6: {
-      fontFamily: 'Raleway',
+      fontFamily: 'Roboto',
       fontSize: '1.25rem',
       fontWeight: 700,
       lineHeight: 1.5,
@@ -79,12 +79,13 @@ const theme = createMuiTheme({
       lineHeight: 1.25,
       fontSize: '1rem',
       fontWeight: 500,
+      color: offWhite,
     },
     subtitle2: {
       lineHeight: 1.25,
       fontSize: '.75rem',
       fontWeight: 500,
-      color: lightGray,
+      color: offWhite,
     },
     body1: {
       lineHeight: 1,
@@ -95,7 +96,7 @@ const theme = createMuiTheme({
   overrides: {
     MuiTableSortLabel: {
       root: {
-        color: lightGray,
+        color: offWhite,
         '&:hover': {
           color: 'white',
         },

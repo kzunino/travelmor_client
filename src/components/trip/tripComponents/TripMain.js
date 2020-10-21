@@ -24,9 +24,6 @@ const useStyles = makeStyles((theme) => ({
     padding: '1em',
     textAlign: 'left',
   },
-  budgetHeading: {
-    color: theme.palette.boxContentBudgetHeading.main,
-  },
   headingBox: {
     padding: 15,
     borderRadius: 3,
@@ -213,11 +210,7 @@ const TripMain = ({tripData}) => {
             <Grid container justify='center'>
               <Grid item>
                 <Typography variant={matchXs ? 'h4' : 'h3'}>{name}</Typography>
-                <Typography
-                  variant='subtitle2'
-                  align='center'
-                  className={classes.budgetHeading}
-                >
+                <Typography variant='subtitle2' align='center'>
                   {Moment(start_date).format('MMM Do')} &ndash;{' '}
                   {Moment(end_date).format('MMM Do')}
                 </Typography>
@@ -227,21 +220,11 @@ const TripMain = ({tripData}) => {
           <Grid item>
             <Grid container justify='space-around' direction='row'>
               <Grid item className={classes.mainBoxBudgetItems}>
-                <Typography
-                  variant='subtitle2'
-                  className={classes.budgetHeading}
-                >
-                  trip budget
-                </Typography>
+                <Typography variant='subtitle2'>trip budget</Typography>
                 <Typography variant='h6'>${total_budget}</Typography>
               </Grid>
               <Grid item className={classes.mainBoxBudgetItems}>
-                <Typography
-                  variant='subtitle2'
-                  className={classes.budgetHeading}
-                >
-                  daily budget
-                </Typography>
+                <Typography variant='subtitle2'>daily budget</Typography>
                 <Typography variant='h6'>${daily_budget}</Typography>
               </Grid>
             </Grid>

@@ -142,13 +142,19 @@ const EditTrip = ({
 
   let {tripName, totalBudget, tripLength} = tripFormData;
 
-  useEffect(() => {
-    setForeignCurrencies(
-      currencies.map((currency) => {
-        return currency.currency;
-      })
-    );
-  }, [currencies]);
+  // creates an array with currencies already selected for trip
+  let previouslyChosenCurrencies = currencies.map((currency) => {
+    return currency.currency;
+  });
+  console.log(previouslyChosenCurrencies);
+
+  // useEffect(() => {
+  //   setForeignCurrencies(
+  //     currencies.map((currency) => {
+  //       return currency.currency;
+  //     })
+  //   );
+  // }, [currencies]);
 
   // If state is changed  on user's information reveals the update button
   const handleUserData = (e) => {
@@ -262,22 +268,9 @@ const EditTrip = ({
 
         // Dispatch add new currencies to database and state
         addCurrencies({currencyRates}, {trip_uid}, {user});
+        setForeignCurrencies([]);
       }
     }
-
-    // Check to see if foreign currencies have been altered. If current ones are missing
-    // delete the currency. If extra are added, add currencies
-
-    // if (currencies.length) {
-    //   // filter to find if currency from original array is missing
-    //   // ["USD", "COP"]
-    //   let previousCurrencies = currencies.map((curr) => curr.currency);
-    //   let removedCurrencies = previousCurrencies.filter(
-    //     (curr) => !foreignCurrencies.includes(curr)
-    //   );
-
-    //   // Delete Currencies
-    // }
 
     setHidden(true);
   };
@@ -438,14 +431,21 @@ const EditTrip = ({
               renderValue={(selected) => (
                 <div className={classes.chips}>
                   {selected.map((value) => (
-                    <Chip key={value} label={value} className={classes.chip} />
+                    <Chip
+                      key={value}
+                      label={value}
+                      className={classes.chip}
+                      onDelete
+                    />
                   ))}
                 </div>
               )}
               MenuProps={MenuProps}
             >
               {countryData.map((country) =>
-                country.countries.length > 1 ? (
+                country.countries.length > 1 &&
+                !previouslyChosenCurrencies.includes(country.code) &&
+                home_currency !== country.code ? (
                   country.countries.map((place, index) => (
                     <MenuItem
                       key={country.number + country.code + index}
@@ -455,7 +455,8 @@ const EditTrip = ({
                       {`${country.code} - ${place}`}
                     </MenuItem>
                   ))
-                ) : (
+                ) : !previouslyChosenCurrencies.includes(country.code) &&
+                  home_currency !== country.code ? (
                   <MenuItem
                     key={country.number + country.code}
                     value={`${country.code}`}
@@ -463,7 +464,7 @@ const EditTrip = ({
                   >
                     {`${country.code} - ${country.countries}`}
                   </MenuItem>
-                )
+                ) : null
               )}
             </Select>
           </FormControl>

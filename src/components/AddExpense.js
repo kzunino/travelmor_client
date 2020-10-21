@@ -148,6 +148,10 @@ const AddExpense = ({
     exchangeRate = parseFloat(exchangeRate).toFixed(3);
     conversion = parseFloat(conversion).toFixed(3);
 
+    console.log(expense_cost, typeof expense_cost);
+    if (expense_cost > 10000000000)
+      return createAlerts({validation_error: "Cost can't exceed 9 billion"});
+
     //check if all field are filled out - send alerts
     if (
       !expenseName ||
