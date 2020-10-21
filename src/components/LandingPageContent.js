@@ -186,7 +186,7 @@ const LandingPageContent = () => {
                     >
                       Start planning your next trip today
                     </Typography>
-                    <Typography variant='subtitle1'>
+                    <Typography variant='body1'>
                       Be it a trip to Bali or a trip around the world on a
                       shoestring, easily keep to your spending goals.
                       <Divider
@@ -251,7 +251,7 @@ const LandingPageContent = () => {
                     >
                       Smart &amp; Easy Budgeting
                     </Typography>
-                    <Typography variant='subtitle1'>
+                    <Typography variant='body1'>
                       An easy way to monitor your travel budget to make the most
                       of your experiences.
                       <Divider
@@ -316,7 +316,7 @@ const LandingPageContent = () => {
                     >
                       International like you
                     </Typography>
-                    <Typography variant='subtitle1'>
+                    <Typography variant='body1'>
                       Travelmor. helps you manage your finances from anywhere in
                       the world.
                       <Divider

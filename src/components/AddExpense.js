@@ -150,7 +150,7 @@ const AddExpense = ({
 
     console.log(expense_cost, typeof expense_cost);
     if (expense_cost > 10000000000)
-      return createAlerts({validation_error: "Cost can't exceed 9 billion"});
+      return createAlerts({validation_error: "Cost can't exceed 10 billion"});
 
     //check if all field are filled out - send alerts
     if (
