@@ -84,7 +84,7 @@ const TripBudgetBoxes = ({tripData}) => {
   // const theme = useTheme();
   const classes = useStyles();
 
-  const {total_budget, length, expenses, end_date} = tripData;
+  const {total_budget, length, expenses, end_date, start_date} = tripData;
 
   let todayExpenses;
   let totalSpentToday = 0;
@@ -94,13 +94,17 @@ const TripBudgetBoxes = ({tripData}) => {
   let new_daily_average = 0;
   let total_budget_spent = 0;
   let total_budget_remaining = 0;
-  let days_left;
+  let days_left = 0;
+
+  let todaysDate = Moment(Date.now());
+  let startDate = Moment(start_date);
+  let endDate = Moment(end_date);
 
   // When props are passed down and render logic executes to make calculations
   if (expenses) {
     //filters all expenses except for today's expenses
     todayExpenses = expenses.filter((expense) => {
-      return Moment(expense.purchase_date).isSame(Moment(Date.now()), 'days')
+      return Moment(expense.purchase_date).isSame(todaysDate, 'days')
         ? expense
         : null;
     });
@@ -113,15 +117,20 @@ const TripBudgetBoxes = ({tripData}) => {
     total_budget_spent = reduceExpenses(expenses).toFixed(2);
     total_budget_remaining = (total_budget - total_budget_spent).toFixed(2);
 
-    // calculates how many days left in trip not including today
-    days_left = Moment(end_date).diff(Date.now(), 'days');
+    // if todays date is within trip boundaries
+    // calculate how many days of the trip are left
+
+    if (todaysDate.isAfter(startDate) && todaysDate.isBefore(endDate)) {
+      // calculates how many days left in trip not including today
+      days_left = endDate.diff(todaysDate, 'days');
+    }
 
     // calculates the overall trip average and new daily budget to stay
     // on budget target
     if (total_budget_spent <= 0) {
       daily_average = 0;
     } else {
-      daily_average = (total_budget_spent / (length - days_left)).toFixed(2);
+      daily_average = (total_budget_spent / length).toFixed(2);
     }
 
     // edge case - if days left is zero then there is one day remaining
