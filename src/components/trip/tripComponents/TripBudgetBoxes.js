@@ -1,5 +1,4 @@
 import React from 'react';
-// import {Link} from 'react-router-dom';
 
 import Moment from 'moment';
 import Typography from '@material-ui/core/Typography';
@@ -94,7 +93,7 @@ const TripBudgetBoxes = ({tripData}) => {
   let new_daily_average = 0;
   let total_budget_spent = 0;
   let total_budget_remaining = 0;
-  let days_left = 0;
+  let days_left = length;
 
   let todaysDate = Moment(Date.now());
   let startDate = Moment(start_date);
@@ -119,8 +118,11 @@ const TripBudgetBoxes = ({tripData}) => {
 
     // if todays date is within trip boundaries
     // calculate how many days of the trip are left
-
-    if (todaysDate.isAfter(startDate) && todaysDate.isBefore(endDate)) {
+    if (
+      (todaysDate.isAfter(startDate) && todaysDate.isBefore(endDate)) ||
+      todaysDate.isSame(startDate) ||
+      todaysDate.isSame(endDate)
+    ) {
       // calculates how many days left in trip not including today
       days_left = endDate.diff(todaysDate, 'days');
     }
@@ -137,6 +139,7 @@ const TripBudgetBoxes = ({tripData}) => {
     if (days_left <= 0) {
       days_left = 1;
     }
+    console.log(total_budget_remaining, days_left);
     new_daily_average = (total_budget_remaining / days_left).toFixed(2);
   }
 
