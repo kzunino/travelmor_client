@@ -67,18 +67,18 @@ const useStyles = makeStyles((theme) => ({
   budgetField: {
     width: '50%',
   },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-    verticalAlign: 'bottom',
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-    width: '10em',
-  },
-  selectMenu: {
-    maxHeight: '15em',
-  },
+  // formControl: {
+  //   margin: theme.spacing(1),
+  //   minWidth: 120,
+  //   verticalAlign: 'bottom',
+  // },
+  // selectEmpty: {
+  //   marginTop: theme.spacing(2),
+  //   width: '10em',
+  // },
+  // selectMenu: {
+  //   maxHeight: '15em',
+  // },
   submit: {
     margin: theme.spacing(3, 1, 2),
     color: 'white',
@@ -95,12 +95,22 @@ const useStyles = makeStyles((theme) => ({
   noLabel: {
     marginTop: theme.spacing(3),
   },
+
   currencyField: {
-    minWidth: 100,
-    width: '50%',
-    marginTop: '2em',
+    width: 300,
+    marginTop: '1em',
     marginBottom: '2em',
   },
+  fieldDescription: {
+    fontSize: '.5em',
+  },
+  menuItemRoot: {
+    '&$menuItemSelected, &$menuItemSelected:focus, &$menuItemSelected:hover': {
+      backgroundColor: theme.palette.listItems.selected,
+    },
+  },
+  /* Styles applied to the root element if `selected={true}`. */
+  menuItemSelected: {},
 }));
 
 function getStyles(name, personName, theme) {
@@ -157,6 +167,8 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
         width: 350,
       },
     },
+    variant: 'menu',
+    getContentAnchorEl: null,
   };
 
   // When a currency is selected, it gets the exchange rate and sets state to
@@ -247,7 +259,7 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
         <CssBaseline />
 
         <form className={classes.form} onSubmit={onSubmit} noValidate>
-          <Grid container direction='column' spacing={2}>
+          <Grid container direction='column' spacing={0}>
             <Grid item>
               <TextField
                 variant='standard'
@@ -265,73 +277,30 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
             </Grid>
 
             <Grid item>
-              <TextField
-                className={classes.budgetField}
-                variant='standard'
-                margin='normal'
-                required
-                fullWidth
-                name='total_budget'
-                value={total_budget}
-                onChange={(e) => handleChange(e)}
-                label='Budget Total'
-                type='number'
-                placeholder='0.00'
-                InputProps={{inputProps: {min: 0}}}
-                id='total_budget'
-              />
-            </Grid>
-
-            <Grid item>
-              <FormControl className={classes.currencyField}>
-                <InputLabel>Foreign Currencies</InputLabel>
-                <Select
-                  multiple
-                  value={currencies}
-                  onChange={handleCurrencyChange}
-                  input={<Input id='select-multiple-chip' />}
-                  renderValue={(selected) => (
-                    <div className={classes.chips}>
-                      {selected.map((value) => (
-                        <Chip
-                          key={value}
-                          label={value}
-                          className={classes.chip}
-                          onDelete={() => {
-                            removeCurrencyFromInput(value);
-                          }}
-                          onMouseDown={(event) => {
-                            event.stopPropagation();
-                          }}
-                        />
-                      ))}
-                    </div>
-                  )}
-                  MenuProps={MenuProps}
-                >
-                  {countryData.map((country) =>
-                    country.countries.length > 1 ? (
-                      country.countries.map((place, index) => (
-                        <MenuItem
-                          key={country.number + country.code + index}
-                          value={`${country.code}`}
-                          style={getStyles(name, currencies, theme)}
-                        >
-                          {`${country.code} - ${place}`}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem
-                        key={country.number + country.code}
-                        value={`${country.code}`}
-                        style={getStyles(name, currencies, theme)}
-                      >
-                        {`${country.code} - ${country.countries}`}
-                      </MenuItem>
-                    )
-                  )}
-                </Select>
-              </FormControl>
+              <Grid container direction='column'>
+                <Grid item>
+                  <TextField
+                    className={classes.budgetField}
+                    variant='standard'
+                    margin='normal'
+                    required
+                    fullWidth
+                    name='total_budget'
+                    value={total_budget}
+                    onChange={(e) => handleChange(e)}
+                    label='Budget Total'
+                    type='number'
+                    placeholder='0.00'
+                    InputProps={{inputProps: {min: 0}}}
+                    id='total_budget'
+                  />
+                </Grid>
+                <Grid item>
+                  <Typography className={classes.fieldDescription}>
+                    * Trip budget is in {home_currency}
+                  </Typography>
+                </Grid>
+              </Grid>
             </Grid>
 
             <Grid item>
@@ -373,6 +342,79 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
                   />
                 </Grid>
               </Grid>
+            </Grid>
+
+            <Grid item>
+              <FormControl className={classes.currencyField}>
+                <InputLabel>Foreign Currencies (optional)</InputLabel>
+                <Select
+                  multiple
+                  value={currencies}
+                  onChange={handleCurrencyChange}
+                  input={<Input id='select-multiple-chip' />}
+                  renderValue={(selected) => (
+                    <div className={classes.chips}>
+                      {selected.map((value) => (
+                        <Chip
+                          key={value}
+                          label={value}
+                          className={classes.chip}
+                          onDelete={() => {
+                            removeCurrencyFromInput(value);
+                          }}
+                          onMouseDown={(event) => {
+                            event.stopPropagation();
+                          }}
+                        />
+                      ))}
+                    </div>
+                  )}
+                  MenuProps={MenuProps}
+                >
+                  {countryData.map((country) =>
+                    country.countries.length > 1 ? (
+                      country.countries.map((place, index) => (
+                        <MenuItem
+                          key={country.number + country.code + index}
+                          value={`${country.code}`}
+                          style={getStyles(name, currencies, theme)}
+                          classes={{
+                            root: classes.menuItemRoot,
+                            selected: classes.menuItemSelected,
+                          }}
+                        >
+                          {`${country.code} - ${place}`}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem
+                        key={country.number + country.code}
+                        value={`${country.code}`}
+                        style={getStyles(name, currencies, theme)}
+                        classes={{
+                          root: classes.menuItemRoot,
+                          selected: classes.menuItemSelected,
+                        }}
+                      >
+                        {`${country.code} - ${country.countries}`}
+                      </MenuItem>
+                    )
+                  )}
+                </Select>
+                <Typography
+                  style={{marginTop: '1em'}}
+                  className={classes.fieldDescription}
+                >
+                  *Select foreign currencies for countries you will visit
+                </Typography>
+                <Typography
+                  style={{marginTop: '.5em'}}
+                  className={classes.fieldDescription}
+                >
+                  *Countries that share currencies will automatically be
+                  selected
+                </Typography>
+              </FormControl>
             </Grid>
 
             <Button

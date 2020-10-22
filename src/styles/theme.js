@@ -43,6 +43,9 @@ const theme = createMuiTheme({
     inputLabels: {
       color: grey,
     },
+    listItems: {
+      selected: grey,
+    },
   },
   typography: {
     h2: {

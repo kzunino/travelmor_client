@@ -228,7 +228,7 @@ const TripBudgetBoxes = ({tripData}) => {
                 <Grid container justify='space-around'>
                   <Grid item>
                     <Typography variant='subtitle2' align='right'>
-                      daily avg.
+                      daily avg
                     </Typography>
                     <Typography variant='h6' align='right'>
                       ${daily_average}
@@ -236,7 +236,7 @@ const TripBudgetBoxes = ({tripData}) => {
                   </Grid>
                   <Grid item>
                     <Typography variant='subtitle2' align='right'>
-                      new daily budget.
+                      new daily budget
                     </Typography>
                     <Typography variant='h6' align='right'>
                       ${new_daily_average}
