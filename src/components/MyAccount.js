@@ -37,27 +37,17 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     backgroundColor: theme.palette.boxContentBudgetData.main,
   },
-  // inputs: {
-  //   color: '#fff',
-  //   '&:before': {
-  //     borderColor: theme.palette.formInputs.border,
-  //   },
-  //   '&:hover': {
-  //     color: theme.palette.formInputs.text,
-  //   },
-  // },
-  // inputLabels: {
-  //   color: theme.palette.formInputs.border,
-  // },
-
   email: {
     width: 300,
   },
+  input: {
+    width: 250,
+  },
   selectEmpty: {
+    width: 250,
     '&:before': {
       borderColor: theme.palette.formInputs.border,
     },
-    width: '10em',
   },
   selectMenu: {
     maxHeight: '15em',
@@ -147,14 +137,8 @@ const MyAccount = ({
             <Grid item>
               <TextField
                 autoFocus
-                className={classes.inputs}
+                className={classes.input}
                 variant='standard'
-                InputProps={{
-                  className: classes.inputs,
-                }}
-                InputLabelProps={{
-                  className: classes.inputLabels,
-                }}
                 margin='normal'
                 required
                 id='first_name'
@@ -170,13 +154,8 @@ const MyAccount = ({
             <Grid item>
               <TextField
                 variant='standard'
+                className={classes.input}
                 margin='normal'
-                InputProps={{
-                  className: classes.inputs,
-                }}
-                InputLabelProps={{
-                  className: classes.inputLabels,
-                }}
                 required
                 id='last_name'
                 label='Last Name'
@@ -192,12 +171,6 @@ const MyAccount = ({
               <TextField
                 variant='standard'
                 margin='normal'
-                InputProps={{
-                  className: classes.inputs,
-                }}
-                InputLabelProps={{
-                  className: classes.inputLabels,
-                }}
                 required
                 className={classes.email}
                 id='email'
@@ -213,9 +186,7 @@ const MyAccount = ({
             <Grid item>
               {/* ------ Currency Input ----- */}
               <FormControl required className={classes.formControl}>
-                <InputLabel id='required-label' className={classes.inputLabels}>
-                  Home Currency
-                </InputLabel>
+                <InputLabel id='required-label'>Home Currency</InputLabel>
                 <Select
                   id='currency'
                   value={homeCurrency}
@@ -224,9 +195,7 @@ const MyAccount = ({
                     handleUserData(e);
                   }}
                   className={classes.selectEmpty}
-                  inputProps={{
-                    className: classes.inputs,
-                  }} // accesses the menu styles
+                  // accesses the menu styles
                   MenuProps={{classes: {list: classes.selectMenu}}}
                 >
                   <MenuItem value={'USD'}>USD</MenuItem>
