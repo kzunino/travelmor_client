@@ -179,6 +179,13 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
     setFormData({...formData, [e.target.name]: e.target.value});
   };
 
+  const removeCurrencyFromInput = (curr) => {
+    let updatedForeignCurrencies = currencies.filter(
+      (currency) => currency !== curr
+    );
+    setCurrencies(updatedForeignCurrencies);
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -290,6 +297,12 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
                           key={value}
                           label={value}
                           className={classes.chip}
+                          onDelete={() => {
+                            removeCurrencyFromInput(value);
+                          }}
+                          onMouseDown={(event) => {
+                            event.stopPropagation();
+                          }}
                         />
                       ))}
                     </div>
