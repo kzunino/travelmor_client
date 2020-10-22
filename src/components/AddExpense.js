@@ -95,6 +95,8 @@ const AddExpense = ({
   trip_uid,
   addExpense,
   user_id,
+  start_date,
+  end_date,
   createAlerts,
   handleClose,
 }) => {
@@ -102,8 +104,23 @@ const AddExpense = ({
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles();
 
+  const startDate = Moment(start_date);
+  const endDate = Moment(end_date);
+  const todaysDate = Moment();
+
+  let defaultDate = startDate;
+  // if todays date is within trip boundaries
+  // calculate how many days of the trip are left
+  if (
+    (todaysDate.isAfter(startDate) && todaysDate.isBefore(endDate)) ||
+    todaysDate.isSame(startDate) ||
+    todaysDate.isSame(endDate)
+  ) {
+    defaultDate = todaysDate;
+  }
+
   // date state
-  const [selectedExpenseDate, setSelectedExpenseDate] = useState(Date.now());
+  const [selectedExpenseDate, setSelectedExpenseDate] = useState(defaultDate);
 
   // Initialize default state values
   const [formData, setFormData] = useState({
@@ -129,7 +146,7 @@ const AddExpense = ({
     // default exchange rate is 1
     let exchangeRate = 1;
     let expense_cost = expenseCost;
-    // conversion is either home currency cost or converted foreign currency
+    // conversion rate is either home currency cost or converted foreign currency
     let conversion = expenseCost;
 
     /* If foreign currency is selected, find index of currency and assign new
@@ -292,6 +309,8 @@ const AddExpense = ({
                   disableToolbar
                   variant='inline'
                   format='MM/DD/yyyy'
+                  maxDate={endDate}
+                  minDate={startDate}
                   margin='normal'
                   id='date-picker-inline'
                   label='Date'
@@ -322,12 +341,16 @@ const AddExpense = ({
 
 addExpense.propTypes = {
   addExpense: PropTypes.func.isRequired,
-  user_id: PropTypes.string.isRequired,
   createAlerts: PropTypes.func.isRequired,
+  user_id: PropTypes.string.isRequired,
+  start_date: PropTypes.string.isRequired,
+  end_date: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   user_id: state.auth.user.id,
+  start_date: state.trips.start_date,
+  end_date: state.trips.end_date,
 });
 
 export default connect(mapStateToProps, {addExpense, createAlerts})(AddExpense);
