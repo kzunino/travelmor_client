@@ -100,6 +100,7 @@ const AddExpense = ({
   handleClose,
 }) => {
   const theme = useTheme();
+  const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles();
 
   // date state
@@ -182,8 +183,6 @@ const AddExpense = ({
     //handle close is passed from Bottom Actions Comp to close modal on submit
     handleClose();
   };
-
-  const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
   return (
     <>

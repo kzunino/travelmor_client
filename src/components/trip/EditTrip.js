@@ -146,7 +146,6 @@ const EditTrip = ({
   let previouslyChosenCurrencies = currencies.map((currency) => {
     return currency.currency;
   });
-  console.log(previouslyChosenCurrencies);
 
   // useEffect(() => {
   //   setForeignCurrencies(
@@ -214,6 +213,18 @@ const EditTrip = ({
     }
   };
 
+  const handleDeleteTrip = () => {
+    deleteTrip(trip_uid);
+    history.push('/dashboard');
+  };
+
+  const removeCurrencyFromInput = (curr) => {
+    let updatedForeignCurrencies = foreignCurrencies.filter(
+      (currency) => currency !== curr
+    );
+    setForeignCurrencies(updatedForeignCurrencies);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -273,11 +284,6 @@ const EditTrip = ({
     }
 
     setHidden(true);
-  };
-
-  const handleDeleteTrip = () => {
-    deleteTrip(trip_uid);
-    history.push('/dashboard');
   };
 
   const ITEM_HEIGHT = 48;
@@ -435,7 +441,12 @@ const EditTrip = ({
                       key={value}
                       label={value}
                       className={classes.chip}
-                      onDelete
+                      onDelete={() => {
+                        removeCurrencyFromInput(value);
+                      }}
+                      onMouseDown={(event) => {
+                        event.stopPropagation();
+                      }}
                     />
                   ))}
                 </div>
