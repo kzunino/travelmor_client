@@ -71,9 +71,8 @@ const useStyles = makeStyles((theme) => ({
     width: '50%',
   },
   formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-    verticalAlign: 'bottom',
+    width: 150,
+    marginTop: '1em',
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -189,7 +188,7 @@ const AddExpense = ({
       <Grid container direction='column' className={classes.containerWrapper}>
         {/* -----Welcome Container----- */}
         <Grid item>
-          <Typography variant={matchXs ? 'h4' : 'h2'}>
+          <Typography variant={matchXs ? 'h6' : 'h2'}>
             {name} - Add New Expense
           </Typography>
         </Grid>
@@ -201,97 +200,109 @@ const AddExpense = ({
             onSubmit={(e) => onSubmit(e)}
             noValidate
           >
-            <TextField
-              variant='standard'
-              margin='normal'
-              required
-              fullWidth
-              id='expenseName'
-              label='Expense Name'
-              value={expenseName}
-              name='expenseName'
-              onChange={(e) => handleChange(e)}
-              autoFocus
-            />
+            <Grid container direction='column' spacing={0}>
+              <Grid item>
+                <TextField
+                  variant='standard'
+                  margin='normal'
+                  required
+                  fullWidth
+                  id='expenseName'
+                  label='Expense Name'
+                  value={expenseName}
+                  name='expenseName'
+                  onChange={(e) => handleChange(e)}
+                  autoFocus
+                />
+              </Grid>
 
-            <FormControl required className={classes.formControl}>
-              <InputLabel id='required-label'>Currency</InputLabel>
-              <Select
-                labelId='demo-simple-select-required-label'
-                id='demo-simple-select-required'
-                value={currency}
-                name='currency'
-                onChange={(e) => handleChange(e)}
-                className={classes.selectEmpty}
-              >
-                <MenuItem value={homeCurrency}>
-                  <em>{homeCurrency}</em>
-                </MenuItem>
-                {currencies
-                  ? currencies.map((currency, index) => (
-                      <MenuItem
-                        value={currency.currency}
-                        key={currency.currency + index}
-                      >
-                        {currency.currency}
-                      </MenuItem>
-                    ))
-                  : null}
-              </Select>
-            </FormControl>
+              <Grid item>
+                <FormControl required className={classes.formControl}>
+                  <InputLabel id='required-label'>Currency</InputLabel>
+                  <Select
+                    labelId='demo-simple-select-required-label'
+                    id='demo-simple-select-required'
+                    value={currency}
+                    name='currency'
+                    onChange={(e) => handleChange(e)}
+                    className={classes.selectEmpty}
+                  >
+                    <MenuItem value={homeCurrency}>
+                      <em>{homeCurrency}</em>
+                    </MenuItem>
+                    {currencies
+                      ? currencies.map((currency, index) => (
+                          <MenuItem
+                            value={currency.currency}
+                            key={currency.currency + index}
+                          >
+                            {currency.currency}
+                          </MenuItem>
+                        ))
+                      : null}
+                  </Select>
+                </FormControl>
+              </Grid>
 
-            <TextField
-              className={classes.budgetField}
-              variant='standard'
-              margin='normal'
-              required
-              fullWidth
-              name='expenseCost'
-              value={expenseCost}
-              onChange={(e) => handleChange(e)}
-              // step="0.01"
-              label='Cost'
-              type='number'
-            />
+              <Grid item>
+                <TextField
+                  className={classes.budgetField}
+                  variant='standard'
+                  margin='normal'
+                  required
+                  fullWidth
+                  name='expenseCost'
+                  value={expenseCost}
+                  onChange={(e) => handleChange(e)}
+                  // step="0.01"
+                  label='Cost'
+                  type='number'
+                />
+              </Grid>
 
-            {/* ------ Type Input ----- */}
-            <FormControl required className={classes.formControl}>
-              <InputLabel>Type</InputLabel>
-              <Select
-                value={expenseType}
-                name='expenseType'
-                onChange={(e) => handleChange(e)}
-                className={classes.selectEmpty}
-              >
-                <MenuItem value='uncategorized'>
-                  <em>Uncategorized</em>
-                </MenuItem>
-                <MenuItem value={'accommodation'}>Accommodation</MenuItem>
-                <MenuItem value={'food'}>Food</MenuItem>
-                <MenuItem value={'transportation'}>Transportation</MenuItem>
-                <MenuItem value={'entertainment'}>Entertainment</MenuItem>
-                <MenuItem value={'tours'}>Tours</MenuItem>
-                <MenuItem value={'shopping'}>Shopping</MenuItem>
-                <MenuItem value={'gifts'}>Gifts</MenuItem>
-                <MenuItem value={'fees'}>Fees</MenuItem>
-                <MenuItem value={'emergencies'}>Emergencies</MenuItem>
-                <MenuItem value={'miscellaneous'}>Miscellaneous</MenuItem>
-              </Select>
-            </FormControl>
+              <Grid item>
+                {/* ------ Type Input ----- */}
+                <FormControl required className={classes.formControl}>
+                  <InputLabel>Type</InputLabel>
+                  <Select
+                    value={expenseType}
+                    name='expenseType'
+                    onChange={(e) => handleChange(e)}
+                    className={classes.selectEmpty}
+                  >
+                    <MenuItem value='uncategorized'>
+                      <em>Uncategorized</em>
+                    </MenuItem>
+                    <MenuItem value={'accommodation'}>Accommodation</MenuItem>
+                    <MenuItem value={'food'}>Food</MenuItem>
+                    <MenuItem value={'transportation'}>Transportation</MenuItem>
+                    <MenuItem value={'entertainment'}>Entertainment</MenuItem>
+                    <MenuItem value={'tours'}>Tours</MenuItem>
+                    <MenuItem value={'shopping'}>Shopping</MenuItem>
+                    <MenuItem value={'gifts'}>Gifts</MenuItem>
+                    <MenuItem value={'fees'}>Fees</MenuItem>
+                    <MenuItem value={'emergencies'}>Emergencies</MenuItem>
+                    <MenuItem value={'miscellaneous'}>Miscellaneous</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
 
-            <KeyboardDatePicker
-              disableToolbar
-              variant='inline'
-              format='MM/DD/yyyy'
-              margin='normal'
-              id='date-picker-inline'
-              label='Date'
-              value={selectedExpenseDate}
-              onChange={handleExpenseDate}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-            />
+              <Grid item>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant='inline'
+                  format='MM/DD/yyyy'
+                  margin='normal'
+                  id='date-picker-inline'
+                  label='Date'
+                  value={selectedExpenseDate}
+                  onChange={handleExpenseDate}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </Grid>
+            </Grid>
 
             <Button
               type='submit'

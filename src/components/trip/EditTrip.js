@@ -85,6 +85,9 @@ const useStyles = makeStyles((theme) => ({
   noLabel: {
     marginTop: theme.spacing(3),
   },
+  dateField: {
+    marginTop: '1em',
+  },
   currencyField: {
     width: 300,
     marginTop: '1em',
@@ -414,7 +417,7 @@ const EditTrip = ({
               </Grid>
             </Grid>
 
-            <Grid item>
+            <Grid item className={classes.dateField}>
               <Grid
                 container
                 direction='row'
@@ -525,8 +528,7 @@ const EditTrip = ({
                   style={{marginTop: '.5em'}}
                   className={classes.fieldDescription}
                 >
-                  *Countries that share currencies will automatically be
-                  selected
+                  *Countries that share currency will automatically be selected
                 </Typography>
               </FormControl>
             </Grid>
