@@ -139,7 +139,6 @@ const TripBudgetBoxes = ({tripData}) => {
     if (days_left <= 0) {
       days_left = 1;
     }
-    console.log(total_budget_remaining, days_left);
     new_daily_average = (total_budget_remaining / days_left).toFixed(2);
   }
 
