@@ -1,9 +1,9 @@
 import React, {useState, forwardRef, useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
-
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {deleteExpense, updateExpense} from '../../../actions/expenses';
+import {createAlerts} from '../../../actions/alerts';
 
 import Moment from 'moment';
 import Grid from '@material-ui/core/Grid';
@@ -11,7 +11,6 @@ import Box from '@material-ui/core/Box';
 
 // Table
 import MaterialTable, {MTableEditField} from 'material-table';
-
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
@@ -38,10 +37,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TripTable = ({tripData, deleteExpense, updateExpense}) => {
+const TripTable = ({tripData, deleteExpense, updateExpense, createAlerts}) => {
   const classes = useStyles();
 
-  const {name, home_currency, expenses} = tripData;
+  const {name, home_currency, expenses, start_date, end_date} = tripData;
+  const startDate = Moment(start_date);
+  const endDate = Moment(end_date);
 
   const [tableData, setTableData] = useState({
     columns: [
@@ -247,28 +248,47 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
                       setTimeout(() => {
                         resolve();
 
-                        // setEditExpense(newData);
-                        updateExpense(newData);
+                        let newPurchaseDate = (newData.purchase_date = Moment(
+                          newData.purchase_date,
+                          'MM/DD/YYYY'
+                        ));
 
-                        if (oldData) {
-                          setTableData((prevState) => {
-                            const data = [...prevState.data];
+                        console.log(newPurchaseDate);
 
-                            // Calculates the home cost by converting currency spent
-                            newData.cost = (
-                              parseFloat(newData.cost_conversion) /
-                              parseFloat(newData.exchange_rate)
-                            ).toFixed(2);
+                        if (
+                          (newPurchaseDate.isAfter(startDate) &&
+                            newPurchaseDate.isBefore(endDate)) ||
+                          newPurchaseDate.isSame(startDate) ||
+                          newPurchaseDate.isSame(endDate)
+                        ) {
+                          // setEditExpense(newData);
+                          updateExpense(newData);
 
-                            // Changes date format in table on update
-                            newData.purchase_date = Moment(
-                              newData.purchase_date,
-                              'MM/DD/YYYY'
-                            ).format('MM-DD-YYYY');
+                          if (oldData) {
+                            setTableData((prevState) => {
+                              const data = [...prevState.data];
 
-                            data[data.indexOf(oldData)] = newData;
+                              // Calculates the home cost by converting currency spent
+                              newData.cost = (
+                                parseFloat(newData.cost_conversion) /
+                                parseFloat(newData.exchange_rate)
+                              ).toFixed(2);
 
-                            return {...prevState, data};
+                              // Changes date format in table on update
+                              newData.purchase_date = Moment(
+                                newData.purchase_date,
+                                'MM/DD/YYYY'
+                              ).format('MM-DD-YYYY');
+
+                              data[data.indexOf(oldData)] = newData;
+
+                              return {...prevState, data};
+                            });
+                          }
+                        } else {
+                          createAlerts({
+                            validation_error:
+                              'Purchase date outside trip range',
                           });
                         }
                       }, 600);
@@ -298,6 +318,9 @@ const TripTable = ({tripData, deleteExpense, updateExpense}) => {
 TripTable.propTypes = {
   deleteExpense: PropTypes.func.isRequired,
   updateExpense: PropTypes.func.isRequired,
+  createAlerts: PropTypes.func.isRequired,
 };
 
-export default connect(null, {deleteExpense, updateExpense})(TripTable);
+export default connect(null, {deleteExpense, updateExpense, createAlerts})(
+  TripTable
+);
