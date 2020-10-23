@@ -1,6 +1,7 @@
 import React from 'react';
 import Moment from 'moment';
 import getSymbolFromCurrency from 'currency-symbol-map';
+import CurrencyFormat from 'react-currency-format';
 
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -13,7 +14,6 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 
 import {makeStyles} from '@material-ui/core/styles';
-// import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -74,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
 
 // Sum of all expense objects from state for each day
 // if none, then 0 is default value
+// returns float
 const reduceExpenses = (obj) => {
   return obj.reduce((acc, item) => {
     return acc + parseFloat(item.cost);
@@ -81,7 +82,6 @@ const reduceExpenses = (obj) => {
 };
 
 const TripBudgetBoxes = ({tripData}) => {
-  // const theme = useTheme();
   const classes = useStyles();
 
   const {
@@ -116,16 +116,12 @@ const TripBudgetBoxes = ({tripData}) => {
         : null;
     });
 
-    // calculates total spent today and how much of todays daily budget remains
+    // calculates total spent today
     totalSpentToday = reduceExpenses(todayExpenses);
-    day_remaining = (daily_budget - totalSpentToday).toFixed(2);
-
-    // calculates total spent and remaining in budget
-    total_budget_spent = reduceExpenses(expenses).toFixed(2);
-    total_budget_remaining = (total_budget - total_budget_spent).toFixed(2);
 
     // if todays date is within trip boundaries
     // calculate how many days of the trip are left
+    // calculates how much can be spent today to stay within average budget
     if (
       (todaysDate.isAfter(startDate) && todaysDate.isBefore(endDate)) ||
       todaysDate.isSame(startDate) ||
@@ -133,7 +129,16 @@ const TripBudgetBoxes = ({tripData}) => {
     ) {
       // calculates how many days left in trip not including today
       days_left = endDate.diff(todaysDate, 'days');
+      // calcultes how much can be spent today
+      day_remaining = parseFloat((daily_budget - totalSpentToday).toFixed(2));
+    } else {
+      // if todays date is outside trip boundary then todays budget remaining is 0
+      day_remaining = 0;
     }
+
+    // calculates total spent and remaining in budget
+    total_budget_spent = reduceExpenses(expenses).toFixed(2);
+    total_budget_remaining = (total_budget - total_budget_spent).toFixed(2);
 
     // calculates the overall trip average and new daily budget to stay
     // on budget target
@@ -149,8 +154,6 @@ const TripBudgetBoxes = ({tripData}) => {
     }
     new_daily_average = (total_budget_remaining / days_left).toFixed(2);
   }
-
-  // const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
   return (
     <>
@@ -174,7 +177,7 @@ const TripBudgetBoxes = ({tripData}) => {
                         variant='h5'
                         className={classes.spendingWidgetTitle}
                       >
-                        {Moment(Date.now()).format('MMM Do')}
+                        {todaysDate.format('MMM Do')}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -186,10 +189,22 @@ const TripBudgetBoxes = ({tripData}) => {
                       spent today
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      {getSymbolFromCurrency(home_currency) !== undefined
+                      {/* {getSymbolFromCurrency(home_currency) !== undefined
                         ? getSymbolFromCurrency(home_currency)
                         : '$'}
-                      {totalSpentToday}
+                      {totalSpentToday} */}
+                      <CurrencyFormat
+                        value={totalSpentToday}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        fixedDecimalScale={true}
+                        decimalScale={2}
+                        prefix={
+                          getSymbolFromCurrency(home_currency) !== undefined
+                            ? getSymbolFromCurrency(home_currency)
+                            : '$'
+                        }
+                      />
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -205,10 +220,23 @@ const TripBudgetBoxes = ({tripData}) => {
                       }
                       align='right'
                     >
-                      {getSymbolFromCurrency(home_currency) !== undefined
+                      {/* {getSymbolFromCurrency(home_currency) !== undefined
                         ? getSymbolFromCurrency(home_currency)
                         : '$'}
-                      {day_remaining}
+                      {day_remaining} */}
+
+                      <CurrencyFormat
+                        value={day_remaining}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        fixedDecimalScale={true}
+                        decimalScale={2}
+                        prefix={
+                          getSymbolFromCurrency(home_currency) !== undefined
+                            ? getSymbolFromCurrency(home_currency)
+                            : '$'
+                        }
+                      />
                     </Typography>
                   </Grid>
                 </Grid>
@@ -245,10 +273,22 @@ const TripBudgetBoxes = ({tripData}) => {
                       daily avg
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      {getSymbolFromCurrency(home_currency) !== undefined
+                      {/* {getSymbolFromCurrency(home_currency) !== undefined
                         ? getSymbolFromCurrency(home_currency)
                         : '$'}
-                      {daily_average}
+                      {daily_average} */}
+                      <CurrencyFormat
+                        value={daily_average}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        fixedDecimalScale={true}
+                        decimalScale={2}
+                        prefix={
+                          getSymbolFromCurrency(home_currency) !== undefined
+                            ? getSymbolFromCurrency(home_currency)
+                            : '$'
+                        }
+                      />
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -256,10 +296,23 @@ const TripBudgetBoxes = ({tripData}) => {
                       adjusted budget
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      {getSymbolFromCurrency(home_currency) !== undefined
+                      {/* {getSymbolFromCurrency(home_currency) !== undefined
                         ? getSymbolFromCurrency(home_currency)
                         : '$'}
-                      {new_daily_average}
+                      {new_daily_average} */}
+
+                      <CurrencyFormat
+                        value={new_daily_average}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        fixedDecimalScale={true}
+                        decimalScale={2}
+                        prefix={
+                          getSymbolFromCurrency(home_currency) !== undefined
+                            ? getSymbolFromCurrency(home_currency)
+                            : '$'
+                        }
+                      />
                     </Typography>
                   </Grid>
                 </Grid>
@@ -297,10 +350,23 @@ const TripBudgetBoxes = ({tripData}) => {
                       total spent
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      {getSymbolFromCurrency(home_currency) !== undefined
+                      {/* {getSymbolFromCurrency(home_currency) !== undefined
                         ? getSymbolFromCurrency(home_currency)
                         : '$'}
-                      {total_budget_spent}
+                      {total_budget_spent} */}
+
+                      <CurrencyFormat
+                        value={total_budget_spent}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        fixedDecimalScale={true}
+                        decimalScale={2}
+                        prefix={
+                          getSymbolFromCurrency(home_currency) !== undefined
+                            ? getSymbolFromCurrency(home_currency)
+                            : '$'
+                        }
+                      />
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -316,10 +382,23 @@ const TripBudgetBoxes = ({tripData}) => {
                       }
                       align='right'
                     >
-                      {getSymbolFromCurrency(home_currency) !== undefined
+                      {/* {getSymbolFromCurrency(home_currency) !== undefined
                         ? getSymbolFromCurrency(home_currency)
                         : '$'}
-                      {total_budget_remaining}
+                      {total_budget_remaining} */}
+
+                      <CurrencyFormat
+                        value={total_budget_remaining}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        fixedDecimalScale={true}
+                        decimalScale={2}
+                        prefix={
+                          getSymbolFromCurrency(home_currency) !== undefined
+                            ? getSymbolFromCurrency(home_currency)
+                            : '$'
+                        }
+                      />
                     </Typography>
                   </Grid>
                 </Grid>

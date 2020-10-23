@@ -67,18 +67,6 @@ const useStyles = makeStyles((theme) => ({
   budgetField: {
     width: '50%',
   },
-  // formControl: {
-  //   margin: theme.spacing(1),
-  //   minWidth: 120,
-  //   verticalAlign: 'bottom',
-  // },
-  // selectEmpty: {
-  //   marginTop: theme.spacing(2),
-  //   width: '10em',
-  // },
-  // selectMenu: {
-  //   maxHeight: '15em',
-  // },
   submit: {
     margin: theme.spacing(3, 1, 2),
     color: 'white',

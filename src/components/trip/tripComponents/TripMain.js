@@ -2,6 +2,7 @@ import React from 'react';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import getSymbolFromCurrency from 'currency-symbol-map';
+import CurrencyFormat from 'react-currency-format';
 
 import Moment from 'moment';
 import Typography from '@material-ui/core/Typography';
@@ -48,7 +49,7 @@ const TripMain = ({tripData}) => {
   const classes = useStyles();
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const {
+  let {
     // trip_uid,
     // user,
     name,
@@ -61,8 +62,6 @@ const TripMain = ({tripData}) => {
     end_date,
   } = tripData;
 
-  console.log(getSymbolFromCurrency(home_currency), home_currency);
-
   let weekExpenses = {
     todayExpenses: [],
     yesterdayExpenses: [],
@@ -73,8 +72,9 @@ const TripMain = ({tripData}) => {
     sevenDaysAgoExpenses: [],
   };
 
+  total_budget = parseFloat(total_budget);
   // Calculates the average daily budget
-  let daily_budget = (total_budget / length).toFixed(2);
+  let daily_budget = parseFloat((total_budget / length).toFixed(2));
 
   // let max_bar_value;
 
@@ -225,19 +225,44 @@ const TripMain = ({tripData}) => {
               <Grid item className={classes.mainBoxBudgetItems}>
                 <Typography variant='subtitle2'>trip budget</Typography>
                 <Typography variant='h6'>
-                  {getSymbolFromCurrency(home_currency) !== undefined
+                  {/* {getSymbolFromCurrency(home_currency) !== undefined
                     ? getSymbolFromCurrency(home_currency)
                     : '$'}
-                  {total_budget}
+                  {total_budget} */}
+
+                  <CurrencyFormat
+                    value={total_budget}
+                    displayType={'text'}
+                    thousandSeparator={true}
+                    fixedDecimalScale={true}
+                    decimalScale={2}
+                    prefix={
+                      getSymbolFromCurrency(home_currency) !== undefined
+                        ? getSymbolFromCurrency(home_currency)
+                        : '$'
+                    }
+                  />
                 </Typography>
               </Grid>
               <Grid item className={classes.mainBoxBudgetItems}>
                 <Typography variant='subtitle2'>daily budget</Typography>
                 <Typography variant='h6'>
-                  {getSymbolFromCurrency(home_currency) !== undefined
+                  {/* {getSymbolFromCurrency(home_currency) !== undefined
                     ? getSymbolFromCurrency(home_currency)
                     : '$'}
-                  {daily_budget}
+                  {daily_budget} */}
+                  <CurrencyFormat
+                    value={daily_budget}
+                    displayType={'text'}
+                    thousandSeparator={true}
+                    fixedDecimalScale={true}
+                    decimalScale={2}
+                    prefix={
+                      getSymbolFromCurrency(home_currency) !== undefined
+                        ? getSymbolFromCurrency(home_currency)
+                        : '$'
+                    }
+                  />
                 </Typography>
               </Grid>
             </Grid>
