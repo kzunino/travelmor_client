@@ -6,6 +6,8 @@ import {newTrip} from '../actions/trips';
 import {createAlerts} from '../actions/alerts';
 import axios from 'axios';
 import Moment from 'moment';
+import getSymbolFromCurrency from 'currency-symbol-map';
+import CurrencyFormat from 'react-currency-format';
 
 // MUI Components
 import Typography from '@material-ui/core/Typography';
@@ -269,7 +271,41 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
             <Grid item>
               <Grid container direction='column'>
                 <Grid item>
-                  <TextField
+                  <CurrencyFormat
+                    className={classes.budgetField}
+                    variant='standard'
+                    margin='normal'
+                    required
+                    allowNegative={false}
+                    fullWidth
+                    name='total_budget'
+                    value={total_budget}
+                    onValueChange={(values) => {
+                      const {formattedValue, value} = values;
+                      // formattedValue = $2,223
+                      // value ie, 2223
+                      setFormData({
+                        ...formData,
+                        total_budget: value,
+                      });
+                      console.log('Iwork');
+                    }}
+                    // onChange={(e) => handleChange(e)}
+                    label='Budget Total'
+                    placeholder='0.00'
+                    InputProps={{inputProps: {min: 0}}}
+                    id='total_budget'
+                    thousandSeparator={true}
+                    decimalScale={2}
+                    prefix={
+                      getSymbolFromCurrency(home_currency) !== undefined
+                        ? getSymbolFromCurrency(home_currency)
+                        : '$'
+                    }
+                    customInput={TextField}
+                  />
+
+                  {/* <TextField
                     className={classes.budgetField}
                     variant='standard'
                     margin='normal'
@@ -283,7 +319,7 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
                     placeholder='0.00'
                     InputProps={{inputProps: {min: 0}}}
                     id='total_budget'
-                  />
+                  /> */}
                 </Grid>
                 <Grid item>
                   <Typography className={classes.fieldDescription}>
