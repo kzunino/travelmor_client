@@ -41,6 +41,8 @@ const TripTable = ({tripData, deleteExpense, updateExpense, createAlerts}) => {
   const classes = useStyles();
 
   const {name, home_currency, expenses, start_date, end_date} = tripData;
+
+  // Parses date in local time
   const startDate = Moment(start_date);
   const endDate = Moment(end_date);
 

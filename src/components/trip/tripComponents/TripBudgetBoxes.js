@@ -1,6 +1,7 @@
 import React from 'react';
-
 import Moment from 'moment';
+import getSymbolFromCurrency from 'currency-symbol-map';
+
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -83,7 +84,14 @@ const TripBudgetBoxes = ({tripData}) => {
   // const theme = useTheme();
   const classes = useStyles();
 
-  const {total_budget, length, expenses, end_date, start_date} = tripData;
+  const {
+    total_budget,
+    length,
+    home_currency,
+    expenses,
+    end_date,
+    start_date,
+  } = tripData;
 
   let todayExpenses;
   let totalSpentToday = 0;
@@ -178,7 +186,10 @@ const TripBudgetBoxes = ({tripData}) => {
                       spent today
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      ${totalSpentToday}
+                      {getSymbolFromCurrency(home_currency) !== undefined
+                        ? getSymbolFromCurrency(home_currency)
+                        : '$'}
+                      {totalSpentToday}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -194,7 +205,10 @@ const TripBudgetBoxes = ({tripData}) => {
                       }
                       align='right'
                     >
-                      ${day_remaining}
+                      {getSymbolFromCurrency(home_currency) !== undefined
+                        ? getSymbolFromCurrency(home_currency)
+                        : '$'}
+                      {day_remaining}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -231,15 +245,21 @@ const TripBudgetBoxes = ({tripData}) => {
                       daily avg
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      ${daily_average}
+                      {getSymbolFromCurrency(home_currency) !== undefined
+                        ? getSymbolFromCurrency(home_currency)
+                        : '$'}
+                      {daily_average}
                     </Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant='subtitle2' align='right'>
-                      new daily budget
+                      adjusted budget
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      ${new_daily_average}
+                      {getSymbolFromCurrency(home_currency) !== undefined
+                        ? getSymbolFromCurrency(home_currency)
+                        : '$'}
+                      {new_daily_average}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -277,7 +297,10 @@ const TripBudgetBoxes = ({tripData}) => {
                       total spent
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      ${total_budget_spent}
+                      {getSymbolFromCurrency(home_currency) !== undefined
+                        ? getSymbolFromCurrency(home_currency)
+                        : '$'}
+                      {total_budget_spent}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -293,7 +316,10 @@ const TripBudgetBoxes = ({tripData}) => {
                       }
                       align='right'
                     >
-                      ${total_budget_remaining}
+                      {getSymbolFromCurrency(home_currency) !== undefined
+                        ? getSymbolFromCurrency(home_currency)
+                        : '$'}
+                      {total_budget_remaining}
                     </Typography>
                   </Grid>
                 </Grid>

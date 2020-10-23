@@ -1,6 +1,7 @@
 import React from 'react';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import getSymbolFromCurrency from 'currency-symbol-map';
 
 import Moment from 'moment';
 import Typography from '@material-ui/core/Typography';
@@ -53,12 +54,14 @@ const TripMain = ({tripData}) => {
     name,
     total_budget,
     length,
-    // home_currency,
+    home_currency,
     // currencies,
     expenses,
     start_date,
     end_date,
   } = tripData;
+
+  console.log(getSymbolFromCurrency(home_currency), home_currency);
 
   let weekExpenses = {
     todayExpenses: [],
@@ -221,11 +224,21 @@ const TripMain = ({tripData}) => {
             <Grid container justify='space-around' direction='row'>
               <Grid item className={classes.mainBoxBudgetItems}>
                 <Typography variant='subtitle2'>trip budget</Typography>
-                <Typography variant='h6'>${total_budget}</Typography>
+                <Typography variant='h6'>
+                  {getSymbolFromCurrency(home_currency) !== undefined
+                    ? getSymbolFromCurrency(home_currency)
+                    : '$'}
+                  {total_budget}
+                </Typography>
               </Grid>
               <Grid item className={classes.mainBoxBudgetItems}>
                 <Typography variant='subtitle2'>daily budget</Typography>
-                <Typography variant='h6'>${daily_budget}</Typography>
+                <Typography variant='h6'>
+                  {getSymbolFromCurrency(home_currency) !== undefined
+                    ? getSymbolFromCurrency(home_currency)
+                    : '$'}
+                  {daily_budget}
+                </Typography>
               </Grid>
             </Grid>
           </Grid>
