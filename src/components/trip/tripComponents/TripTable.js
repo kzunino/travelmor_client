@@ -260,8 +260,8 @@ const TripTable = ({tripData, deleteExpense, updateExpense, createAlerts}) => {
                         if (
                           (newPurchaseDate.isAfter(startDate) &&
                             newPurchaseDate.isBefore(endDate)) ||
-                          newPurchaseDate.isSame(startDate) ||
-                          newPurchaseDate.isSame(endDate)
+                          newPurchaseDate.isSame(startDate, 'day') ||
+                          newPurchaseDate.isSame(endDate, 'day')
                         ) {
                           // setEditExpense(newData);
                           updateExpense(newData);

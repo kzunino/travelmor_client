@@ -215,7 +215,7 @@ const MyAccount = ({
                 </Select>
                 <Typography className={classes.fieldDescription}>
                   *Changing home currency will not change the home currency of
-                  already created trips
+                  trips that have been created
                 </Typography>
               </FormControl>
             </Grid>
