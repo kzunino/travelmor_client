@@ -22,14 +22,14 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '1em',
   },
   buttonContainer: {
-    height: 25,
+    height: 20,
   },
   updateButton: {
     backgroundColor: theme.palette.primary.main,
     color: 'white',
     fontWeight: 'bold',
-    height: 25,
-    fontSize: '.75em',
+    height: 20,
+    fontSize: '1em',
     '&:hover': {
       backgroundColor: theme.palette.primary.dark,
     },
@@ -40,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
   currencyDeleteButton: {
     marginLeft: '1em',
     backgroundColor: '#D61A3C',
-    height: 25,
-    width: 25,
+    height: 20,
+    // width: 25,
     '&:hover': {
       backgroundColor: '#d11a2a',
     },

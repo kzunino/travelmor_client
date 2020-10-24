@@ -39,9 +39,6 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     zIndex: 100,
 
-    // [theme.breakpoints.down('sm')]: {
-    //   width: 500,
-    // },
     [theme.breakpoints.down('sm')]: {
       width: '100%',
       marginLeft: -12,
