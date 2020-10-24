@@ -69,6 +69,10 @@ const useStyles = makeStyles((theme) => ({
   hidden: {
     visibility: 'hidden',
   },
+  fieldDescription: {
+    fontSize: '.5em',
+    marginTop: '1em',
+  },
 }));
 
 const MyAccount = ({
@@ -103,9 +107,9 @@ const MyAccount = ({
     setHidden(false);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    await updateUser({
+    updateUser({
       firstName,
       lastName,
       emailAddress,
@@ -209,6 +213,10 @@ const MyAccount = ({
                     >{`${country.code}`}</MenuItem>
                   ))}
                 </Select>
+                <Typography className={classes.fieldDescription}>
+                  *Changing home currency will not change the home currency of
+                  already created trips
+                </Typography>
               </FormControl>
             </Grid>
 

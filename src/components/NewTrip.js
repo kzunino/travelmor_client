@@ -432,7 +432,8 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
                   style={{marginTop: '.5em'}}
                   className={classes.fieldDescription}
                 >
-                  *Countries that share currency will automatically be selected
+                  *Countries that share a currency will all automatically be
+                  selected
                 </Typography>
               </FormControl>
             </Grid>
