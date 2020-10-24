@@ -119,26 +119,33 @@ const TripBudgetBoxes = ({tripData}) => {
     // calculates total spent today
     totalSpentToday = reduceExpenses(todayExpenses);
 
+    // calculates total spent and remaining in budget
+    total_budget_spent = reduceExpenses(expenses).toFixed(2);
+    total_budget_remaining = (total_budget - total_budget_spent).toFixed(2);
+
     // if todays date is within trip boundaries
     // calculate how many days of the trip are left
     // calculates how much can be spent today to stay within average budget
     if (
       (todaysDate.isAfter(startDate) && todaysDate.isBefore(endDate)) ||
-      todaysDate.isSame(startDate) ||
-      todaysDate.isSame(endDate)
+      todaysDate.isSame(startDate, 'day') ||
+      todaysDate.isSame(endDate, 'day')
     ) {
       // calculates how many days left in trip not including today
       days_left = endDate.diff(todaysDate, 'days');
-      // calcultes how much can be spent today
-      day_remaining = parseFloat((daily_budget - totalSpentToday).toFixed(2));
+
+      // If todays is the last day then remaining budget is whatever is left over
+
+      if (todaysDate.isSame(endDate, 'day')) {
+        day_remaining = total_budget_remaining;
+      } else {
+        // calculates how much can be spent today
+        day_remaining = parseFloat((daily_budget - totalSpentToday).toFixed(2));
+      }
     } else {
       // if todays date is outside trip boundary then todays budget remaining is 0
       day_remaining = 0;
     }
-
-    // calculates total spent and remaining in budget
-    total_budget_spent = reduceExpenses(expenses).toFixed(2);
-    total_budget_remaining = (total_budget - total_budget_spent).toFixed(2);
 
     // calculates the overall trip average and new daily budget to stay
     // on budget target
