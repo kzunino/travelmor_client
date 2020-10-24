@@ -35,7 +35,9 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import FlightIcon from '@material-ui/icons/Flight';
 import HistoryIcon from '@material-ui/icons/History';
 
-import logo from '../imgs/travelmor_square.png';
+// import logo from '../imgs/travelmor_square.png';
+// import logo from '../imgs/travelmor_WHT.png';
+import logo from '../imgs/travelmorLogo.png';
 
 const drawerWidth = 240;
 
@@ -337,7 +339,7 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
             className={classes.logoContainer}
             disableRipple
           >
-            <img src={logo} alt='Travelmor.logo' className={classes.logo} />
+            <img src={logo} alt='Travelmor. logo' className={classes.logo} />
           </Button>
           <Typography variant='h6' noWrap></Typography>
           {matches ? null : tempDrawer}
