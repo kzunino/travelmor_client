@@ -10,6 +10,8 @@ import {createAlerts} from '../../actions/alerts';
 import TripExchangeRate from './TripExchangeRate';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import getSymbolFromCurrency from 'currency-symbol-map';
+import CurrencyFormat from 'react-currency-format';
 
 // MUI Components
 import Typography from '@material-ui/core/Typography';
@@ -395,7 +397,35 @@ const EditTrip = ({
             <Grid item>
               <Grid container direction='column'>
                 <Grid item>
-                  <TextField
+                  <CurrencyFormat
+                    variant='standard'
+                    margin='normal'
+                    required
+                    placeholder='0.00'
+                    label='Budget Total'
+                    name='totalBudget'
+                    value={totalBudget}
+                    InputProps={{inputProps: {min: 0}}}
+                    onValueChange={(values) => {
+                      const {value} = values;
+                      setTripFormData({
+                        ...tripFormData,
+                        totalBudget: value,
+                      });
+                      toggleHidden();
+                    }}
+                    thousandSeparator={true}
+                    decimalScale={2}
+                    allowNegative={false}
+                    prefix={
+                      getSymbolFromCurrency(home_currency) !== undefined
+                        ? getSymbolFromCurrency(home_currency)
+                        : '$'
+                    }
+                    customInput={TextField}
+                  />
+
+                  {/* <TextField
                     variant='standard'
                     margin='normal'
                     required
@@ -407,7 +437,7 @@ const EditTrip = ({
                     onChange={(e) => {
                       handleUserData(e);
                     }}
-                  />
+                  /> */}
                 </Grid>
                 <Grid item>
                   <Typography className={classes.fieldDescription}>

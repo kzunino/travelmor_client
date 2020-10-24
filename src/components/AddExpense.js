@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import {addExpense} from '../actions/expenses';
 import {createAlerts} from '../actions/alerts';
 import Moment from 'moment';
+import getSymbolFromCurrency from 'currency-symbol-map';
+import CurrencyFormat from 'react-currency-format';
 
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -165,7 +167,6 @@ const AddExpense = ({
     exchangeRate = parseFloat(exchangeRate).toFixed(3);
     conversion = parseFloat(conversion).toFixed(3);
 
-    console.log(expense_cost, typeof expense_cost);
     if (expense_cost > 10000000000)
       return createAlerts({validation_error: "Cost can't exceed 10 billion"});
 
@@ -262,8 +263,36 @@ const AddExpense = ({
               </Grid>
 
               <Grid item>
-                <TextField
+                <CurrencyFormat
                   className={classes.budgetField}
+                  label='Cost'
+                  variant='standard'
+                  margin='normal'
+                  required
+                  fullWidth
+                  name='expenseCost'
+                  value={expenseCost}
+                  InputProps={{inputProps: {min: 0}}}
+                  onValueChange={(values) => {
+                    const {value} = values;
+                    setFormData({
+                      ...formData,
+                      expenseCost: value,
+                    });
+                  }}
+                  thousandSeparator={true}
+                  decimalScale={2}
+                  allowNegative={false}
+                  prefix={
+                    getSymbolFromCurrency(homeCurrency) !== undefined
+                      ? getSymbolFromCurrency(homeCurrency)
+                      : '$'
+                  }
+                  customInput={TextField}
+                />
+                {/* <TextField
+                  className={classes.budgetField}
+                  label='Cost'
                   variant='standard'
                   margin='normal'
                   required
@@ -272,9 +301,8 @@ const AddExpense = ({
                   value={expenseCost}
                   onChange={(e) => handleChange(e)}
                   // step="0.01"
-                  label='Cost'
                   type='number'
-                />
+                /> */}
               </Grid>
 
               <Grid item>

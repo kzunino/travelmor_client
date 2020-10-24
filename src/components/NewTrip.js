@@ -276,27 +276,22 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
                     variant='standard'
                     margin='normal'
                     required
-                    allowNegative={false}
-                    fullWidth
                     name='total_budget'
-                    value={total_budget}
-                    onValueChange={(values) => {
-                      const {formattedValue, value} = values;
-                      // formattedValue = $2,223
-                      // value ie, 2223
-                      setFormData({
-                        ...formData,
-                        total_budget: value,
-                      });
-                      console.log('Iwork');
-                    }}
-                    // onChange={(e) => handleChange(e)}
                     label='Budget Total'
                     placeholder='0.00'
                     InputProps={{inputProps: {min: 0}}}
                     id='total_budget'
+                    value={total_budget}
+                    onValueChange={(values) => {
+                      const {value} = values;
+                      setFormData({
+                        ...formData,
+                        total_budget: value,
+                      });
+                    }}
                     thousandSeparator={true}
                     decimalScale={2}
+                    allowNegative={false}
                     prefix={
                       getSymbolFromCurrency(home_currency) !== undefined
                         ? getSymbolFromCurrency(home_currency)
