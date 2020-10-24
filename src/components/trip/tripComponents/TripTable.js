@@ -255,8 +255,6 @@ const TripTable = ({tripData, deleteExpense, updateExpense, createAlerts}) => {
                           'MM/DD/YYYY'
                         ));
 
-                        console.log(newPurchaseDate);
-
                         if (
                           (newPurchaseDate.isAfter(startDate) &&
                             newPurchaseDate.isBefore(endDate)) ||
