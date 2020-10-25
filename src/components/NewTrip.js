@@ -209,7 +209,17 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
     } else if (Moment(end_date).diff(Moment(start_date), 'days') === 1) {
       length = 2;
     } else {
-      length = Moment(end_date).diff(Moment(start_date), 'days') + 1;
+      length = Moment(end_date).diff(Moment(start_date), 'days') + 2;
+    }
+
+    // min number of days is 2
+    // loops over and enumerates the trip length based on start and end date
+    length = 2;
+    let currDate = Moment(start_date).startOf('day');
+    let lastDate = Moment(end_date).startOf('day');
+
+    while (currDate.add(1, 'days').diff(lastDate) < 0) {
+      length++;
     }
 
     if (currencies.length) {
