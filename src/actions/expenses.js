@@ -21,22 +21,88 @@ export const addExpense = (data) => async (dispatch, getState) => {
     exchange_rate,
     cost_conversion,
     purchase_date,
+    end_of_purchase_date_range,
     trip,
     user,
   } = data;
+
+  let purchaseArr = [
+    {
+      name,
+      cost,
+      expense_type,
+      currency,
+      home_currency,
+      exchange_rate,
+      cost_conversion,
+      purchase_date,
+      trip,
+      user,
+    },
+  ];
+
+  // if there purchase end range then enumerate each date and stringify the array of
+  // of objects
+
+  if (end_of_purchase_date_range) {
+    // Reset purchase array
+    purchaseArr = [];
+
+    // Helper function to enumerate how many days are in range
+    const enumerateDaysBetweenDays = (
+      purchase_date,
+      end_of_purchase_date_range
+    ) => {
+      // min number of days is 2
+      let numberOfDays = 2;
+
+      let currDate = Moment(purchase_date).startOf('day');
+      let lastDate = Moment(end_of_purchase_date_range).startOf('day');
+
+      while (currDate.add(1, 'days').diff(lastDate) < 0) {
+        numberOfDays++;
+      }
+      return numberOfDays;
+    };
+
+    let numberOfDaysInRange = enumerateDaysBetweenDays(
+      purchase_date,
+      end_of_purchase_date_range
+    );
+    console.log(numberOfDaysInRange);
+
+    let averageCostOfMultiplePurchases = (cost / numberOfDaysInRange).toFixed(
+      2
+    );
+    // loop through and create each purchase to average out of the range of
+    // selected days
+    let day = 0;
+    while (numberOfDaysInRange > 0) {
+      let purchaseDate = purchase_date.clone().add(day, 'day');
+      let purchase = {
+        name,
+        cost: averageCostOfMultiplePurchases,
+        expense_type,
+        currency,
+        home_currency,
+        exchange_rate,
+        cost_conversion: averageCostOfMultiplePurchases,
+        purchase_date: purchaseDate.toISOString(),
+        trip,
+        user,
+      };
+      purchaseArr.push(purchase);
+      numberOfDaysInRange--;
+      day += 1;
+    }
+
+    console.log(purchaseArr);
+  }
+  console.log(purchaseArr);
+
   // Request Body
-  const body = JSON.stringify({
-    name,
-    cost,
-    expense_type,
-    currency,
-    home_currency,
-    exchange_rate,
-    cost_conversion,
-    purchase_date,
-    trip,
-    user,
-  });
+  const body = JSON.stringify(purchaseArr);
+  console.log(body);
 
   try {
     const res = await axios.post(

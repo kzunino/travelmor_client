@@ -53,7 +53,7 @@ export default (state = initialState, action) => {
     case ADD_EXPENSE:
       return {
         ...state,
-        expenses: [...state.expenses, action.payload],
+        expenses: state.expenses.concat(action.payload),
       };
     case DELETE_EXPENSE:
       return {

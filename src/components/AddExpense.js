@@ -17,11 +17,14 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Button from '@material-ui/core/Button';
 
 // Select
-
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+
+// Switch
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 //Date
 import {KeyboardDatePicker} from '@material-ui/pickers';
@@ -73,7 +76,11 @@ const useStyles = makeStyles((theme) => ({
     width: '50%',
   },
   formControl: {
-    width: 150,
+    width: 200,
+    marginTop: '1em',
+  },
+  switchFormControl: {
+    width: 250,
     marginTop: '1em',
   },
   selectEmpty: {
@@ -87,6 +94,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {
       width: '75%',
     },
+  },
+  hidden: {
+    display: 'none',
   },
 }));
 
@@ -121,8 +131,24 @@ const AddExpense = ({
     defaultDate = todaysDate;
   }
 
-  // date state
+  // Switch hides the purchase range
+  const [hideEndDateRange, setHideEndDateRange] = React.useState({
+    checked: false,
+  });
+
+  const handleDateRange = (event) => {
+    setHideEndDateRange({
+      ...hideEndDateRange,
+      [event.target.name]: event.target.checked,
+    });
+  };
+
+  // Single date state
   const [selectedExpenseDate, setSelectedExpenseDate] = useState(defaultDate);
+  // End of purchase date range state
+  const [selectedEndExpenseDate, setSelectedEndExpenseDate] = useState(
+    Moment(selectedExpenseDate).add(1, 'days')
+  );
 
   // Initialize default state values
   const [formData, setFormData] = useState({
@@ -138,8 +164,14 @@ const AddExpense = ({
     setFormData({...formData, [e.target.name]: e.target.value});
   };
 
+  // handles first date of purchase
   const handleExpenseDate = (date) => {
     setSelectedExpenseDate(date);
+  };
+
+  //handles end of purchase date range
+  const handleEndExpenseDate = (date) => {
+    setSelectedEndExpenseDate(date);
   };
 
   const onSubmit = (e) => {
@@ -181,6 +213,18 @@ const AddExpense = ({
       return createAlerts({validation_error: 'Please fill out all fields'});
     }
 
+    // Alert if trip end date is before trip start
+    if (
+      hideEndDateRange.checked &&
+      Moment(selectedExpenseDate).isAfter(
+        Moment(selectedEndExpenseDate),
+        'days'
+      )
+    ) {
+      return createAlerts({validation_error: 'End date is before start date!'});
+      //return console.log('cannot start trip after end date');
+    }
+
     //construct an expense object
     let data = {
       name: expenseName,
@@ -190,8 +234,11 @@ const AddExpense = ({
       home_currency: homeCurrency,
       exchange_rate: exchangeRate,
       cost_conversion: conversion,
-      // converts to UTC time before sending to reducer
-      purchase_date: Moment(selectedExpenseDate).toISOString(),
+      purchase_date: Moment(selectedExpenseDate),
+      // checks to see if purchase is a date range
+      end_of_purchase_date_range: hideEndDateRange.checked
+        ? Moment(selectedEndExpenseDate)
+        : null,
       trip: trip_uid,
       user: user_id,
     };
@@ -230,7 +277,6 @@ const AddExpense = ({
                   value={expenseName}
                   name='expenseName'
                   onChange={(e) => handleChange(e)}
-                  autoFocus
                 />
               </Grid>
 
@@ -333,17 +379,67 @@ const AddExpense = ({
               </Grid>
 
               <Grid item>
+                <FormControlLabel
+                  className={classes.switchFormControl}
+                  control={
+                    <Switch
+                      checked={hideEndDateRange.checked}
+                      onChange={handleDateRange}
+                      name='checked'
+                      color='primary'
+                    />
+                  }
+                  label={
+                    <span style={{fontSize: '.75em'}}>
+                      Spread one purchase over a range of days? — e.g. Hotel
+                      costs
+                    </span>
+                  }
+                />
+              </Grid>
+
+              <Grid item>
                 <KeyboardDatePicker
                   disableToolbar
+                  required
                   variant='inline'
                   format='MM/DD/yyyy'
-                  maxDate={endDate}
+                  maxDate={
+                    hideEndDateRange.checked
+                      ? Moment(selectedEndExpenseDate).subtract(1, 'days')
+                      : endDate
+                  }
                   minDate={startDate}
                   margin='normal'
                   id='date-picker-inline'
-                  label='Date'
+                  label={
+                    hideEndDateRange.checked
+                      ? 'Begin Purchase Date'
+                      : 'Purchase Date'
+                  }
                   value={selectedExpenseDate}
                   onChange={handleExpenseDate}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </Grid>
+
+              <Grid
+                item
+                className={hideEndDateRange.checked ? null : classes.hidden}
+              >
+                <KeyboardDatePicker
+                  disableToolbar
+                  required
+                  variant='inline'
+                  format='MM/DD/yyyy'
+                  maxDate={endDate}
+                  minDate={Moment(selectedExpenseDate).add(1, 'days')}
+                  margin='normal'
+                  label='End of Purchase Date'
+                  value={selectedEndExpenseDate}
+                  onChange={handleEndExpenseDate}
                   KeyboardButtonProps={{
                     'aria-label': 'change date',
                   }}
@@ -358,7 +454,7 @@ const AddExpense = ({
               className={classes.submit}
               disableRipple
             >
-              Submit Expense
+              Save Expense
             </Button>
           </form>
         </Container>
