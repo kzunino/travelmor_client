@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import Moment from 'moment';
 import {data as countryData} from 'currency-codes';
@@ -32,6 +32,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import {KeyboardDatePicker} from '@material-ui/pickers';
+
+// Checkbox
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
@@ -117,6 +121,10 @@ function getStyles(name, currency, theme) {
 }
 
 const EditTrip = ({
+  updateTrip,
+  deleteTrip,
+  addCurrencies,
+  createAlerts,
   trip_uid,
   name,
   total_budget,
@@ -126,10 +134,7 @@ const EditTrip = ({
   currencies,
   home_currency,
   user,
-  updateTrip,
-  deleteTrip,
-  addCurrencies,
-  createAlerts,
+  default_trips,
   history,
 }) => {
   const theme = useTheme();
@@ -154,6 +159,8 @@ const EditTrip = ({
   // State for delete dialog
   const [open, setOpen] = React.useState(false);
 
+  const [defaultTripChecked, setDefaultTripChecked] = React.useState(false);
+
   let {tripName, totalBudget, tripLength} = tripFormData;
 
   // creates an array with currencies already selected for trip
@@ -161,13 +168,10 @@ const EditTrip = ({
     return currency.currency;
   });
 
-  // useEffect(() => {
-  //   setForeignCurrencies(
-  //     currencies.map((currency) => {
-  //       return currency.currency;
-  //     })
-  //   );
-  // }, [currencies]);
+  useEffect(() => {
+    if (default_trips.length && default_trips[0].trip_uid === trip_uid)
+      setDefaultTripChecked(true);
+  }, [default_trips, trip_uid]);
 
   // If state is changed  on user's information reveals the update button
   const handleUserData = (e) => {
@@ -192,6 +196,11 @@ const EditTrip = ({
   const handleCurrencyChange = (event) => {
     toggleHidden();
     setForeignCurrencies(event.target.value);
+  };
+
+  // handles setting trip to default
+  const handleSetDefault = () => {
+    setDefaultTripChecked(!defaultTripChecked);
   };
 
   const toggleHidden = () => {
@@ -489,6 +498,20 @@ const EditTrip = ({
             </Grid>
 
             <Grid item>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={defaultTripChecked}
+                    onChange={handleSetDefault}
+                    name='checked'
+                    color='primary'
+                  />
+                }
+                label={<span style={{fontSize: '1em'}}>Default trip</span>}
+              />
+            </Grid>
+
+            <Grid item>
               <FormControl className={classes.currencyField}>
                 <InputLabel>Trip Currencies (optional)</InputLabel>
                 <Select
@@ -600,6 +623,7 @@ EditTrip.propTypes = {
   currencies: PropTypes.array,
   home_currency: PropTypes.string.isRequired,
   user: PropTypes.string,
+  default_trips: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -612,6 +636,7 @@ const mapStateToProps = (state) => ({
   currencies: state.trips.currencies,
   home_currency: state.trips.home_currency,
   user: state.trips.user,
+  default_trips: state.auth.user.default_trips,
 });
 
 export default connect(mapStateToProps, {
