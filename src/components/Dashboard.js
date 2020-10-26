@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Dashboard = ({trips, getTrip, name, location}) => {
+const Dashboard = ({trips, default_trips, getTrip, name, location}) => {
   const theme = useTheme();
   const classes = useStyles();
 
@@ -49,13 +49,20 @@ const Dashboard = ({trips, getTrip, name, location}) => {
 
   /*
   if user has trips rendered as Links, component will automatically fire
-  a post request to render the most recent trip to the Dashboard and pass those as 
+  a post request to render the default trip to the Dashboard and pass those as 
   props to the <TRIP/> component inside render method
+
+  if there is no default selected then the app automatically renders most recent trip
+  by start date
   */
 
   useEffect(() => {
-    if (trips.length) getTrip(trips[0].trip_uid);
-  }, [trips, getTrip]);
+    if (default_trips.length) {
+      getTrip(default_trips[0].trip_uid);
+    } else if (trips.length) {
+      getTrip(trips[0].trip_uid);
+    }
+  }, [trips, default_trips, getTrip]);
 
   // Acts like component did mount and fetches updated data when the location
   // changes
@@ -106,11 +113,13 @@ Dashboard.propTypes = {
   trips: PropTypes.array,
   getTrip: PropTypes.func.isRequired,
   name: PropTypes.string,
+  default_trips: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   trips: state.auth.user.trips,
   name: state.auth.user.first_name,
+  default_trips: state.auth.user.default_trips,
 });
 
 export default connect(mapStateToProps, {getTrip})(Dashboard);

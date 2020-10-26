@@ -19,6 +19,10 @@ export const NEW_TRIP = 'NEW_TRIP';
 export const UPDATE_TRIP = 'UPDATE_TRIP';
 export const DELETE_TRIP = 'DELETE_TRIP';
 
+//Default Trip
+export const SET_DEFAULT_TRIP = 'SET_DEFAULT_TRIP';
+export const DELETE_DEFAULT_TRIP = 'DELETE_DEFAULT_TRIP';
+
 // Currencies
 export const ADD_CURRENCIES = 'ADD_CURRENCIES';
 export const UPDATE_CURRENCY_RATE = 'UPDATE_CURRENCY_RATE';

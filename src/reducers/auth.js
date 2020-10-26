@@ -11,6 +11,8 @@ import {
   DELETE_TRIP,
   NEW_TRIP,
   UPDATE_TRIP,
+  SET_DEFAULT_TRIP,
+  DELETE_DEFAULT_TRIP,
 } from '../actions/types';
 
 const initialState = {
@@ -97,6 +99,27 @@ export default (state = initialState, action) => {
           ...state.user,
           trips: state.user.trips.filter(
             (trip) => trip.trip_uid !== action.payload
+          ),
+          default_trips: state.user.default_trips.filter(
+            (default_trip) => default_trip.trip_uid !== action.payload
+          ),
+        },
+      };
+    case SET_DEFAULT_TRIP:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          default_trips: [action.payload],
+        },
+      };
+    case DELETE_DEFAULT_TRIP:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          default_trips: state.user.default_trips.filter(
+            (default_trip) => default_trip.default_trip_uid === action.payload
           ),
         },
       };

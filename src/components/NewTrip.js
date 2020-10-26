@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {data as countryData} from 'currency-codes';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {newTrip} from '../actions/trips';
+import {newTrip, deleteDefaultTrip} from '../actions/trips';
 import {createAlerts} from '../actions/alerts';
 import axios from 'axios';
 import Moment from 'moment';
@@ -26,9 +26,12 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 // Multiselect
-
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
+
+// Checkbox
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 //Date
 import {KeyboardDatePicker} from '@material-ui/pickers';
@@ -114,7 +117,15 @@ function getStyles(name, personName, theme) {
   };
 }
 
-const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
+const NewTrip = ({
+  newTrip,
+  deleteDefaultTrip,
+  createAlerts,
+  user,
+  home_currency,
+  history,
+  default_trip,
+}) => {
   const theme = useTheme();
   const classes = useStyles();
   const API_KEY = process.env.REACT_APP_EXCHANGE_KEY;
@@ -126,6 +137,7 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
   const [start_date, setStartDate] = useState(Date.now());
   const [end_date, setEndDate] = useState(Date.now());
   const [currencies, setCurrencies] = useState([]);
+  const [defaultTripChecked, setDefaultTripChecked] = React.useState(true);
 
   let {name, total_budget} = formData;
 
@@ -190,27 +202,39 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
     setCurrencies(updatedForeignCurrencies);
   };
 
+  const handleSetDefault = () => {
+    setDefaultTripChecked(!defaultTripChecked);
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
     let currencyRates;
     let length;
     const format = 'YYYY-MM-DD HH:mm:ss';
+    let setNewDefaultTrip = false;
+    let deleteOldDefaultTrip = false;
+
+    if (default_trip.length && defaultTripChecked) {
+      setNewDefaultTrip = true;
+      deleteOldDefaultTrip = true;
+    } else if (!default_trip.length && defaultTripChecked) {
+      setNewDefaultTrip = true;
+    }
 
     // Alert if trip end date is before trip start
     if (Moment(start_date).isAfter(Moment(end_date), 'days')) {
       return createAlerts({validation_error: 'End date is before start date!'});
-      //return console.log('cannot start trip after end date');
     }
 
-    // if start is same day as end day then length is 1 day
-    if (Moment(end_date).isSame(Moment(start_date), 'day')) {
-      length = 1;
-    } else if (Moment(end_date).diff(Moment(start_date), 'days') === 1) {
-      length = 2;
-    } else {
-      length = Moment(end_date).diff(Moment(start_date), 'days') + 2;
-    }
+    // // if start is same day as end day then length is 1 day
+    // if (Moment(end_date).isSame(Moment(start_date), 'day')) {
+    //   length = 1;
+    // } else if (Moment(end_date).diff(Moment(start_date), 'days') === 1) {
+    //   length = 2;
+    // } else {
+    //   length = Moment(end_date).diff(Moment(start_date), 'days') + 2;
+    // }
 
     // min number of days is 2
     // loops over and enumerates the trip length based on start and end date
@@ -226,6 +250,10 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
       currencyRates = await getExchangeRate();
     }
 
+    if (deleteOldDefaultTrip) {
+      // deletes current default trip if user selects the new trip as default
+      deleteDefaultTrip(default_trip[0].default_trip_uid);
+    }
     // sets the new trip with the hours adjusted to account for full days
     newTrip(
       {
@@ -241,7 +269,8 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
           .set({hour: 23, minute: 59, second: 59, millisecond: 0})
           .format(format),
       },
-      currencyRates
+      currencyRates,
+      setNewDefaultTrip ? setNewDefaultTrip : false
     );
 
     history.push('/dashboard');
@@ -448,6 +477,24 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
               </FormControl>
             </Grid>
 
+            <Grid item>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={defaultTripChecked}
+                    onChange={handleSetDefault}
+                    name='checked'
+                    color='primary'
+                  />
+                }
+                label={
+                  <span style={{fontSize: '1em'}}>
+                    Make default trip for dashboard
+                  </span>
+                }
+              />
+            </Grid>
+
             <Button
               type='submit'
               variant='contained'
@@ -466,14 +513,21 @@ const NewTrip = ({home_currency, newTrip, createAlerts, user, history}) => {
 
 NewTrip.propTypes = {
   newTrip: PropTypes.func.isRequired,
+  deleteDefaultTrip: PropTypes.func.isRequired,
   createAlerts: PropTypes.func.isRequired,
   home_currency: PropTypes.string.isRequired,
   user: PropTypes.string.isRequired,
+  default_trip: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   home_currency: state.auth.user.home_currency,
   user: state.auth.user.id,
+  default_trip: state.auth.user.default_trips,
 });
 
-export default connect(mapStateToProps, {newTrip, createAlerts})(NewTrip);
+export default connect(mapStateToProps, {
+  newTrip,
+  deleteDefaultTrip,
+  createAlerts,
+})(NewTrip);
