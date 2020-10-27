@@ -4,7 +4,12 @@ import Moment from 'moment';
 import {data as countryData} from 'currency-codes';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {updateTrip, deleteTrip} from '../../actions/trips';
+import {
+  updateTrip,
+  deleteTrip,
+  setDefaultTrip,
+  deleteDefaultTrip,
+} from '../../actions/trips';
 import {addCurrencies} from '../../actions/currency';
 import {createAlerts} from '../../actions/alerts';
 import TripExchangeRate from './TripExchangeRate';
@@ -125,6 +130,8 @@ const EditTrip = ({
   deleteTrip,
   addCurrencies,
   createAlerts,
+  setDefaultTrip,
+  deleteDefaultTrip,
   trip_uid,
   name,
   total_budget,
@@ -304,6 +311,23 @@ const EditTrip = ({
         addCurrencies({currencyRates}, {trip_uid}, {user});
         setForeignCurrencies([]);
       }
+    }
+
+    if (
+      defaultTripChecked &&
+      default_trips.length &&
+      default_trips[0].trip_uid !== trip_uid
+    ) {
+      deleteDefaultTrip(default_trips[0].default_trip_uid);
+      setDefaultTrip({user: user, trip_uid: trip_uid});
+    } else if (defaultTripChecked && default_trips.length === 0) {
+      setDefaultTrip({user: user, trip_uid: trip_uid});
+    } else if (
+      !defaultTripChecked &&
+      default_trips.length &&
+      default_trips[0].trip_uid === trip_uid
+    ) {
+      deleteDefaultTrip(default_trips[0].default_trip_uid);
     }
 
     setHidden(true);
@@ -502,7 +526,10 @@ const EditTrip = ({
                 control={
                   <Checkbox
                     checked={defaultTripChecked}
-                    onChange={handleSetDefault}
+                    onChange={() => {
+                      toggleHidden();
+                      handleSetDefault();
+                    }}
                     name='checked'
                     color='primary'
                   />
@@ -614,6 +641,8 @@ EditTrip.propTypes = {
   addCurrencies: PropTypes.func.isRequired,
   createAlerts: PropTypes.func.isRequired,
   deleteTrip: PropTypes.func.isRequired,
+  setDefaultTrip: PropTypes.func.isRequired,
+  deleteDefaultTrip: PropTypes.func.isRequired,
   trip_uid: PropTypes.string,
   name: PropTypes.string,
   total_budget: PropTypes.string,
@@ -644,4 +673,6 @@ export default connect(mapStateToProps, {
   addCurrencies,
   createAlerts,
   deleteTrip,
+  setDefaultTrip,
+  deleteDefaultTrip,
 })(EditTrip);

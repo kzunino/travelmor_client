@@ -119,7 +119,7 @@ export default (state = initialState, action) => {
         user: {
           ...state.user,
           default_trips: state.user.default_trips.filter(
-            (default_trip) => default_trip.default_trip_uid === action.payload
+            (default_trip) => default_trip.default_trip_uid !== action.payload
           ),
         },
       };

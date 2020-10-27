@@ -175,15 +175,18 @@ export const setDefaultTrip = ({user, trip_uid}) => async (
 };
 
 // Delete default trip
-export const deleteDefaultTrip = (trip_uid) => async (dispatch, getState) => {
+export const deleteDefaultTrip = (default_trip_uid) => async (
+  dispatch,
+  getState
+) => {
   try {
     const res = await axios.delete(
-      `${databaseURI}/api/default-trip/${trip_uid}`,
+      `${databaseURI}/api/default-trip/${default_trip_uid}`,
       tokenConfig(getState)
     );
 
     if (res) {
-      dispatch({type: DELETE_DEFAULT_TRIP, payload: trip_uid});
+      dispatch({type: DELETE_DEFAULT_TRIP, payload: default_trip_uid});
     }
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));
