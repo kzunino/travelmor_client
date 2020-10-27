@@ -202,7 +202,6 @@ const TripExchangeRate = ({
                   </Grid>
                 </Grid>
               </Grid>
-              <Divider />
             </Fragment>
           );
         })}

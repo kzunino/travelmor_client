@@ -73,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 5,
     marginTop: '1em',
     padding: 10,
+    paddingBottom: 20,
     [theme.breakpoints.up('md')]: {
       marginLeft: 0,
     },
