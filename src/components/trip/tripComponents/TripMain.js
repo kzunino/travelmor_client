@@ -217,11 +217,6 @@ const TripMain = ({tripData}) => {
               <Grid item className={classes.mainBoxBudgetItems}>
                 <Typography variant='subtitle2'>trip budget</Typography>
                 <Typography variant='h6'>
-                  {/* {getSymbolFromCurrency(home_currency) !== undefined
-                    ? getSymbolFromCurrency(home_currency)
-                    : '$'}
-                  {total_budget} */}
-
                   <CurrencyFormat
                     value={total_budget}
                     displayType={'text'}
@@ -239,10 +234,6 @@ const TripMain = ({tripData}) => {
               <Grid item className={classes.mainBoxBudgetItems}>
                 <Typography variant='subtitle2'>daily budget</Typography>
                 <Typography variant='h6'>
-                  {/* {getSymbolFromCurrency(home_currency) !== undefined
-                    ? getSymbolFromCurrency(home_currency)
-                    : '$'}
-                  {daily_budget} */}
                   <CurrencyFormat
                     value={daily_budget}
                     displayType={'text'}

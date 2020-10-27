@@ -166,6 +166,7 @@ const TripBudgetBoxes = ({tripData}) => {
     } else {
       // if todays date is outside trip boundary then todays budget remaining is 0
       day_remaining = 0;
+      days_left = 0;
     }
 
     // daily average is the average spent so far in the trip
@@ -183,9 +184,6 @@ const TripBudgetBoxes = ({tripData}) => {
     }
     console.log('daysIntoTrip: ' + daysIntoTrip);
 
-    // if (total_budget_spent <= 0) {
-    //   daily_average = 0;
-    // } else {
     daily_average = (totalSpentUntilToday / daysIntoTrip).toFixed(2);
 
     // edge case - if days left is zero then there is one day remaining
