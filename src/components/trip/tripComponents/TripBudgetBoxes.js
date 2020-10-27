@@ -147,7 +147,12 @@ const TripBudgetBoxes = ({tripData}) => {
     ) {
       if (!todaysDate.isSame(startDate, 'day')) {
         // calculates how many days left in trip not including today
-        days_left = endDate.diff(todaysDate, 'days');
+        if (endDate.diff(todaysDate, 'days') === 1) {
+          days_left = 2;
+        } else {
+          days_left = endDate.diff(todaysDate, 'days');
+        }
+        console.log(endDate.diff(todaysDate, 'days'));
       }
 
       // If todays is the last day then remaining budget is whatever is left over
