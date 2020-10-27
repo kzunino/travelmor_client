@@ -210,7 +210,7 @@ const NewTrip = ({
     e.preventDefault();
 
     let currencyRates;
-    let length;
+    let length = 1;
     const format = 'YYYY-MM-DD HH:mm:ss';
     let setNewDefaultTrip = false;
     let deleteOldDefaultTrip = false;
@@ -227,22 +227,13 @@ const NewTrip = ({
       return createAlerts({validation_error: 'End date is before start date!'});
     }
 
-    // // if start is same day as end day then length is 1 day
-    // if (Moment(end_date).isSame(Moment(start_date), 'day')) {
-    //   length = 1;
-    // } else if (Moment(end_date).diff(Moment(start_date), 'days') === 1) {
-    //   length = 2;
-    // } else {
-    //   length = Moment(end_date).diff(Moment(start_date), 'days') + 2;
-    // }
-
-    // min number of days is 2
+    // min number of days is 1
     // loops over and enumerates the trip length based on start and end date
-    length = 2;
     let currDate = Moment(start_date).startOf('day');
     let lastDate = Moment(end_date).startOf('day');
 
-    while (currDate.add(1, 'days').diff(lastDate) < 0) {
+    console.log(currDate.clone().diff(lastDate, 'day'));
+    while (currDate.add(1, 'day').diff(lastDate, 'day') <= 0) {
       length++;
     }
 
