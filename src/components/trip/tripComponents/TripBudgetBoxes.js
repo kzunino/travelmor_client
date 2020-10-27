@@ -95,15 +95,18 @@ const TripBudgetBoxes = ({tripData}) => {
 
   let todayExpenses;
   let totalSpentToday = 0;
+  let pastAndTodaysExpenses;
+  let totalSpentUntilToday = 0;
   let day_remaining = 0;
   let daily_budget = (total_budget / length).toFixed(2);
   let daily_average = 0;
-  let new_daily_average = 0;
+  let adjusted_daily_budget = 0;
   let total_budget_spent = 0;
   let total_budget_remaining = 0;
   let days_left = length;
+  let daysIntoTrip = 1;
 
-  let todaysDate = Moment(Date.now());
+  let todaysDate = Moment();
   let startDate = Moment(start_date);
   let endDate = Moment(end_date);
 
@@ -116,28 +119,38 @@ const TripBudgetBoxes = ({tripData}) => {
         : null;
     });
 
+    pastAndTodaysExpenses = expenses.filter((expense) => {
+      return Moment(expense.purchase_date).isSameOrBefore(todaysDate, 'days')
+        ? expense
+        : null;
+    });
+
     // calculates total spent today
     totalSpentToday = reduceExpenses(todayExpenses);
+
+    // calculate all expenses spend until todays date
+    totalSpentUntilToday = reduceExpenses(pastAndTodaysExpenses);
+    console.log(totalSpentUntilToday);
 
     // calculates total spent and remaining in budget
     total_budget_spent = reduceExpenses(expenses).toFixed(2);
     total_budget_remaining = (total_budget - total_budget_spent).toFixed(2);
 
-    /* 
-     -if todays date is within trip boundaries:
-     - calculate how many days of the trip are left
-     -calculates how much can be spent today to stay within average budget
-     */
+    //  -if todays date is within trip boundaries:
+    //  - calculate how many days of the trip are left
+    //  -calculates how much can be spent today to stay within average budget
+
     if (
       (todaysDate.isAfter(startDate) && todaysDate.isBefore(endDate)) ||
       todaysDate.isSame(startDate, 'day') ||
       todaysDate.isSame(endDate, 'day')
     ) {
-      // calculates how many days left in trip not including today
-      days_left = endDate.diff(todaysDate, 'days');
+      if (!todaysDate.isSame(startDate, 'day')) {
+        // calculates how many days left in trip not including today
+        days_left = endDate.diff(todaysDate, 'days');
+      }
 
       // If todays is the last day then remaining budget is whatever is left over
-
       if (todaysDate.isSame(endDate, 'day')) {
         day_remaining = total_budget_remaining;
       } else {
@@ -149,19 +162,34 @@ const TripBudgetBoxes = ({tripData}) => {
       day_remaining = 0;
     }
 
-    // calculates the overall trip average and new daily budget to stay
-    // on budget target
-    if (total_budget_spent <= 0) {
-      daily_average = 0;
-    } else {
-      daily_average = (total_budget_spent / length).toFixed(2);
+    // daily average is the average spent so far in the trip
+    //
+    if (
+      !todaysDate.isSame(startDate, 'day') &&
+      !todaysDate.isAfter(endDate) &&
+      !todaysDate.isBefore(startDate)
+    ) {
+      daysIntoTrip = todaysDate.diff(startDate, 'days') + 1;
+    } else if (todaysDate.isBefore(startDate)) {
+      daysIntoTrip = 0;
+    } else if (todaysDate.isAfter(endDate)) {
+      daysIntoTrip = length;
     }
+    console.log('daysIntoTrip: ' + daysIntoTrip);
+
+    // if (total_budget_spent <= 0) {
+    //   daily_average = 0;
+    // } else {
+    daily_average = (totalSpentUntilToday / daysIntoTrip).toFixed(2);
 
     // edge case - if days left is zero then there is one day remaining
     if (days_left <= 0) {
       days_left = 1;
     }
-    new_daily_average = (total_budget_remaining / days_left).toFixed(2);
+
+    console.log('days left: ' + days_left);
+
+    adjusted_daily_budget = (total_budget_remaining / days_left).toFixed(2);
   }
 
   return (
@@ -198,10 +226,6 @@ const TripBudgetBoxes = ({tripData}) => {
                       spent today
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      {/* {getSymbolFromCurrency(home_currency) !== undefined
-                        ? getSymbolFromCurrency(home_currency)
-                        : '$'}
-                      {totalSpentToday} */}
                       <CurrencyFormat
                         value={totalSpentToday}
                         displayType={'text'}
@@ -229,11 +253,6 @@ const TripBudgetBoxes = ({tripData}) => {
                       }
                       align='right'
                     >
-                      {/* {getSymbolFromCurrency(home_currency) !== undefined
-                        ? getSymbolFromCurrency(home_currency)
-                        : '$'}
-                      {day_remaining} */}
-
                       <CurrencyFormat
                         value={day_remaining}
                         displayType={'text'}
@@ -282,10 +301,6 @@ const TripBudgetBoxes = ({tripData}) => {
                       daily avg
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      {/* {getSymbolFromCurrency(home_currency) !== undefined
-                        ? getSymbolFromCurrency(home_currency)
-                        : '$'}
-                      {daily_average} */}
                       <CurrencyFormat
                         value={daily_average}
                         displayType={'text'}
@@ -305,13 +320,8 @@ const TripBudgetBoxes = ({tripData}) => {
                       adjusted budget
                     </Typography>
                     <Typography variant='h6' align='right'>
-                      {/* {getSymbolFromCurrency(home_currency) !== undefined
-                        ? getSymbolFromCurrency(home_currency)
-                        : '$'}
-                      {new_daily_average} */}
-
                       <CurrencyFormat
-                        value={new_daily_average}
+                        value={adjusted_daily_budget}
                         displayType={'text'}
                         thousandSeparator={true}
                         fixedDecimalScale={true}
