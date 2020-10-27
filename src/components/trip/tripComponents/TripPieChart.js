@@ -189,7 +189,7 @@ const TripPieChart = ({tripData}) => {
       <Grid xs={12} sm={12} item>
         <Box m={1} boxShadow={3} className={classes.budgetBox}>
           <Grid item>
-            <Typography variant='h5'>Trip Expense Types</Typography>
+            <Typography variant='h6'>Trip Expense Types</Typography>
           </Grid>
           <Grid item>
             <Doughnut

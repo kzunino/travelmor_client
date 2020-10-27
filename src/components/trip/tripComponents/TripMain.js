@@ -76,10 +76,8 @@ const TripMain = ({tripData}) => {
   // Calculates the average daily budget
   let daily_budget = parseFloat((total_budget / length).toFixed(2));
 
-  // let max_bar_value;
-
   //sets daily totals of money spent
-  let dailyWeekTotals = {
+  let dailyTotals = {
     today: 0,
     yesterday: 0,
     threeDaysAgo: 0,
@@ -114,7 +112,7 @@ const TripMain = ({tripData}) => {
 
     //sets daily totals of money spent for each day by reducing each item and adding
     //total cost per day
-    dailyWeekTotals = {
+    dailyTotals = {
       today: reduceExpenses(weekExpenses.todayExpenses),
       yesterday: reduceExpenses(weekExpenses.yesterdayExpenses),
       threeDaysAgo: reduceExpenses(weekExpenses.threeDaysAgoExpenses),
@@ -123,12 +121,6 @@ const TripMain = ({tripData}) => {
       sixDaysAgo: reduceExpenses(weekExpenses.sixDaysAgoExpenses),
       sevenDaysAgo: reduceExpenses(weekExpenses.sevenDaysAgoExpenses),
     };
-
-    // // reduces all expenses and finds most expensive purchase
-    // max_bar_value = expenses.reduce((prev, current) => {
-    //   return prev.cost > current.cost ? prev.cost : current.cost;
-    // }, 0);
-    // max_bar_value = parseInt(max_bar_value);
   }
 
   let {
@@ -139,7 +131,7 @@ const TripMain = ({tripData}) => {
     fiveDaysAgo,
     sixDaysAgo,
     sevenDaysAgo,
-  } = dailyWeekTotals;
+  } = dailyTotals;
 
   const barData = (canvas) => {
     // const ctx = canvas.getContext('2d');

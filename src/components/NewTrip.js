@@ -232,7 +232,6 @@ const NewTrip = ({
     let currDate = Moment(start_date).startOf('day');
     let lastDate = Moment(end_date).startOf('day');
 
-    console.log(currDate.clone().diff(lastDate, 'day'));
     while (currDate.add(1, 'day').diff(lastDate, 'day') <= 0) {
       length++;
     }

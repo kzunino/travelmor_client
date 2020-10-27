@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   spendingChartContainer: {
     backgroundColor: theme.palette.boxBackground.main,
+    padding: 15,
   },
   tableWrapper: {
     marginTop: '2em',
@@ -216,10 +217,15 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
           {/* Line Chart Item */}
           <Grid item xs={12}>
             <Box m={1} boxShadow={3} className={classes.spendingChartContainer}>
-              <Typography className={classes.heading} variant='h5'>
-                Trip Spending Overview
-              </Typography>
-              <Line data={chartData} options={options} />
+              <Grid item>
+                <Typography className={classes.heading} variant='h6'>
+                  Trip Spending Overview
+                </Typography>
+              </Grid>
+
+              <Grid item>
+                <Line data={chartData} options={options} />
+              </Grid>
             </Box>
           </Grid>
           {/* Table Item */}

@@ -123,9 +123,11 @@ const TripBudgetBoxes = ({tripData}) => {
     total_budget_spent = reduceExpenses(expenses).toFixed(2);
     total_budget_remaining = (total_budget - total_budget_spent).toFixed(2);
 
-    // if todays date is within trip boundaries
-    // calculate how many days of the trip are left
-    // calculates how much can be spent today to stay within average budget
+    /* 
+     -if todays date is within trip boundaries:
+     - calculate how many days of the trip are left
+     -calculates how much can be spent today to stay within average budget
+     */
     if (
       (todaysDate.isAfter(startDate) && todaysDate.isBefore(endDate)) ||
       todaysDate.isSame(startDate, 'day') ||
