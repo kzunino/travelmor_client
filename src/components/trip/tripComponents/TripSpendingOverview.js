@@ -134,7 +134,13 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
               }
 
               //if matchXS is true
-              if (tripDays.length >= 15 && tripDays.length < 30 && matchXs) {
+              if (tripDays.length < 15 && matchXs) {
+                if ((index + 1) % 1 === 0) return item;
+              } else if (
+                tripDays.length >= 15 &&
+                tripDays.length < 30 &&
+                matchXs
+              ) {
                 if ((index + 1) % 2 === 0) return item;
               } else if (
                 tripDays.length >= 30 &&
