@@ -108,6 +108,7 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
   console.log(dailySpendingData);
 
   let options = {
+    maintainAspectRatio: false,
     scales: {
       xAxes: [
         {
@@ -160,6 +161,7 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
         {
           ticks: {
             beginAtZero: true,
+            maxTicksLimit: 7,
           },
         },
       ],
@@ -235,7 +237,9 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
           </Grid>
 
           <Grid item>
-            <Line data={chartData} options={options} />
+            <div style={{minHeight: 275}}>
+              <Line data={chartData} options={options} />
+            </div>
           </Grid>
         </Box>
       </Grid>
