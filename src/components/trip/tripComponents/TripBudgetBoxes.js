@@ -130,7 +130,6 @@ const TripBudgetBoxes = ({tripData}) => {
 
     // calculate all expenses spend until todays date
     totalSpentUntilToday = reduceExpenses(pastAndTodaysExpenses);
-    console.log(totalSpentUntilToday);
 
     // calculates total spent and remaining in budget
     total_budget_spent = reduceExpenses(expenses).toFixed(2);
@@ -153,7 +152,6 @@ const TripBudgetBoxes = ({tripData}) => {
         } else {
           days_left = endDate.diff(todaysDate, 'days') + 1;
         }
-        console.log(endDate.diff(todaysDate, 'days'));
       }
 
       // If todays is the last day then remaining budget is whatever is left over
@@ -182,7 +180,6 @@ const TripBudgetBoxes = ({tripData}) => {
     } else if (todaysDate.isAfter(endDate)) {
       daysIntoTrip = length;
     }
-    console.log('daysIntoTrip: ' + daysIntoTrip);
 
     daily_average = (totalSpentUntilToday / daysIntoTrip).toFixed(2);
 
@@ -190,8 +187,6 @@ const TripBudgetBoxes = ({tripData}) => {
     if (days_left <= 0) {
       days_left = 1;
     }
-
-    console.log('days left: ' + days_left);
 
     adjusted_daily_budget = (total_budget_remaining / days_left).toFixed(2);
   }
