@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {getTrip} from '../../actions/trips';
 import Moment from 'moment';
+import getSymbolFromCurrency from 'currency-symbol-map';
+import CurrencyFormat from 'react-currency-format';
 
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -57,7 +59,7 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
     name,
     total_budget,
     length,
-    // home_currency,
+    home_currency,
     // currencies,
     expenses,
     start_date,
@@ -68,6 +70,9 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
   let dailyBudgetData = [];
   let dailySpendingData = [];
 
+  let daily_budget = parseFloat((total_budget / length).toFixed(2));
+
+  // gets trip depending on params of trip
   useEffect(() => {
     const {trip_uid} = match.params;
     getTrip(trip_uid);
@@ -220,6 +225,44 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
               <Grid item>
                 <Typography className={classes.heading} variant='h6'>
                   Trip Spending Overview
+                </Typography>
+                <Typography variant='subtitle2'>
+                  {Moment(start_date).format('MMM Do')} &ndash;{' '}
+                  {Moment(end_date).format('MMM Do')}
+                </Typography>
+                <Typography style={{marginTop: '1em'}} variant='subtitle2'>
+                  <strong>Total Budget</strong>:{' '}
+                  {
+                    <CurrencyFormat
+                      value={total_budget}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                      fixedDecimalScale={true}
+                      decimalScale={2}
+                      prefix={
+                        getSymbolFromCurrency(home_currency) !== undefined
+                          ? getSymbolFromCurrency(home_currency)
+                          : '$'
+                      }
+                    />
+                  }
+                </Typography>
+                <Typography variant='subtitle2'>
+                  <strong>Daily budget:</strong>{' '}
+                  {
+                    <CurrencyFormat
+                      value={daily_budget}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                      fixedDecimalScale={true}
+                      decimalScale={2}
+                      prefix={
+                        getSymbolFromCurrency(home_currency) !== undefined
+                          ? getSymbolFromCurrency(home_currency)
+                          : '$'
+                      }
+                    />
+                  }
                 </Typography>
               </Grid>
 
