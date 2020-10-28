@@ -69,7 +69,6 @@ export const addExpense = (data) => async (dispatch, getState) => {
       purchase_date,
       end_of_purchase_date_range
     );
-    console.log(numberOfDaysInRange);
 
     let averageCostOfMultiplePurchases = (cost / numberOfDaysInRange).toFixed(
       2
@@ -95,14 +94,10 @@ export const addExpense = (data) => async (dispatch, getState) => {
       numberOfDaysInRange--;
       day += 1;
     }
-
-    console.log(purchaseArr);
   }
-  console.log(purchaseArr);
 
   // Request Body
   const body = JSON.stringify(purchaseArr);
-  console.log(body);
 
   try {
     const res = await axios.post(

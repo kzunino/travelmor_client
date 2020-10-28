@@ -1,0 +1,24 @@
+diff --git a/node_modules/react-currency-format/lib/currency-format.js b/node_modules/react-currency-format/lib/currency-format.js
+index e80841e..bcf0a00 100644
+--- a/node_modules/react-currency-format/lib/currency-format.js
++++ b/node_modules/react-currency-format/lib/currency-format.js
+@@ -36,7 +36,8 @@ var propTypes = {
+   mask: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.arrayOf(_propTypes2.default.string)]),
+   value: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string]),
+   isNumericString: _propTypes2.default.bool,
+-  customInput: _propTypes2.default.func,
++  // patch here
++  customInput: _propTypes2.default.object,
+   allowNegative: _propTypes2.default.bool,
+   onValueChange: _propTypes2.default.func,
+   onKeyDown: _propTypes2.default.func,
+@@ -876,6 +877,9 @@ var CurrencyFormat = function (_React$Component) {
+           selectionEnd = el.selectionEnd,
+           value = el.value;
+       
++      // Patched issue here
++      if(value === undefined) value = ''
++
+ 
+       if (selectionStart === selectionEnd) {
+         var caretPostion = this.correctCaretPosition(value, selectionStart);
