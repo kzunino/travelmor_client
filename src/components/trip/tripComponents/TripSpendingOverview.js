@@ -53,8 +53,8 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
   if (end_date) {
     // DaysArr creates a day for everyday of the trip
     let daysArr = [];
-    let firstDayOfTrip = Moment(start_date).utc();
-    let lastDayOfTrip = Moment(end_date).utc();
+    let firstDayOfTrip = Moment(start_date);
+    let lastDayOfTrip = Moment(end_date);
     //loops over all days from start to end date using a Moment for loop
     for (
       let i = Moment(firstDayOfTrip);
@@ -105,6 +105,8 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
     });
   }
 
+  console.log(dailySpendingData);
+
   let options = {
     scales: {
       xAxes: [
@@ -151,6 +153,13 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
           },
           gridLines: {
             display: true,
+          },
+        },
+      ],
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
           },
         },
       ],
