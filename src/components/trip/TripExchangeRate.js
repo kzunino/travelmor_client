@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: theme.palette.primary.dark,
     },
+    [theme.breakpoints.down('xs')]: {
+      height: 30,
+    },
   },
   deleteIcon: {
     color: 'whitesmoke',
@@ -42,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
     height: 25,
     '&:hover': {
       backgroundColor: '#d11a2a',
+    },
+    [theme.breakpoints.down('xs')]: {
+      height: 30,
     },
   },
   hidden: {
