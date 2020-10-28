@@ -2,11 +2,11 @@ import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {getTrip} from '../../actions/trips';
-
-// import {Link} from 'react-router-dom';
+import Moment from 'moment';
 
 // Trip Components
 import TripMain from './tripComponents/TripMain';
+import TripSpendingOverview from './tripComponents/TripSpendingOverview';
 import TripBudgetBoxes from './tripComponents/TripBudgetBoxes';
 import TripTable from './tripComponents/TripTable';
 import TripPieChart from './tripComponents/TripPieChart';
@@ -18,6 +18,11 @@ import Grid from '@material-ui/core/Grid';
 import BottomAction from '../BottomActions';
 
 const Trip = ({match, getTrip, trip_data}) => {
+  const {end_date} = trip_data;
+  const today = Moment();
+  const endDate = Moment(end_date);
+  let todayIsAfterTripEnded = today.isAfter(endDate, 'days');
+
   useEffect(() => {
     if (window.location.pathname !== '/dashboard') {
       let {trip_uid} = match.params;
@@ -28,7 +33,12 @@ const Trip = ({match, getTrip, trip_data}) => {
   return (
     <>
       <Grid container justify='space-between'>
-        <TripMain tripData={trip_data} />
+        {todayIsAfterTripEnded ? (
+          <TripSpendingOverview tripData={trip_data} />
+        ) : (
+          <TripMain tripData={trip_data} />
+        )}
+
         <TripBudgetBoxes tripData={trip_data} />
         <TripTable tripData={trip_data} />
         <TripPieChart tripData={trip_data} />

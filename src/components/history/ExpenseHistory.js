@@ -3,26 +3,27 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {getTrip} from '../../actions/trips';
-import Moment from 'moment';
-import getSymbolFromCurrency from 'currency-symbol-map';
-import CurrencyFormat from 'react-currency-format';
+// import Moment from 'moment';
+// import getSymbolFromCurrency from 'currency-symbol-map';
+// import CurrencyFormat from 'react-currency-format';
 
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
+import TripSpendingOverview from '../trip/tripComponents/TripSpendingOverview';
 import TripTable from '../trip/tripComponents/TripTable';
 
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+// import Box from '@material-ui/core/Box';
 import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
 // Line Chart imports
-import {Line} from 'react-chartjs-2';
+// import {Line} from 'react-chartjs-2';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -57,20 +58,20 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
     trip_uid,
     // user,
     name,
-    total_budget,
-    length,
-    home_currency,
-    // currencies,
-    expenses,
-    start_date,
-    end_date,
+    // total_budget,
+    // length,
+    // home_currency,
+    //  currencies,
+    // expenses,
+    // start_date,
+    // end_date,
   } = trip_data;
 
-  let tripDays = [];
-  let dailyBudgetData = [];
-  let dailySpendingData = [];
+  // let tripDays = [];
+  // let dailyBudgetData = [];
+  // let dailySpendingData = [];
 
-  let daily_budget = parseFloat((total_budget / length).toFixed(2));
+  // let daily_budget = parseFloat((total_budget / length).toFixed(2));
 
   // gets trip depending on params of trip
   useEffect(() => {
@@ -78,131 +79,131 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
     getTrip(trip_uid);
   }, [getTrip, match]);
 
-  if (end_date) {
-    // DaysArr creates a day for everyday of the trip
-    let daysArr = [];
-    let firstDayOfTrip = Moment(start_date).utc();
-    let lastDayOfTrip = Moment(end_date).utc();
-    //loops over all days from start to end date using a Moment for loop
-    for (
-      let i = Moment(firstDayOfTrip);
-      i.isBefore(lastDayOfTrip);
-      i.add(1, 'days')
-    ) {
-      if (daysArr.indexOf(Moment(i).format('MM-DD-YYYY')) === -1) {
-        daysArr.push(Moment(i).format('MM-DD-YYYY'));
-      }
-    }
-    // Formats the dates for the X axis on graph
-    tripDays = daysArr.map((day, index) => {
-      if (index === 0) return Moment(day, 'MM-DD-YYYY').format('MMM Do');
-      else if (Moment(day, 'MM-DD-YYYY').format('DD') === '01') {
-        return Moment(day, 'MM-DD-YYYY').format('MMM Do');
-      } else {
-        return Moment(day, 'MM-DD-YYYY').format('Do');
-      }
-    });
+  // if (end_date) {
+  //   // DaysArr creates a day for everyday of the trip
+  //   let daysArr = [];
+  //   let firstDayOfTrip = Moment(start_date).utc();
+  //   let lastDayOfTrip = Moment(end_date).utc();
+  //   //loops over all days from start to end date using a Moment for loop
+  //   for (
+  //     let i = Moment(firstDayOfTrip);
+  //     i.isBefore(lastDayOfTrip);
+  //     i.add(1, 'days')
+  //   ) {
+  //     if (daysArr.indexOf(Moment(i).format('MM-DD-YYYY')) === -1) {
+  //       daysArr.push(Moment(i).format('MM-DD-YYYY'));
+  //     }
+  //   }
+  //   // Formats the dates for the X axis on graph
+  //   tripDays = daysArr.map((day, index) => {
+  //     if (index === 0) return Moment(day, 'MM-DD-YYYY').format('MMM Do');
+  //     else if (Moment(day, 'MM-DD-YYYY').format('DD') === '01') {
+  //       return Moment(day, 'MM-DD-YYYY').format('MMM Do');
+  //     } else {
+  //       return Moment(day, 'MM-DD-YYYY').format('Do');
+  //     }
+  //   });
 
-    // Daily budget Data
+  //   // Daily budget Data
 
-    dailyBudgetData = tripDays.map(() => (total_budget / length).toFixed(2));
+  //   dailyBudgetData = tripDays.map(() => (total_budget / length).toFixed(2));
 
-    // Daily Spending Data
-    /* Creates a days object filled with each day an expense occurred
-        -organizes 
-        - if day doesn't exist it creates day with cost, if it does exist
-        it adds the cost to the previous day totals
-    */
-    let daysObj = {};
-    expenses.forEach((expense) => {
-      if (!daysObj[Moment(expense.purchase_date).format('MM-DD-YYYY')]) {
-        daysObj[
-          Moment(expense.purchase_date).format('MM-DD-YYYY')
-        ] = parseFloat(expense.cost);
-      } else {
-        daysObj[
-          Moment(expense.purchase_date).format('MM-DD-YYYY')
-        ] += parseFloat(expense.cost);
-      }
-    });
+  //   // Daily Spending Data
+  //   /* Creates a days object filled with each day an expense occurred
+  //       -organizes
+  //       - if day doesn't exist it creates day with cost, if it does exist
+  //       it adds the cost to the previous day totals
+  //   */
+  //   let daysObj = {};
+  //   expenses.forEach((expense) => {
+  //     if (!daysObj[Moment(expense.purchase_date).format('MM-DD-YYYY')]) {
+  //       daysObj[
+  //         Moment(expense.purchase_date).format('MM-DD-YYYY')
+  //       ] = parseFloat(expense.cost);
+  //     } else {
+  //       daysObj[
+  //         Moment(expense.purchase_date).format('MM-DD-YYYY')
+  //       ] += parseFloat(expense.cost);
+  //     }
+  //   });
 
-    // Matches Spending with trip days saved in days array or pushes 0
-    daysArr.forEach((day) => {
-      if (daysObj.hasOwnProperty(day)) dailySpendingData.push(daysObj[day]);
-      else dailySpendingData.push(0);
-    });
-  }
+  //   // Matches Spending with trip days saved in days array or pushes 0
+  //   daysArr.forEach((day) => {
+  //     if (daysObj.hasOwnProperty(day)) dailySpendingData.push(daysObj[day]);
+  //     else dailySpendingData.push(0);
+  //   });
+  // }
 
-  let options = {
-    scales: {
-      xAxes: [
-        {
-          ticks: {
-            userCallback: function (item, index) {
-              //always return first day of trip to chart
-              if (index === 0) return item;
-              // sm-lg screen
-              if (tripDays.length >= 15 && tripDays.length < 30 && !matchXs) {
-                if ((index + 1) % 1 === 0) return item;
-              } else if (
-                tripDays.length >= 30 &&
-                tripDays.length < 200 &&
-                !matchXs
-              ) {
-                if ((index + 1) % 5 === 0) return item;
-              } else if (
-                tripDays.length >= 200 &&
-                tripDays.length < 367 &&
-                !matchXs
-              ) {
-                if ((index + 1) % 15 === 0) return item;
-              }
+  // let options = {
+  //   scales: {
+  //     xAxes: [
+  //       {
+  //         ticks: {
+  //           userCallback: function (item, index) {
+  //             //always return first day of trip to chart
+  //             if (index === 0) return item;
+  //             // sm-lg screen
+  //             if (tripDays.length >= 15 && tripDays.length < 30 && !matchXs) {
+  //               if ((index + 1) % 1 === 0) return item;
+  //             } else if (
+  //               tripDays.length >= 30 &&
+  //               tripDays.length < 200 &&
+  //               !matchXs
+  //             ) {
+  //               if ((index + 1) % 5 === 0) return item;
+  //             } else if (
+  //               tripDays.length >= 200 &&
+  //               tripDays.length < 367 &&
+  //               !matchXs
+  //             ) {
+  //               if ((index + 1) % 15 === 0) return item;
+  //             }
 
-              //if matchXS is true
-              if (tripDays.length >= 15 && tripDays.length < 30 && matchXs) {
-                if ((index + 1) % 2 === 0) return item;
-              } else if (
-                tripDays.length >= 30 &&
-                tripDays.length < 200 &&
-                matchXs
-              ) {
-                if ((index + 1) % 15 === 0) return item;
-              } else if (
-                tripDays.length >= 200 &&
-                tripDays.length < 367 &&
-                matchXs
-              ) {
-                if ((index + 1) % 30 === 0) return item;
-              }
-            },
-            autoSkip: false,
-          },
-          gridLines: {
-            display: true,
-          },
-        },
-      ],
-    },
-  };
+  //             //if matchXS is true
+  //             if (tripDays.length >= 15 && tripDays.length < 30 && matchXs) {
+  //               if ((index + 1) % 2 === 0) return item;
+  //             } else if (
+  //               tripDays.length >= 30 &&
+  //               tripDays.length < 200 &&
+  //               matchXs
+  //             ) {
+  //               if ((index + 1) % 15 === 0) return item;
+  //             } else if (
+  //               tripDays.length >= 200 &&
+  //               tripDays.length < 367 &&
+  //               matchXs
+  //             ) {
+  //               if ((index + 1) % 30 === 0) return item;
+  //             }
+  //           },
+  //           autoSkip: false,
+  //         },
+  //         gridLines: {
+  //           display: true,
+  //         },
+  //       },
+  //     ],
+  //   },
+  // };
 
-  let chartData = {
-    labels: tripDays,
-    datasets: [
-      {
-        label: 'Daily Spending',
-        data: dailySpendingData,
-        fill: true,
-        backgroundColor: 'rgba(75,192,192,0.2)',
-        borderColor: 'rgba(75,192,192,1)',
-      },
-      {
-        label: 'Daily Budget',
-        data: dailyBudgetData,
-        fill: false,
-        borderColor: '#742774',
-      },
-    ],
-  };
+  // let chartData = {
+  //   labels: tripDays,
+  //   datasets: [
+  //     {
+  //       label: 'Daily Spending',
+  //       data: dailySpendingData,
+  //       fill: true,
+  //       backgroundColor: 'rgba(75,192,192,0.2)',
+  //       borderColor: 'rgba(75,192,192,1)',
+  //     },
+  //     {
+  //       label: 'Daily Budget',
+  //       data: dailyBudgetData,
+  //       fill: false,
+  //       borderColor: '#742774',
+  //     },
+  //   ],
+  // };
 
   return (
     <>
@@ -219,7 +220,8 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
       <Divider className={classes.divider} />
       <Container component='div' maxWidth='lg' className={classes.tableWrapper}>
         <Grid container direction='column'>
-          {/* Line Chart Item */}
+          <TripSpendingOverview tripData={trip_data} />
+          {/* Line Chart Item
           <Grid item xs={12}>
             <Box m={1} boxShadow={3} className={classes.spendingChartContainer}>
               <Grid item>
@@ -247,7 +249,7 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
                     />
                   }
                 </Typography>
-                <Typography variant='subtitle2'>
+                <Typography style={{marginTop: '.5em'}} variant='subtitle2'>
                   <strong>Daily budget:</strong>{' '}
                   {
                     <CurrencyFormat
@@ -270,7 +272,8 @@ const ExpenseHistory = ({match, getTrip, trip_data}) => {
                 <Line data={chartData} options={options} />
               </Grid>
             </Box>
-          </Grid>
+          </Grid> */}
+
           {/* Table Item */}
           <TripTable tripData={trip_data} />
         </Grid>
