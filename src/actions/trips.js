@@ -80,7 +80,6 @@ export const newTrip = (
       // if old_default_trip is passed then it deletes itself and creates new default
       // old default trip is null or an uuid
       if (setNewDefaultTrip) {
-        console.log(res.data.trip_uid);
         dispatch(setDefaultTrip({user: user, trip_uid: res.data.trip_uid}));
       }
     }
@@ -159,7 +158,7 @@ export const setDefaultTrip = ({user, trip_uid}) => async (
       trip_uid,
       user,
     });
-    console.log(body);
+
     const res = await axios.post(
       `${databaseURI}/api/default-trip/`,
       body,
