@@ -21,13 +21,13 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '1em',
   },
   buttonContainer: {
-    height: 20,
+    height: 25,
   },
   updateButton: {
     backgroundColor: theme.palette.primary.main,
     color: 'white',
     fontWeight: 'bold',
-    height: 20,
+    height: 25,
     fontSize: '1em',
     '&:hover': {
       backgroundColor: theme.palette.primary.dark,
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   currencyDeleteButton: {
     marginLeft: '1em',
     backgroundColor: '#D61A3C',
-    height: 20,
+    height: 25,
     '&:hover': {
       backgroundColor: '#d11a2a',
     },
@@ -191,6 +191,7 @@ const TripExchangeRate = ({
                       {/* Delete Button and Dialog */}
                       <Grid item>
                         <Button
+                          variant='contained'
                           className={classes.currencyDeleteButton}
                           onClick={() => handleClickOpen(index)}
                         >

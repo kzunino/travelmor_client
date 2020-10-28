@@ -149,6 +149,7 @@ const TripBudgetBoxes = ({tripData}) => {
       daysIntoTrip = length;
     }
 
+    // Daily average is the average spent up until today
     if (totalSpentUntilToday === 0 && daysIntoTrip === 0) {
       daily_average = 0.0;
     } else {
