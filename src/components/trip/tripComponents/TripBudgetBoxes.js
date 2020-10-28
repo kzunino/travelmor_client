@@ -135,40 +135,8 @@ const TripBudgetBoxes = ({tripData}) => {
     total_budget_spent = reduceExpenses(expenses).toFixed(2);
     total_budget_remaining = (total_budget - total_budget_spent).toFixed(2);
 
-    //  -if todays date is within trip boundaries:
-    //  - calculate how many days of the trip are left
-    //  -calculates how much can be spent today to stay within average budget
-
-    if (
-      (todaysDate.isAfter(startDate) && todaysDate.isBefore(endDate)) ||
-      todaysDate.isSame(startDate, 'day') ||
-      todaysDate.isSame(endDate, 'day')
-    ) {
-      if (!todaysDate.isSame(startDate, 'day')) {
-        // calculates how many days left in trip not including today
-        // if only two days in trip then days left is 2
-        if (endDate.diff(todaysDate, 'days') === 1) {
-          days_left = 2;
-        } else {
-          days_left = endDate.diff(todaysDate, 'days') + 1;
-        }
-      }
-
-      // If todays is the last day then remaining budget is whatever is left over
-      if (todaysDate.isSame(endDate, 'day')) {
-        day_remaining = total_budget_remaining;
-      } else {
-        // calculates how much can be spent today
-        day_remaining = parseFloat((daily_budget - totalSpentToday).toFixed(2));
-      }
-    } else {
-      // if todays date is outside trip boundary then todays budget remaining is 0
-      day_remaining = 0;
-      days_left = 0;
-    }
-
     // daily average is the average spent so far in the trip
-    //
+
     if (
       !todaysDate.isSame(startDate, 'day') &&
       !todaysDate.isAfter(endDate) &&
@@ -181,7 +149,14 @@ const TripBudgetBoxes = ({tripData}) => {
       daysIntoTrip = length;
     }
 
-    daily_average = (totalSpentUntilToday / daysIntoTrip).toFixed(2);
+    if (totalSpentUntilToday === 0 && daysIntoTrip === 0) {
+      daily_average = 0.0;
+    } else {
+      daily_average = (totalSpentUntilToday / daysIntoTrip).toFixed(2);
+    }
+
+    // Days left is length of the trip minus the days into the trip
+    days_left = length - daysIntoTrip;
 
     // edge case - if days left is zero then there is one day remaining
     if (days_left <= 0) {

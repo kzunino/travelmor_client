@@ -105,8 +105,6 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
     });
   }
 
-  console.log(dailySpendingData);
-
   let options = {
     maintainAspectRatio: false,
     scales: {
