@@ -61,8 +61,8 @@ const About = () => {
           My name is Kyle Zunino and I am from the San Francisco Bay Area. After
           graduating from college I decided to save money and go on a long
           backpacking journey through Latin America. To prepare for this
-          adventure, I saved up a large chunk of change and calculated out how
-          much I could spend every day for six months in order to stay within my
+          adventure, I saved up a chunk of change and calculated out how much I
+          could spend every day for six months in order to stay within my
           budget. So I made a mental note and tried to live within my daily
           means; however, some days it was impossible because I had large
           expenses like becoming PADI certified or paying guides to take me
