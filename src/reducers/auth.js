@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -16,7 +18,8 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  token: localStorage.getItem('token'),
+  // token: localStorage.getItem('token'),
+  token: Cookies.get('token'),
   isAuthenticated: null,
   isLoading: false,
   user: null,
@@ -38,7 +41,8 @@ export default (state = initialState, action) => {
       };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
-      localStorage.setItem('token', action.payload.key);
+      // localStorage.setItem('token', action.payload.key);
+      Cookies.set('token', action.payload.key, {expires: 1});
       return {
         ...state,
         token: action.payload.key,
@@ -57,7 +61,8 @@ export default (state = initialState, action) => {
     case LOGOUT_SUCCESS:
     case REGISTER_FAIL:
     case LOGIN_FAIL:
-      localStorage.removeItem('token');
+      // localStorage.removeItem('token');
+      Cookies.remove('token');
       return {
         ...state,
         token: null,

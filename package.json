@@ -18,6 +18,7 @@
     "currency-codes": "^2.1.0",
     "currency-symbol-map": "^4.0.4",
     "fontsource-roboto": "^3.0.3",
+    "js-cookie": "^2.2.1",
     "material-table": "^1.69.0",
     "moment": "^2.27.0",
     "patch-package": "^6.2.2",
