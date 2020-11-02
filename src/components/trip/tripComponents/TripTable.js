@@ -158,6 +158,7 @@ const TripTable = ({tripData, deleteExpense, updateExpense, createAlerts}) => {
   }, [expenses, home_currency]);
 
   let options = {
+    // selection: true,
     search: false,
     pageSize: 5,
     headerStyle: {

@@ -128,6 +128,9 @@ const TripBudgetBoxes = ({tripData}) => {
     // calculates total spent today
     totalSpentToday = reduceExpenses(todayExpenses);
 
+    // calculate remaining for spending today
+    day_remaining = daily_budget - totalSpentToday;
+
     // calculate all expenses spend until todays date
     totalSpentUntilToday = reduceExpenses(pastAndTodaysExpenses);
 
@@ -139,13 +142,13 @@ const TripBudgetBoxes = ({tripData}) => {
 
     if (
       !todaysDate.isSame(startDate, 'day') &&
-      !todaysDate.isAfter(endDate) &&
-      !todaysDate.isBefore(startDate)
+      !todaysDate.isAfter(endDate, 'day') &&
+      !todaysDate.isBefore(startDate, 'day')
     ) {
       daysIntoTrip = todaysDate.diff(startDate, 'days') + 1;
-    } else if (todaysDate.isBefore(startDate)) {
+    } else if (todaysDate.isBefore(startDate, 'day')) {
       daysIntoTrip = 0;
-    } else if (todaysDate.isAfter(endDate)) {
+    } else if (todaysDate.isAfter(endDate, 'day')) {
       daysIntoTrip = length;
     }
 
@@ -159,12 +162,16 @@ const TripBudgetBoxes = ({tripData}) => {
     // Days left is length of the trip minus the days into the trip
     days_left = length - daysIntoTrip;
 
-    // edge case - if days left is zero then there is one day remaining
+    // edge case - if days left is zero or less then there is one day remaining
     if (days_left <= 0) {
       days_left = 1;
     }
 
     adjusted_daily_budget = (total_budget_remaining / days_left).toFixed(2);
+
+    if (days_left === 1 || total_budget_remaining < daily_budget) {
+      day_remaining = adjusted_daily_budget;
+    }
   }
 
   return (
