@@ -3,7 +3,12 @@ import {returnErrors} from './alerts';
 import {tokenConfig} from './auth';
 import Moment from 'moment';
 
-import {ADD_EXPENSE, DELETE_EXPENSE, UPDATE_EXPENSE} from './types';
+import {
+  ADD_EXPENSE,
+  DELETE_EXPENSE,
+  DELETE_EXPENSES,
+  UPDATE_EXPENSE,
+} from './types';
 
 // Devops happy - loads URI based on production or development
 let databaseURI;
@@ -112,7 +117,7 @@ export const addExpense = (data) => async (dispatch, getState) => {
   }
 };
 
-// Delete Expense
+// Delete Single Expense
 // Takes in expense_uid and passes it to reducer to remove from state
 
 export const deleteExpense = (expense_uid) => async (dispatch, getState) => {
@@ -124,6 +129,31 @@ export const deleteExpense = (expense_uid) => async (dispatch, getState) => {
 
     if (res) {
       dispatch({type: DELETE_EXPENSE, payload: expense_uid});
+    }
+  } catch (err) {
+    dispatch(returnErrors(err.response.data, err.response.status));
+  }
+};
+
+// Delete Multiple Expense uids
+// Takes in array of uids to delete and passes it to reducer to remove from state
+
+export const deleteMultipleExpenses = (expense_uid_array) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    // expense_uid_array needs to be in this format [uid as strings]
+    let body = expense_uid_array;
+
+    const res = await axios.post(
+      `${databaseURI}/api/expense/delete_multiple`,
+      body,
+      tokenConfig(getState)
+    );
+
+    if (res) {
+      dispatch({type: DELETE_EXPENSES, payload: expense_uid_array});
     }
   } catch (err) {
     dispatch(returnErrors(err.response.data, err.response.status));

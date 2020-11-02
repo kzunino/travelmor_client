@@ -8,6 +8,7 @@ import {
   UPDATE_TRIP,
   UPDATE_CURRENCY_RATE,
   DELETE_CURRENCY,
+  DELETE_EXPENSES,
 } from '../actions/types';
 
 const initialState = {
@@ -60,6 +61,13 @@ export default (state = initialState, action) => {
         ...state,
         expenses: state.expenses.filter((expense) => {
           return expense.expense_uid !== action.payload;
+        }),
+      };
+    case DELETE_EXPENSES:
+      return {
+        ...state,
+        expenses: state.expenses.filter((expense) => {
+          return !action.payload.includes(expense.expense_uid);
         }),
       };
     case UPDATE_EXPENSE:

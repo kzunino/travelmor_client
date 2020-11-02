@@ -22,10 +22,7 @@ process.env.NODE_ENV === 'development'
 
 // Checks Token and Loads the User
 export const loadUser = () => async (dispatch, getState) => {
-  if (
-    // localStorage.getItem('token')
-    Cookies.get('token')
-  ) {
+  if (Cookies.get('token')) {
     try {
       // User Loading
       dispatch({type: USER_LOADING});
