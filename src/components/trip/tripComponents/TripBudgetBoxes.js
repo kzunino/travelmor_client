@@ -168,10 +168,6 @@ const TripBudgetBoxes = ({tripData}) => {
     }
 
     adjusted_daily_budget = (total_budget_remaining / days_left).toFixed(2);
-
-    if (days_left === 1 || total_budget_remaining < daily_budget) {
-      day_remaining = adjusted_daily_budget;
-    }
   }
 
   return (

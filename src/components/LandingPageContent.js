@@ -189,11 +189,11 @@ const LandingPageContent = () => {
                     <Typography variant='body1'>
                       Be it a trip to Bali or a trip around the world on a
                       shoestring, easily keep to your spending goals.
-                      <Divider
-                        variant='fullWidth'
-                        classes={{root: classes.divider}}
-                      />
                     </Typography>
+                    <Divider
+                      variant='fullWidth'
+                      classes={{root: classes.divider}}
+                    />
 
                     <Typography variant='h6' className={classes.subheading}>
                       A lightweight budget tool to suit your needs
@@ -254,11 +254,11 @@ const LandingPageContent = () => {
                     <Typography variant='body1'>
                       An easy way to monitor your travel budget to make the most
                       of your experiences.
-                      <Divider
-                        variant='fullWidth'
-                        classes={{root: classes.divider}}
-                      />
                     </Typography>
+                    <Divider
+                      variant='fullWidth'
+                      classes={{root: classes.divider}}
+                    />
 
                     <Typography variant='h6' className={classes.subheading}>
                       Stay accountable
@@ -319,11 +319,11 @@ const LandingPageContent = () => {
                     <Typography variant='body1'>
                       Travelmor. helps you manage your finances from anywhere in
                       the world.
-                      <Divider
-                        variant='fullWidth'
-                        classes={{root: classes.divider}}
-                      />
                     </Typography>
+                    <Divider
+                      variant='fullWidth'
+                      classes={{root: classes.divider}}
+                    />
 
                     <Typography variant='h6' className={classes.subheading}>
                       Foreign currency converter
