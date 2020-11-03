@@ -21,6 +21,7 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 import Clear from '@material-ui/icons/Clear';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Edit from '@material-ui/icons/Edit';
 import FilterList from '@material-ui/icons/FilterList';
 import FirstPage from '@material-ui/icons/FirstPage';
@@ -209,7 +210,7 @@ const TripTable = ({
       <DeleteOutline {...props} className={classes.icon} ref={ref} />
     )),
     MultiDelete: forwardRef((props, ref) => (
-      <DeleteOutline {...props} className={classes.icon2} ref={ref} />
+      <DeleteForeverIcon {...props} className={classes.icon2} ref={ref} />
     )),
     DetailPanel: forwardRef((props, ref) => (
       <ChevronRight {...props} ref={ref} />
