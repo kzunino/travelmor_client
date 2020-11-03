@@ -2,7 +2,11 @@ import React, {useState, forwardRef, useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {deleteExpense, updateExpense} from '../../../actions/expenses';
+import {
+  deleteExpense,
+  deleteMultipleExpenses,
+  updateExpense,
+} from '../../../actions/expenses';
 import {createAlerts} from '../../../actions/alerts';
 
 import Moment from 'moment';
@@ -32,12 +36,21 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     color: 'grey',
   },
+  icon2: {
+    color: '#D61A3C',
+  },
   paginationIcon: {
     color: 'white',
   },
 }));
 
-const TripTable = ({tripData, deleteExpense, updateExpense, createAlerts}) => {
+const TripTable = ({
+  tripData,
+  deleteExpense,
+  deleteMultipleExpenses,
+  updateExpense,
+  createAlerts,
+}) => {
   const classes = useStyles();
 
   const {name, home_currency, expenses, start_date, end_date} = tripData;
@@ -158,7 +171,7 @@ const TripTable = ({tripData, deleteExpense, updateExpense, createAlerts}) => {
   }, [expenses, home_currency]);
 
   let options = {
-    // selection: true,
+    selection: true,
     search: false,
     pageSize: 5,
     headerStyle: {
@@ -194,6 +207,9 @@ const TripTable = ({tripData, deleteExpense, updateExpense, createAlerts}) => {
     )),
     Delete: forwardRef((props, ref) => (
       <DeleteOutline {...props} className={classes.icon} ref={ref} />
+    )),
+    MultiDelete: forwardRef((props, ref) => (
+      <DeleteOutline {...props} className={classes.icon2} ref={ref} />
     )),
     DetailPanel: forwardRef((props, ref) => (
       <ChevronRight {...props} ref={ref} />
@@ -245,6 +261,20 @@ const TripTable = ({tripData, deleteExpense, updateExpense, createAlerts}) => {
                 columns={tableData.columns}
                 data={tableData.data}
                 icons={tableIcons}
+                actions={[
+                  {
+                    tooltip: 'Remove All Selected Expenses',
+                    icon: tableIcons.MultiDelete,
+                    onClick: (evt, data) => {
+                      let expenses_to_delete = data.map((expense) => {
+                        return expense.expense_uid;
+                      });
+                      console.log(expenses_to_delete);
+                      // send array to the reducer [expense_uid, expense_uid]
+                      deleteMultipleExpenses(expenses_to_delete);
+                    },
+                  },
+                ]}
                 editable={{
                   onRowUpdate: (newData, oldData) =>
                     new Promise((resolve) => {
@@ -318,10 +348,14 @@ const TripTable = ({tripData, deleteExpense, updateExpense, createAlerts}) => {
 
 TripTable.propTypes = {
   deleteExpense: PropTypes.func.isRequired,
+  deleteMultipleExpenses: PropTypes.func.isRequired,
   updateExpense: PropTypes.func.isRequired,
   createAlerts: PropTypes.func.isRequired,
 };
 
-export default connect(null, {deleteExpense, updateExpense, createAlerts})(
-  TripTable
-);
+export default connect(null, {
+  deleteExpense,
+  deleteMultipleExpenses,
+  updateExpense,
+  createAlerts,
+})(TripTable);

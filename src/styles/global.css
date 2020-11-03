@@ -3,10 +3,8 @@ bg color - 53,58,63
 
 */
 
-body {
-  /* background-color: rgb(33, 33, 33); */
-  /* font-family: 'Muli', sans-serif; */
-  /* font-size: 1rem; */
+div[class*='MTableToolbar-highlight'] {
+  background-color: rgb(39, 41, 59);
 }
 
 /* xs < 768 */
