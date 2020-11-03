@@ -16,6 +16,7 @@ const theme = createMuiTheme({
     },
     secondary: {
       main: white,
+      offWhite: offWhite,
     },
     background: {
       main: darkPurple,
@@ -135,6 +136,7 @@ const theme = createMuiTheme({
         color: white,
       },
     },
+
     MuiTableCell: {
       body: {
         color: white,

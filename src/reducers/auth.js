@@ -40,7 +40,7 @@ export default (state = initialState, action) => {
       };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
-      Cookies.set('token', action.payload.key, {expires: 1});
+      Cookies.set('token', action.payload.key, {expires: 180});
       return {
         ...state,
         token: action.payload.key,

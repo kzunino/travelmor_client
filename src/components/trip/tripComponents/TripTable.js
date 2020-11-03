@@ -34,6 +34,11 @@ const useStyles = makeStyles((theme) => ({
   tableBox: {
     padding: 8,
   },
+  materialTable: {
+    '& span.MuiCheckbox-root': {
+      color: theme.palette.secondary.offWhite,
+    },
+  },
   icon: {
     color: 'grey',
   },
@@ -251,94 +256,96 @@ const TripTable = ({
         <Grid container justify='space-between'>
           <Grid item xs={12}>
             <Box m={0} boxShadow={0} className={classes.tableBox}>
-              <MaterialTable
-                style={{
-                  backgroundColor: 'rgb(39, 41, 59)',
-                  color: '#fff',
-                }}
-                components={components}
-                title={`${name} Expenses`}
-                options={options}
-                columns={tableData.columns}
-                data={tableData.data}
-                icons={tableIcons}
-                actions={[
-                  {
-                    tooltip: 'Remove All Selected Expenses',
-                    icon: tableIcons.MultiDelete,
-                    onClick: (evt, data) => {
-                      let expenses_to_delete = data.map((expense) => {
-                        return expense.expense_uid;
-                      });
-                      console.log(expenses_to_delete);
-                      // send array to the reducer [expense_uid, expense_uid]
-                      deleteMultipleExpenses(expenses_to_delete);
+              <div className={classes.materialTable}>
+                <MaterialTable
+                  style={{
+                    backgroundColor: 'rgb(39, 41, 59)',
+                    color: '#fff',
+                  }}
+                  components={components}
+                  title={`${name} Expenses`}
+                  options={options}
+                  columns={tableData.columns}
+                  data={tableData.data}
+                  icons={tableIcons}
+                  actions={[
+                    {
+                      tooltip: 'Remove All Selected Expenses',
+                      icon: tableIcons.MultiDelete,
+                      onClick: (evt, data) => {
+                        let expenses_to_delete = data.map((expense) => {
+                          return expense.expense_uid;
+                        });
+                        console.log(expenses_to_delete);
+                        // send array to the reducer [expense_uid, expense_uid]
+                        deleteMultipleExpenses(expenses_to_delete);
+                      },
                     },
-                  },
-                ]}
-                editable={{
-                  onRowUpdate: (newData, oldData) =>
-                    new Promise((resolve) => {
-                      setTimeout(() => {
-                        resolve();
+                  ]}
+                  editable={{
+                    onRowUpdate: (newData, oldData) =>
+                      new Promise((resolve) => {
+                        setTimeout(() => {
+                          resolve();
 
-                        let newPurchaseDate = (newData.purchase_date = Moment(
-                          newData.purchase_date,
-                          'MM/DD/YYYY'
-                        ));
+                          let newPurchaseDate = (newData.purchase_date = Moment(
+                            newData.purchase_date,
+                            'MM/DD/YYYY'
+                          ));
 
-                        if (
-                          (newPurchaseDate.isAfter(startDate) &&
-                            newPurchaseDate.isBefore(endDate)) ||
-                          newPurchaseDate.isSame(startDate, 'day') ||
-                          newPurchaseDate.isSame(endDate, 'day')
-                        ) {
-                          // setEditExpense(newData);
-                          updateExpense(newData);
+                          if (
+                            (newPurchaseDate.isAfter(startDate) &&
+                              newPurchaseDate.isBefore(endDate)) ||
+                            newPurchaseDate.isSame(startDate, 'day') ||
+                            newPurchaseDate.isSame(endDate, 'day')
+                          ) {
+                            // setEditExpense(newData);
+                            updateExpense(newData);
 
-                          if (oldData) {
-                            setTableData((prevState) => {
-                              const data = [...prevState.data];
+                            if (oldData) {
+                              setTableData((prevState) => {
+                                const data = [...prevState.data];
 
-                              // Calculates the home cost by converting currency spent
-                              newData.cost = (
-                                parseFloat(newData.cost_conversion) /
-                                parseFloat(newData.exchange_rate)
-                              ).toFixed(2);
+                                // Calculates the home cost by converting currency spent
+                                newData.cost = (
+                                  parseFloat(newData.cost_conversion) /
+                                  parseFloat(newData.exchange_rate)
+                                ).toFixed(2);
 
-                              // Changes date format in table on update
-                              newData.purchase_date = Moment(
-                                newData.purchase_date,
-                                'MM/DD/YYYY'
-                              ).format('MM-DD-YYYY');
+                                // Changes date format in table on update
+                                newData.purchase_date = Moment(
+                                  newData.purchase_date,
+                                  'MM/DD/YYYY'
+                                ).format('MM-DD-YYYY');
 
-                              data[data.indexOf(oldData)] = newData;
+                                data[data.indexOf(oldData)] = newData;
 
-                              return {...prevState, data};
+                                return {...prevState, data};
+                              });
+                            }
+                          } else {
+                            createAlerts({
+                              validation_error:
+                                'Purchase date outside trip range',
                             });
                           }
-                        } else {
-                          createAlerts({
-                            validation_error:
-                              'Purchase date outside trip range',
+                        }, 600);
+                      }),
+                    onRowDelete: (oldData) =>
+                      new Promise((resolve) => {
+                        setTimeout(() => {
+                          resolve();
+                          deleteExpense(oldData.expense_uid);
+                          setTableData((prevState) => {
+                            const data = [...prevState.data];
+                            data.splice(data.indexOf(oldData), 1);
+                            return {...prevState, data};
                           });
-                        }
-                      }, 600);
-                    }),
-                  onRowDelete: (oldData) =>
-                    new Promise((resolve) => {
-                      setTimeout(() => {
-                        resolve();
-                        deleteExpense(oldData.expense_uid);
-                        setTableData((prevState) => {
-                          const data = [...prevState.data];
-                          data.splice(data.indexOf(oldData), 1);
-                          return {...prevState, data};
-                        });
-                      }, 600);
-                    }),
-                }}
-              />
+                        }, 600);
+                      }),
+                  }}
+                />
+              </div>
             </Box>
           </Grid>
         </Grid>
