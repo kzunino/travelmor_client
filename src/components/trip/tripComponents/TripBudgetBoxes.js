@@ -150,6 +150,8 @@ const TripBudgetBoxes = ({tripData}) => {
       daysIntoTrip = 0;
     } else if (todaysDate.isAfter(endDate, 'day')) {
       daysIntoTrip = length;
+      //if today is after trip ends then daily remaining budget is 0
+      day_remaining = 0;
     }
 
     // Daily average is the average spent up until today
