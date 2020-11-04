@@ -3,9 +3,13 @@ bg color - 53,58,63
 
 */
 
-div[class*='MTableToolbar-highlight'] {
+/* div[class*='MTableToolbar-highlight'] {
   background-color: rgb(39, 41, 59);
-}
+} */
+
+/* div[class*='jss527'] {
+  background-color: rgb(39, 41, 59);
+} */
 
 /* xs < 768 */
 @media screen and (min-width: 551px) {

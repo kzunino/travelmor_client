@@ -14,7 +14,7 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
 // Table
-import MaterialTable, {MTableEditField} from 'material-table';
+import MaterialTable, {MTableEditField, MTableToolbar} from 'material-table';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
     '& span.MuiCheckbox-root': {
       color: theme.palette.secondary.offWhite,
     },
+  },
+  highlight:{
+    backgroundColor: theme.palette.boxBackground.main
   },
   icon: {
     color: 'grey',
@@ -200,6 +203,11 @@ const TripTable = ({
         <MTableEditField {...props} />
       </div>
     ),
+    Toolbar:(props)=>(
+      
+        <MTableToolbar {...props}  classes={{highlight: classes.highlight}}/>
+      
+    )
   };
 
   //Table Data
