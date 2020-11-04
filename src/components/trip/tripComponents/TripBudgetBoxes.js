@@ -97,7 +97,7 @@ const TripBudgetBoxes = ({tripData}) => {
   let totalSpentToday = 0;
   let pastAndTodaysExpenses;
   let totalSpentUntilToday = 0;
-  let day_remaining = 0;
+  let today_remaining = 0;
   let daily_budget = (total_budget / length).toFixed(2);
   let daily_average = 0;
   let adjusted_daily_budget = 0;
@@ -129,7 +129,7 @@ const TripBudgetBoxes = ({tripData}) => {
     totalSpentToday = reduceExpenses(todayExpenses);
 
     // calculate remaining for spending today
-    day_remaining = daily_budget - totalSpentToday;
+    today_remaining = daily_budget - totalSpentToday;
 
     // calculate all expenses spend until todays date
     totalSpentUntilToday = reduceExpenses(pastAndTodaysExpenses);
@@ -148,10 +148,11 @@ const TripBudgetBoxes = ({tripData}) => {
       daysIntoTrip = todaysDate.diff(startDate, 'days') + 1;
     } else if (todaysDate.isBefore(startDate, 'day')) {
       daysIntoTrip = 0;
+      today_remaining = 0;
     } else if (todaysDate.isAfter(endDate, 'day')) {
       daysIntoTrip = length;
       //if today is after trip ends then daily remaining budget is 0
-      day_remaining = 0;
+      today_remaining = 0;
     }
 
     // Daily average is the average spent up until today
@@ -227,14 +228,14 @@ const TripBudgetBoxes = ({tripData}) => {
                     <Typography
                       variant='h6'
                       className={
-                        day_remaining > 0
+                        today_remaining > 0
                           ? classes.underBudgetColor
                           : classes.overBudgetColor
                       }
                       align='right'
                     >
                       <CurrencyFormat
-                        value={day_remaining}
+                        value={today_remaining}
                         displayType={'text'}
                         thousandSeparator={true}
                         fixedDecimalScale={true}
