@@ -102,6 +102,7 @@ const TripTable = ({
           {
             title: 'Name',
             field: 'name',
+            
           },
           {
             title: 'Cost',
@@ -284,7 +285,7 @@ const TripTable = ({
                         let expenses_to_delete = data.map((expense) => {
                           return expense.expense_uid;
                         });
-                        console.log(expenses_to_delete);
+                        
                         // send array to the reducer [expense_uid, expense_uid]
                         deleteMultipleExpenses(expenses_to_delete);
                       },
