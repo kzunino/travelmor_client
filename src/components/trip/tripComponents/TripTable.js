@@ -38,9 +38,15 @@ const useStyles = makeStyles((theme) => ({
     '& span.MuiCheckbox-root': {
       color: theme.palette.secondary.offWhite,
     },
+    '& .MuiToolbar-gutters':{
+      paddingLeft: 15
+    },
   },
   highlight:{
     backgroundColor: theme.palette.boxBackground.main
+  },
+  gutters:{
+    paddingLeft: 0
   },
   icon: {
     color: 'grey',

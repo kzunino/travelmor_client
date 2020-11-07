@@ -13,7 +13,7 @@ import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
+// import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -35,8 +35,6 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import FlightIcon from '@material-ui/icons/Flight';
 import HistoryIcon from '@material-ui/icons/History';
 
-// import logo from '../imgs/travelmor_square.png';
-// import logo from '../imgs/travelmor_WHT.png';
 import logo from '../imgs/travelmorLogo.png';
 
 const drawerWidth = 240;
@@ -216,6 +214,7 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
     <Drawer
       className={classes.drawer}
       variant='permanent'
+      anchor={matches ? 'left' : 'right'}
       classes={{
         paper: classes.drawerPaper,
       }}
@@ -313,6 +312,7 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}
         open={openDrawer}
+        anchor="right"
         onClose={() => setOpenDrawer(false)}
         onOpen={() => setOpenDrawer(true)}
       >
@@ -341,7 +341,7 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
           >
             <img src={logo} alt='Travelmor. logo' className={classes.logo} />
           </Button>
-          <Typography variant='h6' noWrap></Typography>
+          {/* <Typography variant='h6' noWrap></Typography> */}
           {matches ? null : tempDrawer}
         </Toolbar>
       </AppBar>

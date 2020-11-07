@@ -71,11 +71,11 @@ const Dashboard = ({trips, default_trips, getTrip, name, location}) => {
   return (
     <>
       {/* -----Welcome Container----- */}
-      <Grid item>
+      {/* <Grid item>
         <Typography className={classes.heading} variant={matchXs ? 'h4' : 'h2'}>
           Welcome, {name}!
         </Typography>
-      </Grid>
+      </Grid> */}
       <Container maxWidth={'lg'} className={classes.container}>
         {!trips.length ? (
           <Grid item>
