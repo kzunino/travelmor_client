@@ -22,9 +22,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.boxBackground.main,
     color: theme.palette.boxContentBudgetData.main,
     borderRadius: 3,
-    [theme.breakpoints.down('xs')]: {
-      padding: 5,
-    },
+    // [theme.breakpoints.down('xs')]: {
+    //   padding: 5,
+    // },
   },
 }));
 

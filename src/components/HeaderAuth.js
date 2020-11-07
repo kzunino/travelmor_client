@@ -90,9 +90,13 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
   },
   list: {
+    color: 'white',
     [theme.breakpoints.up('sm')]: {
       padding: 0,
     },
+  },
+  icon:{
+    color: 'white'
   },
   nested: {
     paddingLeft: theme.spacing(4),
@@ -123,56 +127,56 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
   const drawerItems = [
     {
       text: 'Dashboard',
-      icon: <DashboardIcon />,
+      icon: <DashboardIcon className={classes.icon}/>,
       link: '/dashboard',
       activeIndex: 0,
     },
     {
       text: 'My Trips',
-      icon: <CardTravelIcon />,
+      icon: <CardTravelIcon className={classes.icon}/>,
       activeIndex: 1,
     },
     {
       text: 'History',
-      icon: <HistoryIcon />,
+      icon: <HistoryIcon className={classes.icon}/>,
       link: '/history',
       activeIndex: 2,
     },
     {
       text: 'New Trip',
-      icon: <FlightTakeoffIcon />,
+      icon: <FlightTakeoffIcon className={classes.icon}/>,
       link: '/newtrip',
       activeIndex: 3,
     },
     {
       text: 'Divider',
-      divider: <DashboardIcon />,
+      divider: <DashboardIcon className={classes.icon}/>,
     },
     {
       text: 'About Us',
-      icon: <InfoIcon />,
+      icon: <InfoIcon className={classes.icon}/>,
       link: '/about',
       activeIndex: 4,
     },
     {
       text: 'Contact Us',
-      icon: <RecentActorsIcon />,
+      icon: <RecentActorsIcon className={classes.icon}/>,
       link: '/contact',
       activeIndex: 5,
     },
     {
       text: 'Divider',
-      divider: <DashboardIcon />,
+      divider: <DashboardIcon className={classes.icon}/>,
     },
     {
       text: 'My Account',
-      icon: <AccountBoxIcon />,
+      icon: <AccountBoxIcon className={classes.icon} />,
       link: '/account',
       activeIndex: 7,
     },
     {
       text: 'Logout',
-      icon: <ExitToAppIcon />,
+      icon: <ExitToAppIcon className={classes.icon}/>,
       activeIndex: 8,
     },
   ];
@@ -229,12 +233,13 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
               return (
                 <Fragment key={index + 10}>
                   <ListItem
+
                     button
                     key={`${item}, ${index}`}
                     onClick={handleClick}
                     selected={value === item.activeIndex}
                   >
-                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemIcon className={classes.icon}>{item.icon}</ListItemIcon>
                     <ListItemText primary={item.text} />
                     {openCollapse ? <ExpandLess /> : <ExpandMore />}
                   </ListItem>
@@ -259,7 +264,7 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
                             }}
                             selected={tripValue === trip.trip_uid}
                           >
-                            <ListItemIcon>
+                            <ListItemIcon className={classes.icon}>
                               <FlightIcon />
                             </ListItemIcon>
                             <ListItemText primary={trip.name} />
@@ -278,7 +283,7 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
                   selected={value === item.activeIndex}
                   onClick={logout}
                 >
-                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemIcon className={classes.icon}>{item.icon}</ListItemIcon>
                   <ListItemText primary={item.text} />
                 </ListItem>
               );
