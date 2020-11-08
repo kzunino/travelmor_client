@@ -165,11 +165,7 @@ const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
     return <Redirect to='/dashboard' />;
   }
 
-  return isLoading ? (
-    <div className={classes.spinner}>
-      <CircularProgress />
-    </div>
-  ) : (
+  return (
     <Container
       component='div'
       maxWidth='xs'

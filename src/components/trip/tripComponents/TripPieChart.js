@@ -192,12 +192,22 @@ const TripPieChart = ({tripData}) => {
             <Typography variant='h6'>Trip Expense Types</Typography>
           </Grid>
           <Grid item>
-            <Doughnut
-              plugins={[ChartDataLabels]}
-              height={400}
-              data={pieStateData}
-              options={options}
-            />
+            {expenses.length ? (
+              <Doughnut
+                plugins={[ChartDataLabels]}
+                height={400}
+                data={pieStateData}
+                options={options}
+              />
+            ) : (
+              <Typography
+                align='center'
+                variant='body1'
+                style={{marginTop: '2em', marginBottom: '2em'}}
+              >
+                No expenses yet!
+              </Typography>
+            )}
           </Grid>
         </Box>
       </Grid>
