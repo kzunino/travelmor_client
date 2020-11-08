@@ -56,13 +56,13 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
     backgroundColor: theme.palette.secondary.main,
   },
-  listItemBackground2: {
-    backgroundColor: theme.palette.secondary.light,
+  year: {
+    color: theme.palette.secondary.offWhite,
   },
   listItem: {
     width: '100%',
     textDecoration: 'none',
-    color: 'black',
+    color: theme.palette.secondary.main,
     '&:hover': {
       color: theme.palette.primary.main,
     },
@@ -101,7 +101,7 @@ const History = ({trips}) => {
                   {tripYears.map((year, index) => (
                     <List
                       subheader={
-                        <ListSubheader>
+                        <ListSubheader className={classes.year}>
                           {Moment(year).format('YYYY')}
                         </ListSubheader>
                       }
