@@ -65,39 +65,38 @@ const useStyles = makeStyles((theme) => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(0),
   },
-  inputStyles:{
-    '& .MuiFormLabel-root':{
+  inputStyles: {
+    '& .MuiFormLabel-root': {
       color: theme.palette.secondary.offWhite,
-     },
-     '& .MuiInput-underline':{
-       '&:before':{ 
+    },
+    '& .MuiInput-underline': {
+      '&:before': {
         borderBottom: '1px solid whitesmoke',
-       },
-       '&:hover:not($disabled):before':{ 
-            borderBottom:'2px solid whitesmoke',
-       }
+      },
+      '&:hover:not($disabled):before': {
+        borderBottom: '2px solid whitesmoke',
+      },
     },
     // Changes input text color and placeholder text
-     '& .MuiInputBase-input':{
-      color: theme.palette.secondary.main
-     },
-     '& .MuiFormLabel-filled':{
-       backgroundColor: theme.palette.boxBackground.form,
-     },
-     '& .MuiIconButton-root':{
-       color: theme.palette.primary.main
-     },
-     '& .MuiSelect-icon':{
-      color: theme.palette.primary.main
-     }
+    '& .MuiInputBase-input': {
+      color: theme.palette.secondary.main,
+    },
+    '& .MuiFormLabel-filled': {
+      backgroundColor: theme.palette.boxBackground.form,
+    },
+    '& .MuiIconButton-root': {
+      color: theme.palette.primary.main,
+    },
+    '& .MuiSelect-icon': {
+      color: theme.palette.primary.main,
+    },
     //  '& .MuiInput-input':{
     //   color: theme.palette.secondary.main
     //  },
   },
   tripNameField: {
     width: '50%',
-    marginBottom: 0
-   
+    marginBottom: 0,
   },
   budgetField: {
     width: '50%',
@@ -128,7 +127,7 @@ const useStyles = makeStyles((theme) => ({
   },
   fieldDescription: {
     fontSize: '.5em',
-    color: theme.palette.secondary.main
+    color: theme.palette.secondary.main,
   },
   menuItemRoot: {
     '&$menuItemSelected, &$menuItemSelected:focus, &$menuItemSelected:hover': {
@@ -137,7 +136,8 @@ const useStyles = makeStyles((theme) => ({
   },
   /* Styles applied to the root element if `selected={true}`. */
   menuItemSelected: {},
-  checkbox:{
+  disabled: {},
+  checkbox: {
     color: theme.palette.secondary.main,
   },
 }));
@@ -262,14 +262,12 @@ const NewTrip = ({
     }
 
     // Alert if forms are blank
-    if(!name || !total_budget || start_date === null || end_date === null){
-      if(!name && !total_budget){
-        setFormData({...formData, name: '', total_budget: ''})
-      }
-      else if(!total_budget) setFormData({...formData, total_budget: ''})
-      else if(!name) setFormData({...formData, name: ''})
+    if (!name || !total_budget || start_date === null || end_date === null) {
+      if (!name && !total_budget) {
+        setFormData({...formData, name: '', total_budget: ''});
+      } else if (!total_budget) setFormData({...formData, total_budget: ''});
+      else if (!name) setFormData({...formData, name: ''});
       return createAlerts({validation_error: 'Please fill out all fields'});
-        
     }
 
     // min number of days is 1
@@ -331,8 +329,8 @@ const NewTrip = ({
                 variant='standard'
                 margin='normal'
                 required
-                error={name === ""}
-                helperText={name === "" ? "Please enter a trip name." : null}
+                error={name === ''}
+                helperText={name === '' ? 'Please enter a trip name.' : null}
                 placeholder='Name'
                 className={`${classes.tripNameField} ${classes.inputStyles}`}
                 autoComplete='off'
@@ -353,8 +351,10 @@ const NewTrip = ({
                     variant='standard'
                     margin='normal'
                     required
-                    error={total_budget === ""}
-                    helperText={total_budget === "" ? "Please enter a budget." : null}
+                    error={total_budget === ''}
+                    helperText={
+                      total_budget === '' ? 'Please enter a budget.' : null
+                    }
                     autoComplete='off'
                     name='total_budget'
                     label='Budget Total'
@@ -379,7 +379,6 @@ const NewTrip = ({
                     }
                     customInput={TextField}
                   />
-
                 </Grid>
                 <Grid item>
                   <Typography className={classes.fieldDescription}>
@@ -402,7 +401,9 @@ const NewTrip = ({
                     disableToolbar
                     required
                     error={!start_date}
-                    helperText={!start_date ? "Please enter a start date." : null}
+                    helperText={
+                      !start_date ? 'Please enter a start date.' : null
+                    }
                     variant='inline'
                     format='MM/DD/yyyy'
                     margin='normal'
@@ -420,7 +421,7 @@ const NewTrip = ({
                   <KeyboardDatePicker
                     className={classes.inputStyles}
                     error={!end_date}
-                    helperText={!end_date ? "Please enter a end date." : null}
+                    helperText={!end_date ? 'Please enter a end date.' : null}
                     required
                     disableToolbar
                     variant='inline'
@@ -439,7 +440,9 @@ const NewTrip = ({
             </Grid>
 
             <Grid item>
-              <FormControl className={`${classes.currencyField} ${classes.inputStyles}`}>
+              <FormControl
+                className={`${classes.currencyField} ${classes.inputStyles}`}
+              >
                 <InputLabel>Foreign Currencies (optional)</InputLabel>
                 <Select
                   multiple

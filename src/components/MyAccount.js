@@ -3,7 +3,7 @@ import {data as countryData} from 'currency-codes';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {updateUser} from '../actions/auth';
-import {createAlerts} from '../actions/alerts'
+import {createAlerts} from '../actions/alerts';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
@@ -41,36 +41,35 @@ const useStyles = makeStyles((theme) => ({
   input: {
     width: 250,
   },
-  inputStyles:{
-    '& .MuiFormLabel-root':{
+  inputStyles: {
+    '& .MuiFormLabel-root': {
       color: theme.palette.secondary.offWhite,
-     },
-     '& .MuiInput-underline':{
-       '&:before':{
+    },
+    '& .MuiInput-underline': {
+      '&:before': {
         borderBottom: '1px solid whitesmoke',
-       },
-       '&:hover:not($disabled):before':{ 
-            borderBottom:'2px solid whitesmoke',
-       }
+      },
+      '&:hover:not($disabled):before': {
+        borderBottom: '2px solid whitesmoke',
+      },
     },
     // Changes input text color and placeholder text
-     '& .MuiInputBase-input':{
-      color: theme.palette.secondary.main
-     },
-     '& .MuiFormLabel-filled':{
-       backgroundColor: theme.palette.boxBackground.form,
-     },
-    
-     '& .MuiIconButton-root':{
-       color: theme.palette.primary.main
-     },
-     '& .MuiSelect-icon':{
-      color: theme.palette.primary.main
-     },
+    '& .MuiInputBase-input': {
+      color: theme.palette.secondary.main,
+    },
+    '& .MuiFormLabel-filled': {
+      backgroundColor: theme.palette.boxBackground.form,
+    },
+
+    '& .MuiIconButton-root': {
+      color: theme.palette.primary.main,
+    },
+    '& .MuiSelect-icon': {
+      color: theme.palette.primary.main,
+    },
     //  '& .MuiInput-input':{
     //   color: theme.palette.secondary.main
     //  },
-  
   },
   selectEmpty: {
     width: 200,
@@ -102,8 +101,9 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
     fontSize: '.5em',
     marginTop: '1em',
-    color: theme.palette.secondary.main
+    color: theme.palette.secondary.main,
   },
+  disabled: {},
 }));
 
 const MyAccount = ({
@@ -112,7 +112,7 @@ const MyAccount = ({
   home_currency,
   email,
   updateUser,
-  createAlerts
+  createAlerts,
 }) => {
   const theme = useTheme();
   const classes = useStyles();
@@ -142,8 +142,8 @@ const MyAccount = ({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-     // Alert if forms are blank
-     if(!firstName || !lastName || !emailAddress || !homeCurrency){
+    // Alert if forms are blank
+    if (!firstName || !lastName || !emailAddress || !homeCurrency) {
       return createAlerts({validation_error: 'Please fill out all fields'});
     }
 
@@ -181,8 +181,10 @@ const MyAccount = ({
                 autoFocus
                 autoComplete='off'
                 className={`${classes.input} ${classes.inputStyles}`}
-                error={firstName === ""}
-                helperText={firstName === "" ? "Please enter your first name." : null}
+                error={firstName === ''}
+                helperText={
+                  firstName === '' ? 'Please enter your first name.' : null
+                }
                 variant='standard'
                 margin='normal'
                 required
@@ -201,8 +203,10 @@ const MyAccount = ({
                 variant='standard'
                 autoComplete='off'
                 className={`${classes.input} ${classes.inputStyles}`}
-                error={lastName === ""}
-                helperText={lastName === "" ? "Please enter your last name." : null}
+                error={lastName === ''}
+                helperText={
+                  lastName === '' ? 'Please enter your last name.' : null
+                }
                 margin='normal'
                 required
                 id='last_name'
@@ -223,8 +227,10 @@ const MyAccount = ({
                 required
                 style={{width: 250}}
                 className={classes.inputStyles}
-                error={emailAddress === ""}
-                helperText={emailAddress === "" ? "Please enter an email address." : null}
+                error={emailAddress === ''}
+                helperText={
+                  emailAddress === '' ? 'Please enter an email address.' : null
+                }
                 id='email'
                 label='Email'
                 name='emailAddress'
@@ -237,7 +243,10 @@ const MyAccount = ({
 
             <Grid item>
               {/* ------ Currency Input ----- */}
-              <FormControl required className={`${classes.formControl} ${classes.inputStyles}`}>
+              <FormControl
+                required
+                className={`${classes.formControl} ${classes.inputStyles}`}
+              >
                 <InputLabel id='required-label'>Home Currency</InputLabel>
                 <Select
                   id='currency'
@@ -247,8 +256,6 @@ const MyAccount = ({
                   onChange={(e) => {
                     handleUserData(e);
                   }}
-                  error={!homeCurrency}
-                  helperText={!homeCurrency ? "Please enter a currency." : null}
                   className={classes.selectEmpty}
                   // accesses the menu styles
                   MenuProps={{classes: {list: classes.selectMenu}}}
