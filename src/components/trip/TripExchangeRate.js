@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#D61A3C',
     height: 25,
     '&:hover': {
-      backgroundColor: '#d11a2a',
+      backgroundColor: '#722f37',
     },
     [theme.breakpoints.down('xs')]: {
       height: 30,
@@ -150,7 +150,7 @@ const TripExchangeRate = ({
         className={classes.exchangeContainerWrapper}
       >
         <Grid item>
-          <Typography variant='h5'>USD exchange rate:</Typography>
+          <Typography variant='h5' style={{color: 'white'}}>USD exchange rate:</Typography>
         </Grid>
 
         {/* Currency Items  */}
@@ -165,7 +165,7 @@ const TripExchangeRate = ({
                   alignItems='flex-end'
                 >
                   <Grid item className={classes.foreignCurrencyUpdate}>
-                    <Typography>
+                    <Typography style={{color: 'white'}}>
                       <strong>{foreignCurrency.currency}</strong>:{' '}
                       {foreignCurrency.exchange_rate}
                     </Typography>

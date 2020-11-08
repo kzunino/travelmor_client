@@ -59,9 +59,7 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     backgroundColor: theme.palette.boxContentBudgetData.main,
   },
-  deleteButtonContainer: {
-    marginTop: 'auto',
-  },
+  
   selectEmpty: {
     width: '10em',
   },
@@ -80,9 +78,39 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     display: 'block',
-    margin: theme.spacing(0, 0, 2),
+    // margin: theme.spacing(0, 0, 2),
     color: 'white',
     fontWeight: 'bold',
+  },
+  inputStyles:{
+    '& .MuiFormLabel-root':{
+      color: theme.palette.secondary.offWhite,
+     },
+     '& .MuiInput-underline':{
+       '&:before':{
+        borderBottom: '1px solid whitesmoke',
+       },
+       '&:hover:not($disabled):before':{ 
+            borderBottom:'2px solid whitesmoke',
+       }
+    },
+    // Changes input text color and placeholder text
+     '& .MuiInputBase-input':{
+      color: theme.palette.secondary.main
+     },
+     '& .MuiFormLabel-filled':{
+       backgroundColor: theme.palette.boxBackground.form,
+     },
+    
+     '& .MuiIconButton-root':{
+       color: theme.palette.primary.main
+     },
+     '& .MuiSelect-icon':{
+      color: theme.palette.primary.main
+     },
+    //  '& .MuiInput-input':{
+    //   color: theme.palette.secondary.main
+    //  },
   },
   hidden: {
     visibility: 'hidden',
@@ -107,6 +135,7 @@ const useStyles = makeStyles((theme) => ({
   },
   fieldDescription: {
     fontSize: '.5em',
+    color: theme.palette.secondary.main
   },
   menuItemRoot: {
     '&$menuItemSelected, &$menuItemSelected:focus, &$menuItemSelected:hover': {
@@ -115,6 +144,9 @@ const useStyles = makeStyles((theme) => ({
   },
   /* Styles applied to the root element if `selected={true}`. */
   menuItemSelected: {},
+  checkbox:{
+    color: theme.palette.secondary.main,
+  },
 }));
 
 function getStyles(name, currency, theme) {
@@ -360,45 +392,7 @@ const EditTrip = ({
               Edit Trip
             </Typography>
           </Grid>
-          <Grid item className={classes.deleteButtonContainer}>
-            <Tooltip title='Delete Trip'>
-              <IconButton onClick={handleClickOpen}>
-                <DeleteForeverIcon
-                  style={{color: '#D61A3C'}}
-                  fontSize={matchXs ? 'default' : 'large'}
-                />
-              </IconButton>
-            </Tooltip>
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby='alert-dialog-title'
-              aria-describedby='alert-dialog-description'
-            >
-              <DialogTitle id='alert-dialog-title'>
-                {'Would you like to delete this trip?'}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id='alert-dialog-description'>
-                  Deleting this trip will delete it permanently.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose} color='primary' autoFocus>
-                  Go back
-                </Button>
-                <Button
-                  onClick={() => {
-                    handleClose();
-                    handleDeleteTrip();
-                  }}
-                  color='primary'
-                >
-                  Delete
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </Grid>
+        
         </Grid>
       </Grid>
 
@@ -415,6 +409,8 @@ const EditTrip = ({
           <Grid container direction='column' spacing={0}>
             <Grid item>
               <TextField
+                className={classes.inputStyles}
+                autoComplete='off'
                 variant='standard'
                 margin='normal'
                 required
@@ -432,6 +428,8 @@ const EditTrip = ({
               <Grid container direction='column'>
                 <Grid item>
                   <CurrencyFormat
+                  className={classes.inputStyles}
+                  autoComplete='off'
                     variant='standard'
                     margin='normal'
                     required
@@ -490,6 +488,8 @@ const EditTrip = ({
               >
                 <Grid xs={6} item>
                   <KeyboardDatePicker
+                  className={classes.inputStyles}
+                  autoComplete='off'
                     disableToolbar
                     variant='inline'
                     format='MM/DD/yyyy'
@@ -506,6 +506,8 @@ const EditTrip = ({
 
                 <Grid xs={6} item>
                   <KeyboardDatePicker
+                  className={classes.inputStyles}
+                  autoComplete='off'
                     disableToolbar
                     variant='inline'
                     format='MM/DD/yyyy'
@@ -526,6 +528,7 @@ const EditTrip = ({
               <FormControlLabel
                 control={
                   <Checkbox
+                    className={classes.checkbox}
                     checked={defaultTripChecked}
                     onChange={() => {
                       toggleHidden();
@@ -535,12 +538,12 @@ const EditTrip = ({
                     color='primary'
                   />
                 }
-                label={<span style={{fontSize: '1em'}}>Default trip</span>}
+                label={<span style={{fontSize: '1em', color: 'white'}}>Default trip</span>}
               />
             </Grid>
 
             <Grid item>
-              <FormControl className={classes.currencyField}>
+              <FormControl className={`${classes.currencyField} ${classes.inputStyles}`}>
                 <InputLabel>Trip Currencies (optional)</InputLabel>
                 <Select
                   multiple
@@ -603,27 +606,71 @@ const EditTrip = ({
                   style={{marginTop: '1em'}}
                   className={classes.fieldDescription}
                 >
-                  *Select foreign currencies for countries you will visit
+                  * Select foreign currencies for countries you will visit
                 </Typography>
                 <Typography
                   style={{marginTop: '.5em'}}
                   className={classes.fieldDescription}
                 >
-                  *Countries that share currency will automatically be selected
+                  * Countries that share currency will automatically be selected
                 </Typography>
               </FormControl>
             </Grid>
           </Grid>
 
-          <Button
-            type='submit'
-            variant='contained'
-            color='primary'
-            className={hidden ? classes.hidden : classes.submit}
-            disableRipple
-          >
-            Update
-          </Button>
+
+        <Grid container justify='space-between'>
+          <Grid item>
+            <Button
+              type='submit'
+              variant='contained'
+              color='primary'
+              className={hidden ? classes.hidden : classes.submit}
+              disableRipple
+            >
+              Update
+            </Button>
+           </Grid>
+          <Grid item className={classes.deleteButtonContainer}>
+            <Tooltip title='Delete Trip'>
+              <IconButton style={{padding: 0}} onClick={handleClickOpen}>
+                <DeleteForeverIcon
+                  style={{color: '#D61A3C'}}
+                  fontSize={'large'}
+                />
+              </IconButton>
+            </Tooltip>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby='alert-dialog-title'
+              aria-describedby='alert-dialog-description'
+            >
+              <DialogTitle id='alert-dialog-title'>
+                {'Would you like to delete this trip?'}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id='alert-dialog-description'>
+                  Deleting this trip will delete it permanently.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color='primary' autoFocus>
+                  Go back
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleClose();
+                    handleDeleteTrip();
+                  }}
+                  color='primary'
+                >
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Grid>
+          </Grid>
         </form>
 
         {currencies.length ? (
@@ -632,6 +679,7 @@ const EditTrip = ({
             <TripExchangeRate />
           </>
         ) : null}
+     
       </Container>
     </>
   );
