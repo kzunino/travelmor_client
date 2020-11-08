@@ -48,7 +48,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   appBar: {
-    zIndex: theme.zIndex.modal - 1,
+    zIndex: theme.zIndex.modal + 1,
+    // zIndex: 99,
     //changes appbar color opacity
     backgroundColor: 'rgba(30, 30, 54, .8)',
   },

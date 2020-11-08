@@ -668,6 +668,7 @@ const EditTrip = ({
                 </IconButton>
               </Tooltip>
               <Dialog
+                style={{zIndex: 1301}}
                 open={open}
                 onClose={handleClose}
                 aria-labelledby='alert-dialog-title'

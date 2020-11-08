@@ -227,7 +227,7 @@ const TripTable = ({
       <Clear {...props} className={classes.icon} ref={ref} />
     )),
     Delete: forwardRef((props, ref) => (
-      <DeleteOutline {...props} className={classes.icon} ref={ref} />
+      <DeleteOutline {...props} className={classes.icon2} ref={ref} />
     )),
     MultiDelete: forwardRef((props, ref) => (
       <DeleteForeverIcon {...props} className={classes.icon2} ref={ref} />

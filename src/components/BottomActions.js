@@ -118,6 +118,7 @@ const BottomActions = ({trip_data}) => {
             onClick={handleOpen}
           />
           <Modal
+            style={{zIndex: 1301}}
             aria-labelledby='transition-modal-title'
             aria-describedby='transition-modal-description'
             className={classes.modal}
