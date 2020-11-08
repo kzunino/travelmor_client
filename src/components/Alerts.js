@@ -2,7 +2,10 @@ import React, {useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {ToastContainer, toast} from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const Alerts = ({error, alert}) => {
   // Acts like componentDidUpdate
@@ -10,6 +13,7 @@ const Alerts = ({error, alert}) => {
   // a new message is fired
   let oldError = useRef(error);
   let oldAlert = useRef(alert);
+
 
   useEffect(() => {
     // Alerts from the database
@@ -53,6 +57,7 @@ const Alerts = ({error, alert}) => {
   return (
     <>
       <ToastContainer
+        style={{ width: "250px", top: '1em' }}
         position='top-center'
         autoClose={5000}
         hideProgressBar={false}
