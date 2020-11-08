@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   appBar: {
-    zIndex: theme.zIndex.modal + 1,
+    zIndex: theme.zIndex.modal - 1,
     //changes appbar color opacity
     backgroundColor: 'rgba(30, 30, 54, .8)',
   },
@@ -95,8 +95,8 @@ const useStyles = makeStyles((theme) => ({
       padding: 0,
     },
   },
-  icon:{
-    color: 'white'
+  icon: {
+    color: 'white',
   },
   nested: {
     paddingLeft: theme.spacing(4),
@@ -127,46 +127,46 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
   const drawerItems = [
     {
       text: 'Dashboard',
-      icon: <DashboardIcon className={classes.icon}/>,
+      icon: <DashboardIcon className={classes.icon} />,
       link: '/dashboard',
       activeIndex: 0,
     },
     {
       text: 'My Trips',
-      icon: <CardTravelIcon className={classes.icon}/>,
+      icon: <CardTravelIcon className={classes.icon} />,
       activeIndex: 1,
     },
     {
       text: 'History',
-      icon: <HistoryIcon className={classes.icon}/>,
+      icon: <HistoryIcon className={classes.icon} />,
       link: '/history',
       activeIndex: 2,
     },
     {
       text: 'New Trip',
-      icon: <FlightTakeoffIcon className={classes.icon}/>,
+      icon: <FlightTakeoffIcon className={classes.icon} />,
       link: '/newtrip',
       activeIndex: 3,
     },
     {
       text: 'Divider',
-      divider: <DashboardIcon className={classes.icon}/>,
+      divider: <DashboardIcon className={classes.icon} />,
     },
     {
       text: 'About Us',
-      icon: <InfoIcon className={classes.icon}/>,
+      icon: <InfoIcon className={classes.icon} />,
       link: '/about',
       activeIndex: 4,
     },
     {
       text: 'Contact Us',
-      icon: <RecentActorsIcon className={classes.icon}/>,
+      icon: <RecentActorsIcon className={classes.icon} />,
       link: '/contact',
       activeIndex: 5,
     },
     {
       text: 'Divider',
-      divider: <DashboardIcon className={classes.icon}/>,
+      divider: <DashboardIcon className={classes.icon} />,
     },
     {
       text: 'My Account',
@@ -176,7 +176,7 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
     },
     {
       text: 'Logout',
-      icon: <ExitToAppIcon className={classes.icon}/>,
+      icon: <ExitToAppIcon className={classes.icon} />,
       activeIndex: 8,
     },
   ];
@@ -233,13 +233,14 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
               return (
                 <Fragment key={index + 10}>
                   <ListItem
-
                     button
                     key={`${item}, ${index}`}
                     onClick={handleClick}
                     selected={value === item.activeIndex}
                   >
-                    <ListItemIcon className={classes.icon}>{item.icon}</ListItemIcon>
+                    <ListItemIcon className={classes.icon}>
+                      {item.icon}
+                    </ListItemIcon>
                     <ListItemText primary={item.text} />
                     {openCollapse ? <ExpandLess /> : <ExpandMore />}
                   </ListItem>
@@ -283,7 +284,9 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
                   selected={value === item.activeIndex}
                   onClick={logout}
                 >
-                  <ListItemIcon className={classes.icon}>{item.icon}</ListItemIcon>
+                  <ListItemIcon className={classes.icon}>
+                    {item.icon}
+                  </ListItemIcon>
                   <ListItemText primary={item.text} />
                 </ListItem>
               );
@@ -317,7 +320,7 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}
         open={openDrawer}
-        anchor="right"
+        anchor='right'
         onClose={() => setOpenDrawer(false)}
         onOpen={() => setOpenDrawer(true)}
       >

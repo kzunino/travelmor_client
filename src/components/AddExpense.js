@@ -152,13 +152,13 @@ const AddExpense = ({
 
   // Initialize default state values
   const [formData, setFormData] = useState({
-    expenseName: '',
+    expenseName: undefined,
     currency: homeCurrency,
-    expenseCost: '',
+    expenseCost: undefined,
     expenseType: 'uncategorized',
   });
 
-  const {expenseName, currency, expenseCost, expenseType} = formData;
+  let {expenseName, currency, expenseCost, expenseType} = formData;
 
   const handleChange = (e) => {
     setFormData({...formData, [e.target.name]: e.target.value});
@@ -210,6 +210,17 @@ const AddExpense = ({
       !expenseCost ||
       !selectedExpenseDate
     ) {
+      expenseName = expenseName ? expenseName : '';
+      expenseCost = expenseCost ? expenseCost : '';
+
+      let newState = {
+        expenseName,
+        currency,
+        expenseCost,
+        expenseType,
+      };
+      setFormData(newState);
+
       return createAlerts({validation_error: 'Please fill out all fields'});
     }
 
@@ -270,11 +281,15 @@ const AddExpense = ({
                 <TextField
                   variant='standard'
                   margin='normal'
+                  error={expenseName === ''}
+                  helperText={
+                    expenseName === '' ? 'Please name your expense.' : null
+                  }
+                  autoComplete='off'
                   required
                   fullWidth
                   id='expenseName'
                   label='Expense Name'
-                  value={expenseName}
                   name='expenseName'
                   onChange={(e) => handleChange(e)}
                 />
@@ -314,10 +329,14 @@ const AddExpense = ({
                   label='Cost'
                   variant='standard'
                   margin='normal'
+                  error={expenseCost === ''}
+                  helperText={
+                    expenseCost === '' ? 'Please enter expense cost.' : null
+                  }
+                  autoComplete='off'
                   required
                   fullWidth
                   name='expenseCost'
-                  value={expenseCost}
                   InputProps={{inputProps: {min: 0}}}
                   onValueChange={(values) => {
                     const {value} = values;
@@ -410,6 +429,12 @@ const AddExpense = ({
                       : endDate
                   }
                   minDate={startDate}
+                  error={!selectedExpenseDate}
+                  helperText={
+                    !selectedExpenseDate
+                      ? 'Please enter a purchase date.'
+                      : null
+                  }
                   margin='normal'
                   id='date-picker-inline'
                   label={
@@ -438,6 +463,12 @@ const AddExpense = ({
                   minDate={Moment(selectedExpenseDate).add(1, 'days')}
                   margin='normal'
                   label='End of Purchase Date'
+                  error={!selectedEndExpenseDate}
+                  helperText={
+                    !selectedEndExpenseDate
+                      ? 'Please enter an end of purchase date.'
+                      : null
+                  }
                   value={selectedEndExpenseDate}
                   onChange={handleEndExpenseDate}
                   KeyboardButtonProps={{

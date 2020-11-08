@@ -38,15 +38,18 @@ const useStyles = makeStyles((theme) => ({
     '& span.MuiCheckbox-root': {
       color: theme.palette.secondary.offWhite,
     },
-    '& .MuiToolbar-gutters':{
-      paddingLeft: 15
+    '& .MuiToolbar-gutters': {
+      paddingLeft: 15,
+    },
+    '& .MuiSelect-icon': {
+      color: theme.palette.primary.main,
     },
   },
-  highlight:{
-    backgroundColor: theme.palette.boxBackground.main
+  highlight: {
+    backgroundColor: theme.palette.boxBackground.main,
   },
-  gutters:{
-    paddingLeft: 0
+  gutters: {
+    paddingLeft: 0,
   },
   icon: {
     color: 'grey',
@@ -108,7 +111,6 @@ const TripTable = ({
           {
             title: 'Name',
             field: 'name',
-            
           },
           {
             title: 'Cost',
@@ -210,11 +212,9 @@ const TripTable = ({
         <MTableEditField {...props} />
       </div>
     ),
-    Toolbar:(props)=>(
-      
-        <MTableToolbar {...props}  classes={{highlight: classes.highlight}}/>
-      
-    )
+    Toolbar: (props) => (
+      <MTableToolbar {...props} classes={{highlight: classes.highlight}} />
+    ),
   };
 
   //Table Data
@@ -291,7 +291,7 @@ const TripTable = ({
                         let expenses_to_delete = data.map((expense) => {
                           return expense.expense_uid;
                         });
-                        
+
                         // send array to the reducer [expense_uid, expense_uid]
                         deleteMultipleExpenses(expenses_to_delete);
                       },
