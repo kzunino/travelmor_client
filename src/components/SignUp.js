@@ -4,6 +4,7 @@ import {Link, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {register} from '../actions/auth';
+import {createAlerts} from '../actions/alerts';
 
 import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
@@ -92,16 +93,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUp = ({register, isAuthenticated, isLoading}) => {
+const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
-    first_name: 'raq',
-    last_name: 's',
+    first_name: undefined,
+    last_name: undefined,
     home_currency: 'USD',
-    email: '',
-    password1: 'raq123456',
-    password2: 'raq123456',
+    email: undefined,
+    password1: undefined,
+    password2: undefined,
   });
 
   let {
@@ -119,6 +120,32 @@ const SignUp = ({register, isAuthenticated, isLoading}) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    if (
+      !first_name ||
+      !last_name ||
+      !email ||
+      !password1 ||
+      !password2 ||
+      !home_currency
+    ) {
+      first_name = first_name ? first_name : '';
+      last_name = last_name ? last_name : '';
+      email = email ? email : '';
+      password1 = password1 ? password1 : '';
+      password2 = password2 ? password2 : '';
+
+      let newState = {
+        first_name,
+        last_name,
+        home_currency,
+        email,
+        password1,
+        password2,
+      };
+      setFormData(newState);
+      return createAlerts({validation_error: 'Please fill out all fields'});
+    }
 
     email = email.toLowerCase();
 
@@ -161,6 +188,8 @@ const SignUp = ({register, isAuthenticated, isLoading}) => {
             variant='standard'
             margin='normal'
             required
+            error={first_name === ''}
+            helperText={first_name === '' ? 'Please enter first name' : null}
             onChange={handleForm}
             fullWidth
             id='first_name'
@@ -173,6 +202,8 @@ const SignUp = ({register, isAuthenticated, isLoading}) => {
             variant='standard'
             margin='normal'
             required
+            error={last_name === ''}
+            helperText={last_name === '' ? 'Please enter last name' : null}
             onChange={handleForm}
             fullWidth
             id='last_name'
@@ -207,6 +238,8 @@ const SignUp = ({register, isAuthenticated, isLoading}) => {
             variant='standard'
             margin='normal'
             required
+            error={email === ''}
+            helperText={email === '' ? 'Please enter your email' : null}
             onChange={handleForm}
             fullWidth
             id='email'
@@ -218,6 +251,8 @@ const SignUp = ({register, isAuthenticated, isLoading}) => {
             variant='standard'
             margin='normal'
             required
+            error={password1 === ''}
+            helperText={password1 === '' ? 'Please enter a password' : null}
             onChange={handleForm}
             fullWidth
             name='password1'
@@ -229,6 +264,8 @@ const SignUp = ({register, isAuthenticated, isLoading}) => {
             variant='standard'
             margin='normal'
             required
+            error={password2 === ''}
+            helperText={password2 === '' ? 'Please confirm password' : null}
             onChange={handleForm}
             fullWidth
             name='password2'
@@ -240,16 +277,22 @@ const SignUp = ({register, isAuthenticated, isLoading}) => {
             control={<Checkbox value='remember' color='primary' />}
             label='Remember me'
           />
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            color='primary'
-            className={classes.submit}
-            disableRipple
-          >
-            Sign Up
-          </Button>
+          {isLoading ? (
+            <div className={classes.spinner}>
+              <CircularProgress />
+            </div>
+          ) : (
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
+              color='primary'
+              className={classes.submit}
+              disableRipple
+            >
+              Sign Up
+            </Button>
+          )}
           <Grid container>
             <Grid item xs>
               <Link to='#' variant='body2'>
@@ -272,6 +315,7 @@ const SignUp = ({register, isAuthenticated, isLoading}) => {
 };
 
 SignUp.propTypes = {
+  createAlerts: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   isLoading: PropTypes.bool,
@@ -282,4 +326,4 @@ const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
 });
 
-export default connect(mapStateToProps, {register})(SignUp);
+export default connect(mapStateToProps, {register, createAlerts})(SignUp);

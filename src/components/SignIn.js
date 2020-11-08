@@ -4,6 +4,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {login} from '../actions/auth';
+import {createAlerts} from '../actions/alerts';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -71,12 +72,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignIn = ({isAuthenticated, login, isLoading}) => {
+const SignIn = ({isAuthenticated, login, createAlerts, isLoading}) => {
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: undefined,
+    password: undefined,
   });
 
   let {email, password} = formData;
@@ -87,6 +88,14 @@ const SignIn = ({isAuthenticated, login, isLoading}) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    if (!email || !password) {
+      if (!email && !password) {
+        setFormData({...formData, email: '', password: ''});
+      } else if (!password) setFormData({...formData, password: ''});
+      else if (!email) setFormData({...formData, name: ''});
+      return createAlerts({validation_error: 'Please fill out all fields'});
+    }
 
     email = email.toLowerCase();
 
@@ -102,11 +111,7 @@ const SignIn = ({isAuthenticated, login, isLoading}) => {
     return <Redirect to='/dashboard' />;
   }
 
-  return isLoading ? (
-    <div className={classes.spinner}>
-      <CircularProgress />
-    </div>
-  ) : (
+  return (
     <Container
       component='div'
       maxWidth='xs'
@@ -126,7 +131,8 @@ const SignIn = ({isAuthenticated, login, isLoading}) => {
             margin='normal'
             required
             fullWidth
-            value={email}
+            error={email === ''}
+            helperText={email === '' ? 'Please enter an email' : null}
             id='email'
             label='Email Address'
             name='email'
@@ -139,7 +145,8 @@ const SignIn = ({isAuthenticated, login, isLoading}) => {
             margin='normal'
             required
             fullWidth
-            value={password}
+            error={password === ''}
+            helperText={password === '' ? 'Please enter a password' : null}
             name='password'
             label='Password'
             type='password'
@@ -151,16 +158,23 @@ const SignIn = ({isAuthenticated, login, isLoading}) => {
             control={<Checkbox value='remember' color='primary' />}
             label='Remember me'
           />
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            color='primary'
-            className={classes.submit}
-            disableRipple
-          >
-            Sign In
-          </Button>
+          {isLoading ? (
+            <div className={classes.spinner}>
+              <CircularProgress />
+            </div>
+          ) : (
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
+              color='primary'
+              className={classes.submit}
+              disableRipple
+            >
+              Sign In
+            </Button>
+          )}
+
           <Grid container>
             <Grid item xs>
               <Link to='/' variant='body2'>
@@ -183,6 +197,7 @@ const SignIn = ({isAuthenticated, login, isLoading}) => {
 };
 
 SignIn.propTypes = {
+  createAlerts: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   isLoading: PropTypes.bool,
@@ -193,4 +208,4 @@ const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
 });
 
-export default connect(mapStateToProps, {login})(SignIn);
+export default connect(mapStateToProps, {login, createAlerts})(SignIn);

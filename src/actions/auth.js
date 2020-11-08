@@ -95,6 +95,7 @@ export const login = ({email, password}) => async (dispatch) => {
     },
   };
 
+  dispatch({type: USER_LOADING});
   // Request Body
   const body = JSON.stringify({
     email,

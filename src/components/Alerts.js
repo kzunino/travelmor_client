@@ -5,15 +5,12 @@ import {ToastContainer, toast} from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-
-
 const Alerts = ({error, alert}) => {
   // Acts like componentDidUpdate
   // If old error is same as current error, will not fire a repeat alert if
   // a new message is fired
   let oldError = useRef(error);
   let oldAlert = useRef(alert);
-
 
   useEffect(() => {
     // Alerts from the database
@@ -57,7 +54,7 @@ const Alerts = ({error, alert}) => {
   return (
     <>
       <ToastContainer
-        style={{ width: "250px", top: '1em' }}
+        style={{width: '250px'}}
         position='top-center'
         autoClose={5000}
         hideProgressBar={false}
