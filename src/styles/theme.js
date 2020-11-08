@@ -23,7 +23,7 @@ const theme = createMuiTheme({
     },
     boxBackground: {
       main: purple,
-      form: offWhite,
+      form: purple,
     },
     mainHeading: {
       main: white,

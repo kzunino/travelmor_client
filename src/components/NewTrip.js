@@ -65,9 +65,38 @@ const useStyles = makeStyles((theme) => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-
+  inputStyles:{
+    '& .MuiFormLabel-root':{
+      color: theme.palette.secondary.offWhite,
+     },
+     '& .MuiInput-underline':{
+       '&:before':{
+        borderBottom: '1px solid whitesmoke',
+       },
+       '&:hover:not($disabled):before':{ 
+            borderBottom:'2px solid whitesmoke',
+       }
+    },
+    // Changes input text color and placeholder text
+     '& .MuiInputBase-input':{
+      color: theme.palette.secondary.main
+     },
+     '& .MuiFormLabel-filled':{
+       backgroundColor: theme.palette.boxBackground.form,
+     },
+     '& .MuiIconButton-root':{
+       color: theme.palette.primary.main
+     },
+     '& .MuiSelect-icon':{
+      color: theme.palette.primary.main
+     }
+    //  '& .MuiInput-input':{
+    //   color: theme.palette.secondary.main
+    //  },
+  },
   tripNameField: {
     width: '50%',
+   
   },
   budgetField: {
     width: '50%',
@@ -98,6 +127,7 @@ const useStyles = makeStyles((theme) => ({
   },
   fieldDescription: {
     fontSize: '.5em',
+    color: theme.palette.secondary.main
   },
   menuItemRoot: {
     '&$menuItemSelected, &$menuItemSelected:focus, &$menuItemSelected:hover': {
@@ -106,6 +136,9 @@ const useStyles = makeStyles((theme) => ({
   },
   /* Styles applied to the root element if `selected={true}`. */
   menuItemSelected: {},
+  checkbox:{
+    color: theme.palette.secondary.main,
+  },
 }));
 
 function getStyles(name, personName, theme) {
@@ -131,13 +164,13 @@ const NewTrip = ({
   const API_KEY = process.env.REACT_APP_EXCHANGE_KEY;
 
   const [formData, setFormData] = useState({
-    name: '',
-    total_budget: '',
+    name: undefined,
+    total_budget: undefined,
   });
   const [start_date, setStartDate] = useState(Date.now());
   const [end_date, setEndDate] = useState(Date.now());
   const [currencies, setCurrencies] = useState([]);
-  const [defaultTripChecked, setDefaultTripChecked] = React.useState(true);
+  const [defaultTripChecked, setDefaultTripChecked] = useState(true);
 
   let {name, total_budget} = formData;
 
@@ -227,6 +260,17 @@ const NewTrip = ({
       return createAlerts({validation_error: 'End date is before start date!'});
     }
 
+    // Alert if forms are blank
+    if(!name || !total_budget || start_date === null || end_date === null){
+      if(!name && !total_budget){
+        setFormData({...formData, name: '', total_budget: ''})
+      }
+      else if(!total_budget) setFormData({...formData, total_budget: ''})
+      else if(!name) setFormData({...formData, name: ''})
+      return createAlerts({validation_error: 'Please fill out all fields'});
+        
+    }
+
     // min number of days is 1
     // loops over and enumerates the trip length based on start and end date
     let currDate = Moment(start_date).startOf('day');
@@ -286,8 +330,11 @@ const NewTrip = ({
                 variant='standard'
                 margin='normal'
                 required
+                error={name === ""}
+                helperText={name === "" ? "Please enter a trip name." : null}
                 placeholder='Name'
-                className={classes.tripNameField}
+                className={classes.tripNameField, classes.inputStyles}
+                autoComplete='off'
                 id='name'
                 label='Trip Name'
                 name='name'
@@ -301,10 +348,13 @@ const NewTrip = ({
               <Grid container direction='column'>
                 <Grid item>
                   <CurrencyFormat
-                    className={classes.budgetField}
+                    className={classes.budgetField, classes.inputStyles}
                     variant='standard'
                     margin='normal'
                     required
+                    error={total_budget === ""}
+                    helperText={total_budget === "" ? "Please enter a budget." : null}
+                    autoComplete='off'
                     name='total_budget'
                     label='Budget Total'
                     placeholder='0.00'
@@ -329,21 +379,6 @@ const NewTrip = ({
                     customInput={TextField}
                   />
 
-                  {/* <TextField
-                    className={classes.budgetField}
-                    variant='standard'
-                    margin='normal'
-                    required
-                    fullWidth
-                    name='total_budget'
-                    value={total_budget}
-                    onChange={(e) => handleChange(e)}
-                    label='Budget Total'
-                    type='number'
-                    placeholder='0.00'
-                    InputProps={{inputProps: {min: 0}}}
-                    id='total_budget'
-                  /> */}
                 </Grid>
                 <Grid item>
                   <Typography className={classes.fieldDescription}>
@@ -362,7 +397,11 @@ const NewTrip = ({
               >
                 <Grid xs={6} item>
                   <KeyboardDatePicker
+                    className={ classes.inputStyles}
                     disableToolbar
+                    required
+                    error={!start_date}
+                    helperText={!start_date ? "Please enter a start date." : null}
                     variant='inline'
                     format='MM/DD/yyyy'
                     margin='normal'
@@ -378,6 +417,10 @@ const NewTrip = ({
 
                 <Grid xs={6} item>
                   <KeyboardDatePicker
+                    className={ classes.inputStyles}
+                    error={!end_date}
+                    helperText={!end_date ? "Please enter a end date." : null}
+                    required
                     disableToolbar
                     variant='inline'
                     format='MM/DD/yyyy'
@@ -395,7 +438,7 @@ const NewTrip = ({
             </Grid>
 
             <Grid item>
-              <FormControl className={classes.currencyField}>
+              <FormControl className={classes.currencyField, classes.inputStyles}>
                 <InputLabel>Foreign Currencies (optional)</InputLabel>
                 <Select
                   multiple
@@ -455,22 +498,23 @@ const NewTrip = ({
                   style={{marginTop: '1em'}}
                   className={classes.fieldDescription}
                 >
-                  *Select foreign currencies for countries you will visit
+                  * Select foreign currencies for countries you will visit
                 </Typography>
                 <Typography
                   style={{marginTop: '.5em'}}
                   className={classes.fieldDescription}
                 >
-                  *Countries that share a currency will all automatically be
+                  * Countries that share a currency will all automatically be
                   selected
                 </Typography>
               </FormControl>
             </Grid>
 
-            <Grid item>
+            <Grid item style={{marginTop: '1em'}}>
               <FormControlLabel
                 control={
                   <Checkbox
+                    className={classes.checkbox}
                     checked={defaultTripChecked}
                     onChange={handleSetDefault}
                     name='checked'
@@ -478,7 +522,7 @@ const NewTrip = ({
                   />
                 }
                 label={
-                  <span style={{fontSize: '1em'}}>
+                  <span style={{fontSize: '1em', color: 'white'}}>
                     Make default trip for dashboard
                   </span>
                 }
