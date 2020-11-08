@@ -3,6 +3,7 @@ import {data as countryData} from 'currency-codes';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {updateUser} from '../actions/auth';
+import {createAlerts} from '../actions/alerts'
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
@@ -37,14 +38,42 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     backgroundColor: theme.palette.boxContentBudgetData.main,
   },
-  email: {
-    width: 300,
-  },
   input: {
     width: 250,
   },
+  inputStyles:{
+    '& .MuiFormLabel-root':{
+      color: theme.palette.secondary.offWhite,
+     },
+     '& .MuiInput-underline':{
+       '&:before':{
+        borderBottom: '1px solid whitesmoke',
+       },
+       '&:hover:not($disabled):before':{ 
+            borderBottom:'2px solid whitesmoke',
+       }
+    },
+    // Changes input text color and placeholder text
+     '& .MuiInputBase-input':{
+      color: theme.palette.secondary.main
+     },
+     '& .MuiFormLabel-filled':{
+       backgroundColor: theme.palette.boxBackground.form,
+     },
+    
+     '& .MuiIconButton-root':{
+       color: theme.palette.primary.main
+     },
+     '& .MuiSelect-icon':{
+      color: theme.palette.primary.main
+     },
+    //  '& .MuiInput-input':{
+    //   color: theme.palette.secondary.main
+    //  },
+  
+  },
   selectEmpty: {
-    width: 250,
+    width: 200,
     '&:before': {
       borderColor: theme.palette.formInputs.border,
     },
@@ -70,8 +99,10 @@ const useStyles = makeStyles((theme) => ({
     visibility: 'hidden',
   },
   fieldDescription: {
+    width: 200,
     fontSize: '.5em',
     marginTop: '1em',
+    color: theme.palette.secondary.main
   },
 }));
 
@@ -81,6 +112,7 @@ const MyAccount = ({
   home_currency,
   email,
   updateUser,
+  createAlerts
 }) => {
   const theme = useTheme();
   const classes = useStyles();
@@ -109,6 +141,12 @@ const MyAccount = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+     // Alert if forms are blank
+     if(!firstName || !lastName || !emailAddress || !homeCurrency){
+      return createAlerts({validation_error: 'Please fill out all fields'});
+    }
+
     updateUser({
       firstName,
       lastName,
@@ -141,7 +179,10 @@ const MyAccount = ({
             <Grid item>
               <TextField
                 autoFocus
-                className={classes.input}
+                autoComplete='off'
+                className={classes.input, classes.inputStyles}
+                error={firstName === ""}
+                helperText={firstName === "" ? "Please enter your first name." : null}
                 variant='standard'
                 margin='normal'
                 required
@@ -158,7 +199,10 @@ const MyAccount = ({
             <Grid item>
               <TextField
                 variant='standard'
-                className={classes.input}
+                autoComplete='off'
+                className={classes.input, classes.inputStyles}
+                error={lastName === ""}
+                helperText={lastName === "" ? "Please enter your last name." : null}
                 margin='normal'
                 required
                 id='last_name'
@@ -174,9 +218,13 @@ const MyAccount = ({
             <Grid item>
               <TextField
                 variant='standard'
+                autoComplete='off'
                 margin='normal'
                 required
-                className={classes.email}
+                style={{width: 250}}
+                className={classes.inputStyles}
+                error={emailAddress === ""}
+                helperText={emailAddress === "" ? "Please enter an email address." : null}
                 id='email'
                 label='Email'
                 name='emailAddress'
@@ -189,15 +237,18 @@ const MyAccount = ({
 
             <Grid item>
               {/* ------ Currency Input ----- */}
-              <FormControl required className={classes.formControl}>
+              <FormControl required className={classes.formControl, classes.inputStyles}>
                 <InputLabel id='required-label'>Home Currency</InputLabel>
                 <Select
                   id='currency'
+                  autoComplete='off'
                   value={homeCurrency}
                   name='homeCurrency'
                   onChange={(e) => {
                     handleUserData(e);
                   }}
+                  error={!homeCurrency}
+                  helperText={!homeCurrency ? "Please enter a currency." : null}
                   className={classes.selectEmpty}
                   // accesses the menu styles
                   MenuProps={{classes: {list: classes.selectMenu}}}
@@ -214,7 +265,7 @@ const MyAccount = ({
                   ))}
                 </Select>
                 <Typography className={classes.fieldDescription}>
-                  *Changing home currency will not change the home currency of
+                  * Changing home currency will not change the home currency of
                   trips that have been created
                 </Typography>
               </FormControl>
@@ -239,11 +290,12 @@ const MyAccount = ({
 };
 
 MyAccount.propTypes = {
+  updateUser: PropTypes.func.isRequired,
+  createAlerts: PropTypes.func.isRequired,
   first_name: PropTypes.string.isRequired,
   last_name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   home_currency: PropTypes.string.isRequired,
-  updateUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -253,4 +305,4 @@ const mapStateToProps = (state) => ({
   home_currency: state.auth.user.home_currency,
 });
 
-export default connect(mapStateToProps, {updateUser})(MyAccount);
+export default connect(mapStateToProps, {updateUser, createAlerts})(MyAccount);

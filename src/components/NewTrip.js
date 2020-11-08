@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.secondary.offWhite,
      },
      '& .MuiInput-underline':{
-       '&:before':{
+       '&:before':{ 
         borderBottom: '1px solid whitesmoke',
        },
        '&:hover:not($disabled):before':{ 
