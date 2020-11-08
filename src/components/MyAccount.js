@@ -180,7 +180,7 @@ const MyAccount = ({
               <TextField
                 autoFocus
                 autoComplete='off'
-                className={classes.input, classes.inputStyles}
+                className={`${classes.input} ${classes.inputStyles}`}
                 error={firstName === ""}
                 helperText={firstName === "" ? "Please enter your first name." : null}
                 variant='standard'
@@ -200,7 +200,7 @@ const MyAccount = ({
               <TextField
                 variant='standard'
                 autoComplete='off'
-                className={classes.input, classes.inputStyles}
+                className={`${classes.input} ${classes.inputStyles}`}
                 error={lastName === ""}
                 helperText={lastName === "" ? "Please enter your last name." : null}
                 margin='normal'
@@ -237,7 +237,7 @@ const MyAccount = ({
 
             <Grid item>
               {/* ------ Currency Input ----- */}
-              <FormControl required className={classes.formControl, classes.inputStyles}>
+              <FormControl required className={`${classes.formControl} ${classes.inputStyles}`}>
                 <InputLabel id='required-label'>Home Currency</InputLabel>
                 <Select
                   id='currency'

@@ -46,12 +46,12 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     backgroundColor: theme.palette.boxContentBudgetData.main,
   },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
+  // paper: {
+  //   marginTop: theme.spacing(8),
+  //   display: 'flex',
+  //   flexDirection: 'column',
+  //   alignItems: 'center',
+  // },
   container: {
     backgroundColor: theme.palette.boxBackground.form,
     borderRadius: 5,
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(0),
   },
   inputStyles:{
     '& .MuiFormLabel-root':{
@@ -96,6 +96,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tripNameField: {
     width: '50%',
+    marginBottom: 0
    
   },
   budgetField: {
@@ -333,7 +334,7 @@ const NewTrip = ({
                 error={name === ""}
                 helperText={name === "" ? "Please enter a trip name." : null}
                 placeholder='Name'
-                className={classes.tripNameField, classes.inputStyles}
+                className={`${classes.tripNameField} ${classes.inputStyles}`}
                 autoComplete='off'
                 id='name'
                 label='Trip Name'
@@ -348,7 +349,7 @@ const NewTrip = ({
               <Grid container direction='column'>
                 <Grid item>
                   <CurrencyFormat
-                    className={classes.budgetField, classes.inputStyles}
+                    className={`${classes.budgetField} ${classes.inputStyles}`}
                     variant='standard'
                     margin='normal'
                     required
@@ -397,7 +398,7 @@ const NewTrip = ({
               >
                 <Grid xs={6} item>
                   <KeyboardDatePicker
-                    className={ classes.inputStyles}
+                    className={classes.inputStyles}
                     disableToolbar
                     required
                     error={!start_date}
@@ -417,7 +418,7 @@ const NewTrip = ({
 
                 <Grid xs={6} item>
                   <KeyboardDatePicker
-                    className={ classes.inputStyles}
+                    className={classes.inputStyles}
                     error={!end_date}
                     helperText={!end_date ? "Please enter a end date." : null}
                     required
@@ -438,7 +439,7 @@ const NewTrip = ({
             </Grid>
 
             <Grid item>
-              <FormControl className={classes.currencyField, classes.inputStyles}>
+              <FormControl className={`${classes.currencyField} ${classes.inputStyles}`}>
                 <InputLabel>Foreign Currencies (optional)</InputLabel>
                 <Select
                   multiple

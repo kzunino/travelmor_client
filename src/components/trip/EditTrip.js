@@ -636,7 +636,7 @@ const EditTrip = ({
               <IconButton style={{padding: 0}} onClick={handleClickOpen}>
                 <DeleteForeverIcon
                   style={{color: '#D61A3C'}}
-                  fontSize={'large'}
+                  fontSize='large'
                 />
               </IconButton>
             </Tooltip>
