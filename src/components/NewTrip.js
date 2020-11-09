@@ -460,9 +460,19 @@ const NewTrip = ({
               <Autocomplete
                 className={classes.inputStyles}
                 multiple
+                disableCloseOnSelect
                 id='tags-standard'
                 options={currencyList}
-                getOptionLabel={(option) => option.country}
+                getOptionLabel={(option) => option.value}
+                renderOption={(option) => option.country}
+                // filterSelectedOptions
+                getOptionSelected={(option, value) =>
+                  option.value === value.value
+                }
+                // filterOptions={(options) => {
+                //   options.filter(option => option.title);
+                //   return options;
+                // }}
                 onChange={handleCurrencyChange}
                 renderInput={(params) => (
                   <TextField
