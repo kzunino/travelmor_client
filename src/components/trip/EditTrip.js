@@ -38,6 +38,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import {KeyboardDatePicker} from '@material-ui/pickers';
 
+// Multiselect
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
 // Checkbox
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -133,6 +136,18 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '1em',
     marginBottom: '2em',
   },
+  popperMenu: {
+    // // Hover
+    // '&[data-focus="true"]': {
+    //   backgroundColor: theme.palette.listItems.selected,
+    //   borderColor: 'transparent',
+    // },
+    // Selected
+    '&[aria-selected="true"]': {
+      backgroundColor: theme.palette.listItems.selected,
+      borderColor: 'transparent',
+    },
+  },
   fieldDescription: {
     fontSize: '.5em',
     color: theme.palette.secondary.main,
@@ -209,6 +224,30 @@ const EditTrip = ({
     return currency.currency;
   });
 
+  console.log(previouslyChosenCurrencies);
+
+  let currencyList = countryData
+    .map((country) =>
+      country.countries.length > 1
+        ? country.countries.map((place) => {
+            return {country: `${country.code} - ${place}`, code: country.code};
+          })
+        : {
+            country: `${country.code} - ${country.countries}`,
+            code: country.code,
+          }
+    )
+    .flat()
+    .filter((country) => {
+      if (
+        !previouslyChosenCurrencies.includes(country.code) &&
+        home_currency !== country.code
+      )
+        return country;
+    });
+
+  console.log(currencyList);
+
   useEffect(() => {
     if (default_trips.length && default_trips[0].trip_uid === trip_uid)
       setDefaultTripChecked(true);
@@ -234,10 +273,16 @@ const EditTrip = ({
 
   // When a currency is selected, it gets the exchange rate and sets state to
   // an array of currency objects
-  const handleCurrencyChange = (event) => {
-    toggleHidden();
-    setForeignCurrencies(event.target.value);
+  const handleCurrencyChange = (event, values) => {
+    console.log(event, values);
+    // let foreignCurr = values.map((curr) => curr.code);
+    // console.log(foreignCurr);
+    // setForeignCurrencies(foreignCurr);
   };
+  // const handleCurrencyChange = (event) => {
+  //   toggleHidden();
+  //   setForeignCurrencies(event.target.value);
+  // };
 
   // handles setting trip to default
   const handleSetDefault = () => {
@@ -472,20 +517,6 @@ const EditTrip = ({
                     }
                     customInput={TextField}
                   />
-
-                  {/* <TextField
-                    variant='standard'
-                    margin='normal'
-                    required
-                    type='number'
-                    placeholder='0.00'
-                    label='Budget Total'
-                    name='totalBudget'
-                    value={totalBudget}
-                    onChange={(e) => {
-                      handleUserData(e);
-                    }}
-                  /> */}
                 </Grid>
                 <Grid item>
                   <Typography className={classes.fieldDescription}>
@@ -569,6 +600,41 @@ const EditTrip = ({
             </Grid>
 
             <Grid item>
+              <Autocomplete
+                className={`${classes.currencyField} ${classes.inputStyles}`}
+                classes={{
+                  option: classes.popperMenu,
+                }}
+                style={{marginBottom: '.5em'}}
+                multiple
+                disableCloseOnSelect
+                id='tags-standard'
+                options={currencyList}
+                getOptionLabel={(option) => option.code}
+                renderOption={(option) => option.country}
+                getOptionSelected={(option, value) =>
+                  option.code === value.code
+                }
+                onChange={handleCurrencyChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant='standard'
+                    label='Foreign Currencies (Optional)'
+                  />
+                )}
+              />
+              <Typography className={classes.fieldDescription}>
+                * Select foreign currencies for countries you will visit
+              </Typography>
+              <Typography
+                style={{marginTop: '.5em'}}
+                className={classes.fieldDescription}
+              >
+                * Countries that share a currency will all automatically be
+                selected
+              </Typography>
+
               <FormControl
                 className={`${classes.currencyField} ${classes.inputStyles}`}
               >
