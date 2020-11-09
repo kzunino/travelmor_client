@@ -48,7 +48,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   appBar: {
-    zIndex: theme.zIndex.modal + 1,
+    // zIndex: theme.zIndex.modal + 1,
+    zIndex: 1290,
     //changes appbar color opacity
     backgroundColor: 'rgba(30, 30, 54, .8)',
   },
@@ -69,6 +70,9 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
     background: `linear-gradient( rgb(75,176,248), rgb(55,94,235))`,
+  },
+  modal: {
+    zIndex: 1289,
   },
   drawerContainer: {
     overflow: 'auto',
@@ -216,11 +220,14 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
   //renders drawer component depending on media breakpoint
   const drawer = (
     <Drawer
+      // style={{zIndex: 1289}}
       className={classes.drawer}
       variant='permanent'
       anchor={matches ? 'left' : 'right'}
       classes={{
         paper: classes.drawerPaper,
+        modal: classes.modal,
+        root: classes.modal,
       }}
     >
       <Toolbar className={classes.toolbarMargin} />
@@ -317,6 +324,7 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
   const tempDrawer = (
     <>
       <SwipeableDrawer
+        style={{zIndex: 1289}}
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}
         open={openDrawer}

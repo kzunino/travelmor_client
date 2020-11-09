@@ -25,6 +25,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
+
+// Auto complete search select
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
 // import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -82,6 +86,7 @@ const useStyles = makeStyles((theme) => ({
   },
   selectEmpty: {
     width: '10em',
+    marginTop: '.5em',
   },
   selectMenu: {
     maxHeight: '15em',
@@ -118,6 +123,10 @@ const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
     setFormData({...formData, [e.target.name]: e.target.value});
   };
 
+  const handleCurrencyUpdate = (e, values) => {
+    setFormData({...formData, home_currency: values});
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -131,6 +140,7 @@ const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
     ) {
       first_name = first_name ? first_name : '';
       last_name = last_name ? last_name : '';
+      home_currency = home_currency ? home_currency : '';
       email = email ? email : '';
       password1 = password1 ? password1 : '';
       password2 = password2 ? password2 : '';
@@ -185,7 +195,7 @@ const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
             margin='normal'
             required
             error={first_name === ''}
-            helperText={first_name === '' ? 'Please enter first name' : null}
+            helperText={first_name === '' ? 'Please enter first name.' : null}
             onChange={handleForm}
             fullWidth
             id='first_name'
@@ -199,7 +209,7 @@ const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
             margin='normal'
             required
             error={last_name === ''}
-            helperText={last_name === '' ? 'Please enter last name' : null}
+            helperText={last_name === '' ? 'Please enter last name.' : null}
             onChange={handleForm}
             fullWidth
             id='last_name'
@@ -207,7 +217,27 @@ const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
             name='last_name'
             autoComplete='last_name'
           />
-          <FormControl required className={classes.formControl}>
+
+          <Autocomplete
+            options={countryData.map((country, index) => country.code)}
+            className={classes.selectEmpty}
+            getOptionLabel={(option) => option}
+            value={home_currency}
+            onChange={handleCurrencyUpdate}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                error={!home_currency}
+                helperText={
+                  !home_currency ? 'Please enter home currency.' : null
+                }
+                label='Combo box'
+                variant='standard'
+              />
+            )}
+          />
+
+          {/* <FormControl required className={classes.formControl}>
             <InputLabel id='required-label'>Home Currency</InputLabel>
             <Select
               id='currency'
@@ -229,13 +259,14 @@ const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
                 >{`${country.code}`}</MenuItem>
               ))}
             </Select>
-          </FormControl>
+          </FormControl> */}
+
           <TextField
             variant='standard'
             margin='normal'
             required
             error={email === ''}
-            helperText={email === '' ? 'Please enter your email' : null}
+            helperText={email === '' ? 'Please enter your email.' : null}
             onChange={handleForm}
             fullWidth
             id='email'
@@ -248,7 +279,7 @@ const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
             margin='normal'
             required
             error={password1 === ''}
-            helperText={password1 === '' ? 'Please enter a password' : null}
+            helperText={password1 === '' ? 'Please enter a password.' : null}
             onChange={handleForm}
             fullWidth
             name='password1'
@@ -261,7 +292,7 @@ const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
             margin='normal'
             required
             error={password2 === ''}
-            helperText={password2 === '' ? 'Please confirm password' : null}
+            helperText={password2 === '' ? 'Please confirm password.' : null}
             onChange={handleForm}
             fullWidth
             name='password2'
