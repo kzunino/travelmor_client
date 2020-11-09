@@ -28,6 +28,7 @@ import Select from '@material-ui/core/Select';
 // Multiselect
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 // Checkbox
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -175,6 +176,21 @@ const NewTrip = ({
 
   let {name, total_budget} = formData;
 
+  let currencyList = countryData
+    .map((country) =>
+      country.countries.length > 1
+        ? country.countries.map((place) => {
+            return {country: `${country.code} - ${place}`, value: country.code};
+          })
+        : {
+            country: `${country.code} - ${country.countries}`,
+            value: country.code,
+          }
+    )
+    .flat();
+
+  console.log(currencyList);
+
   //joins all currencies to "USD,COP" format for query string
   // then gets all exchange rates and creat
 
@@ -211,8 +227,9 @@ const NewTrip = ({
 
   // When a currency is selected, it gets the exchange rate and sets state to
   // an array of currency objects
-  const handleCurrencyChange = (event) => {
-    setCurrencies(event.target.value);
+  const handleCurrencyChange = (event, values) => {
+    console.log(event, values);
+    // setCurrencies(event.target.value);
   };
 
   //start date state
@@ -440,6 +457,22 @@ const NewTrip = ({
             </Grid>
 
             <Grid item>
+              <Autocomplete
+                className={classes.inputStyles}
+                multiple
+                id='tags-standard'
+                options={currencyList}
+                getOptionLabel={(option) => option.country}
+                onChange={handleCurrencyChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant='standard'
+                    label='Foreign Currencies (Optional)'
+                  />
+                )}
+              />
+
               <FormControl
                 className={`${classes.currencyField} ${classes.inputStyles}`}
               >
