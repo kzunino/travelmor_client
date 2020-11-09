@@ -272,6 +272,9 @@ const TripMain = ({tripData}) => {
                         display: true,
                         color: 'rgba(75,192,192,.1)',
                       },
+                      ticks: {
+                        fontColor: 'whitesmoke',
+                      },
                     },
                   ],
                   yAxes: [
@@ -283,6 +286,7 @@ const TripMain = ({tripData}) => {
                       ticks: {
                         display: true,
                         beginAtZero: true,
+                        fontColor: 'whitesmoke',
                       },
                     },
                   ],
