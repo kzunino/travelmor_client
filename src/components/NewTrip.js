@@ -130,13 +130,27 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '.5em',
     color: theme.palette.secondary.main,
   },
-  menuItemRoot: {
-    '&$menuItemSelected, &$menuItemSelected:focus, &$menuItemSelected:hover': {
+  popperMenu: {
+    // // Hover
+    // '&[data-focus="true"]': {
+    //   backgroundColor: theme.palette.listItems.selected,
+    //   borderColor: 'transparent',
+    // },
+    // Selected
+    '&[aria-selected="true"]': {
       backgroundColor: theme.palette.listItems.selected,
+      borderColor: 'transparent',
     },
   },
+
+  // menuItemRoot: {
+  //   '&$menuItemSelected, &$menuItemSelected:focus, &$menuItemSelected:hover': {
+  //     backgroundColor: theme.palette.listItems.selected,
+  //   },
+  // },
+
   /* Styles applied to the root element if `selected={true}`. */
-  menuItemSelected: {},
+  // menuItemSelected: {},
   disabled: {},
   checkbox: {
     color: theme.palette.secondary.main,
@@ -180,11 +194,11 @@ const NewTrip = ({
     .map((country) =>
       country.countries.length > 1
         ? country.countries.map((place) => {
-            return {country: `${country.code} - ${place}`, value: country.code};
+            return {country: `${country.code} - ${place}`, code: country.code};
           })
         : {
             country: `${country.code} - ${country.countries}`,
-            value: country.code,
+            code: country.code,
           }
     )
     .flat();
@@ -212,24 +226,26 @@ const NewTrip = ({
     }
   };
 
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 350,
-      },
-    },
-    variant: 'menu',
-    getContentAnchorEl: null,
-  };
+  // const ITEM_HEIGHT = 48;
+  // const ITEM_PADDING_TOP = 8;
+  // const MenuProps = {
+  //   PaperProps: {
+  //     style: {
+  //       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+  //       width: 350,
+  //     },
+  //   },
+  //   variant: 'menu',
+  //   getContentAnchorEl: null,
+  // };
 
   // When a currency is selected, it gets the exchange rate and sets state to
-  // an array of currency objects
+  // an array of currency codes ['USD', 'COP']
   const handleCurrencyChange = (event, values) => {
     console.log(event, values);
-    // setCurrencies(event.target.value);
+    let foreignCurr = values.map((curr) => curr.code);
+    console.log(foreignCurr);
+    setCurrencies(foreignCurr);
   };
 
   //start date state
@@ -246,12 +262,12 @@ const NewTrip = ({
     setFormData({...formData, [e.target.name]: e.target.value});
   };
 
-  const removeCurrencyFromInput = (curr) => {
-    let updatedForeignCurrencies = currencies.filter(
-      (currency) => currency !== curr
-    );
-    setCurrencies(updatedForeignCurrencies);
-  };
+  // const removeCurrencyFromInput = (curr) => {
+  //   let updatedForeignCurrencies = currencies.filter(
+  //     (currency) => currency !== curr
+  //   );
+  //   setCurrencies(updatedForeignCurrencies);
+  // };
 
   const handleSetDefault = () => {
     setDefaultTripChecked(!defaultTripChecked);
@@ -458,16 +474,19 @@ const NewTrip = ({
 
             <Grid item>
               <Autocomplete
-                className={classes.inputStyles}
+                className={`${classes.currencyField} ${classes.inputStyles}`}
+                classes={{
+                  option: classes.popperMenu,
+                }}
+                style={{marginBottom: '.5em'}}
                 multiple
                 disableCloseOnSelect
                 id='tags-standard'
                 options={currencyList}
-                getOptionLabel={(option) => option.value}
+                getOptionLabel={(option) => option.code}
                 renderOption={(option) => option.country}
-                // filterSelectedOptions
                 getOptionSelected={(option, value) =>
-                  option.value === value.value
+                  option.code === value.code
                 }
                 // filterOptions={(options) => {
                 //   options.filter(option => option.title);
@@ -482,8 +501,18 @@ const NewTrip = ({
                   />
                 )}
               />
+              <Typography className={classes.fieldDescription}>
+                * Select foreign currencies for countries you will visit
+              </Typography>
+              <Typography
+                style={{marginTop: '.5em'}}
+                className={classes.fieldDescription}
+              >
+                * Countries that share a currency will all automatically be
+                selected
+              </Typography>
 
-              <FormControl
+              {/* <FormControl
                 className={`${classes.currencyField} ${classes.inputStyles}`}
               >
                 <InputLabel>Foreign Currencies (optional)</InputLabel>
@@ -554,7 +583,7 @@ const NewTrip = ({
                   * Countries that share a currency will all automatically be
                   selected
                 </Typography>
-              </FormControl>
+              </FormControl> */}
             </Grid>
 
             <Grid item style={{marginTop: '1em'}}>
