@@ -4,7 +4,6 @@ import {makeStyles} from '@material-ui/core/styles';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {login} from '../actions/auth';
-import {createAlerts} from '../actions/alerts';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -72,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignIn = ({isAuthenticated, login, createAlerts, isLoading}) => {
+const SignIn = ({isAuthenticated, login, isLoading}) => {
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
@@ -94,16 +93,15 @@ const SignIn = ({isAuthenticated, login, createAlerts, isLoading}) => {
         setFormData({...formData, email: '', password: ''});
       } else if (!password) setFormData({...formData, password: ''});
       else if (!email) setFormData({...formData, name: ''});
-      return createAlerts({validation_error: 'Please fill out all fields'});
+    } else {
+      email = email.toLowerCase();
+
+      //passes info to register action passed in from props
+      login({
+        email,
+        password,
+      });
     }
-
-    email = email.toLowerCase();
-
-    //passes info to register action passed in from props
-    login({
-      email,
-      password,
-    });
   };
 
   // Redirect if logged in
@@ -197,7 +195,6 @@ const SignIn = ({isAuthenticated, login, createAlerts, isLoading}) => {
 };
 
 SignIn.propTypes = {
-  createAlerts: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   isLoading: PropTypes.bool,
@@ -208,4 +205,4 @@ const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
 });
 
-export default connect(mapStateToProps, {login, createAlerts})(SignIn);
+export default connect(mapStateToProps, {login})(SignIn);
