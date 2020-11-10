@@ -91,6 +91,9 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiSelect-icon': {
       color: theme.palette.primary.main,
     },
+    '& .MuiAutocomplete-clearIndicator': {
+      color: '#D61A3C',
+    },
     //  '& .MuiInput-input':{
     //   color: theme.palette.secondary.main
     //  },
