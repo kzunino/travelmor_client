@@ -153,17 +153,17 @@ const MyAccount = ({
 
     // Alert if forms are blank
     if (!firstName || !lastName || !emailAddress || !homeCurrency) {
-      return createAlerts({validation_error: 'Please fill out all fields'});
+      // return createAlerts({validation_error: 'Please fill out all fields'});
+    } else {
+      updateUser({
+        firstName,
+        lastName,
+        emailAddress,
+        homeCurrency,
+      });
+
+      setHidden(true);
     }
-
-    updateUser({
-      firstName,
-      lastName,
-      emailAddress,
-      homeCurrency,
-    });
-
-    setHidden(true);
   };
 
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
