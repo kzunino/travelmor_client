@@ -157,14 +157,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
+// function getStyles(name, personName, theme) {
+//   return {
+//     fontWeight:
+//       personName.indexOf(name) === -1
+//         ? theme.typography.fontWeightRegular
+//         : theme.typography.fontWeightMedium,
+//   };
+// }
 
 const NewTrip = ({
   newTrip,
@@ -190,6 +190,9 @@ const NewTrip = ({
 
   let {name, total_budget} = formData;
 
+  // Maps country data and constructs objects for each individual country
+  // then flattens the arrays because some countries share a currency
+  // then filters out countries that share home_currency
   let currencyList = countryData
     .map((country) =>
       country.countries.length > 1
@@ -201,9 +204,8 @@ const NewTrip = ({
             code: country.code,
           }
     )
-    .flat();
-
-  console.log(currencyList);
+    .flat()
+    .filter((country) => home_currency !== country.code);
 
   //joins all currencies to "USD,COP" format for query string
   // then gets all exchange rates and creat
@@ -242,9 +244,7 @@ const NewTrip = ({
   // When a currency is selected, it gets the exchange rate and sets state to
   // an array of currency codes ['USD', 'COP']
   const handleCurrencyChange = (event, values) => {
-    console.log(event, values);
     let foreignCurr = values.map((curr) => curr.code);
-    console.log(foreignCurr);
     setCurrencies(foreignCurr);
   };
 

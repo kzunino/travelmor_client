@@ -32,10 +32,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 
 //Select
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+// import InputLabel from '@material-ui/core/InputLabel';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import FormControl from '@material-ui/core/FormControl';
+// import Select from '@material-ui/core/Select';
 import {KeyboardDatePicker} from '@material-ui/pickers';
 
 // Multiselect
@@ -45,8 +45,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
-import Input from '@material-ui/core/Input';
-import Chip from '@material-ui/core/Chip';
+// import Input from '@material-ui/core/Input';
+// import Chip from '@material-ui/core/Chip';
 
 // Delete Dialog Components
 import Dialog from '@material-ui/core/Dialog';
@@ -165,14 +165,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function getStyles(name, currency, theme) {
-  return {
-    fontWeight:
-      currency.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
+// function getStyles(name, currency, theme) {
+//   return {
+//     fontWeight:
+//       currency.indexOf(name) === -1
+//         ? theme.typography.fontWeightRegular
+//         : theme.typography.fontWeightMedium,
+//   };
+// }
 
 const EditTrip = ({
   updateTrip,
@@ -224,8 +224,9 @@ const EditTrip = ({
     return currency.currency;
   });
 
-  console.log(previouslyChosenCurrencies);
-
+  // Maps country data and constructs objects for each individual country
+  // then flattens the arrays because some countries share a currency
+  // then filters out home_currency countries and previously chosen currencies
   let currencyList = countryData
     .map((country) =>
       country.countries.length > 1
@@ -238,15 +239,11 @@ const EditTrip = ({
           }
     )
     .flat()
-    .filter((country) => {
-      if (
+    .filter(
+      (country) =>
         !previouslyChosenCurrencies.includes(country.code) &&
         home_currency !== country.code
-      )
-        return country;
-    });
-
-  console.log(currencyList);
+    );
 
   useEffect(() => {
     if (default_trips.length && default_trips[0].trip_uid === trip_uid)
@@ -274,11 +271,11 @@ const EditTrip = ({
   // When a currency is selected, it gets the exchange rate and sets state to
   // an array of currency objects
   const handleCurrencyChange = (event, values) => {
-    console.log(event, values);
-    // let foreignCurr = values.map((curr) => curr.code);
-    // console.log(foreignCurr);
-    // setForeignCurrencies(foreignCurr);
+    toggleHidden();
+    let foreignCurr = values.map((curr) => curr.code);
+    setForeignCurrencies(foreignCurr);
   };
+
   // const handleCurrencyChange = (event) => {
   //   toggleHidden();
   //   setForeignCurrencies(event.target.value);
@@ -325,13 +322,6 @@ const EditTrip = ({
   const handleDeleteTrip = () => {
     deleteTrip(trip_uid);
     history.push('/dashboard');
-  };
-
-  const removeCurrencyFromInput = (curr) => {
-    let updatedForeignCurrencies = foreignCurrencies.filter(
-      (currency) => currency !== curr
-    );
-    setForeignCurrencies(updatedForeignCurrencies);
   };
 
   const handleSubmit = async (e) => {
@@ -422,18 +412,18 @@ const EditTrip = ({
     setHidden(true);
   };
 
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 350,
-      },
-    },
-    variant: 'menu',
-    getContentAnchorEl: null,
-  };
+  // const ITEM_HEIGHT = 48;
+  // const ITEM_PADDING_TOP = 8;
+  // const MenuProps = {
+  //   PaperProps: {
+  //     style: {
+  //       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+  //       width: 350,
+  //     },
+  //   },
+  //   variant: 'menu',
+  //   getContentAnchorEl: null,
+  // };
 
   return (
     <>
@@ -609,6 +599,7 @@ const EditTrip = ({
                 multiple
                 disableCloseOnSelect
                 id='tags-standard'
+                key={currencyList.length}
                 options={currencyList}
                 getOptionLabel={(option) => option.code}
                 renderOption={(option) => option.country}
@@ -628,14 +619,14 @@ const EditTrip = ({
                 * Select foreign currencies for countries you will visit
               </Typography>
               <Typography
-                style={{marginTop: '.5em'}}
+                style={{marginTop: '.5em', marginBottom: '3em'}}
                 className={classes.fieldDescription}
               >
                 * Countries that share a currency will all automatically be
                 selected
               </Typography>
 
-              <FormControl
+              {/* <FormControl
                 className={`${classes.currencyField} ${classes.inputStyles}`}
               >
                 <InputLabel>Trip Currencies (optional)</InputLabel>
@@ -708,7 +699,7 @@ const EditTrip = ({
                 >
                   * Countries that share currency will automatically be selected
                 </Typography>
-              </FormControl>
+              </FormControl> */}
             </Grid>
           </Grid>
 

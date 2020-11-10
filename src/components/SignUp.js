@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import {register} from '../actions/auth';
 import {createAlerts} from '../actions/alerts';
 
-import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -23,15 +22,15 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 //Select
 
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
+// import InputLabel from '@material-ui/core/InputLabel';
+// import MenuItem from '@material-ui/core/MenuItem';
 
 // Auto complete search select
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 // import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+// import FormControl from '@material-ui/core/FormControl';
+// import Select from '@material-ui/core/Select';
 
 function Copyright() {
   return (
@@ -148,7 +147,7 @@ const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
       let newState = {
         first_name,
         last_name,
-        home_currency,
+        home_currency: home_currency ? home_currency : 'USD',
         email,
         password1,
         password2,
