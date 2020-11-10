@@ -300,49 +300,49 @@ const NewTrip = ({
     // Alert if forms are blank
     if (!name || !total_budget || start_date === null || end_date === null) {
       if (!name && !total_budget) {
-        setFormData({...formData, name: '', total_budget: ''});
+        return setFormData({...formData, name: '', total_budget: ''});
       } else if (!total_budget) setFormData({...formData, total_budget: ''});
-      else if (!name) setFormData({...formData, name: ''});
-      return createAlerts({validation_error: 'Please fill out all fields'});
+      else if (!name) return setFormData({...formData, name: ''});
+      // return createAlerts({validation_error: 'Please fill out all fields'});
+    } else {
+      // min number of days is 1
+      // loops over and enumerates the trip length based on start and end date
+      let currDate = Moment(start_date).startOf('day');
+      let lastDate = Moment(end_date).startOf('day');
+
+      while (currDate.add(1, 'day').diff(lastDate, 'day') <= 0) {
+        length++;
+      }
+
+      if (currencies.length) {
+        currencyRates = await getExchangeRate();
+      }
+
+      if (deleteOldDefaultTrip) {
+        // deletes current default trip if user selects the new trip as default
+        deleteDefaultTrip(default_trip[0].default_trip_uid);
+      }
+      // sets the new trip with the hours adjusted to account for full days
+      newTrip(
+        {
+          user,
+          name,
+          total_budget,
+          length,
+          home_currency,
+          start_date: Moment(start_date)
+            .set({hour: 0, minute: 0, second: 0, millisecond: 0})
+            .format(format),
+          end_date: Moment(end_date)
+            .set({hour: 23, minute: 59, second: 59, millisecond: 0})
+            .format(format),
+        },
+        currencyRates,
+        setNewDefaultTrip ? setNewDefaultTrip : false
+      );
+
+      history.push('/dashboard');
     }
-
-    // min number of days is 1
-    // loops over and enumerates the trip length based on start and end date
-    let currDate = Moment(start_date).startOf('day');
-    let lastDate = Moment(end_date).startOf('day');
-
-    while (currDate.add(1, 'day').diff(lastDate, 'day') <= 0) {
-      length++;
-    }
-
-    if (currencies.length) {
-      currencyRates = await getExchangeRate();
-    }
-
-    if (deleteOldDefaultTrip) {
-      // deletes current default trip if user selects the new trip as default
-      deleteDefaultTrip(default_trip[0].default_trip_uid);
-    }
-    // sets the new trip with the hours adjusted to account for full days
-    newTrip(
-      {
-        user,
-        name,
-        total_budget,
-        length,
-        home_currency,
-        start_date: Moment(start_date)
-          .set({hour: 0, minute: 0, second: 0, millisecond: 0})
-          .format(format),
-        end_date: Moment(end_date)
-          .set({hour: 23, minute: 59, second: 59, millisecond: 0})
-          .format(format),
-      },
-      currencyRates,
-      setNewDefaultTrip ? setNewDefaultTrip : false
-    );
-
-    history.push('/dashboard');
   };
 
   const matchXs = useMediaQuery(theme.breakpoints.down('xs'));
@@ -373,7 +373,9 @@ const NewTrip = ({
                 id='name'
                 label='Trip Name'
                 name='name'
-                value={name}
+                // short circuit becuase starting value in undefined to not trigger
+                // the helper text validation errors if empty string
+                value={name || ''}
                 onChange={(e) => handleChange(e)}
                 autoFocus
               />
