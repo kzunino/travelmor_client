@@ -159,6 +159,7 @@ const TripPieChart = ({tripData}) => {
         align: 'start',
         labels: {
           usePointStyle: true,
+          fontColor: '#fff',
         },
       },
       plugins: {
