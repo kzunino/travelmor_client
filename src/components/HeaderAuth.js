@@ -13,7 +13,6 @@ import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-// import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -104,10 +103,6 @@ const useStyles = makeStyles((theme) => ({
   },
   nested: {
     paddingLeft: theme.spacing(4),
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
   },
 }));
 
@@ -220,7 +215,6 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
   //renders drawer component depending on media breakpoint
   const drawer = (
     <Drawer
-      // style={{zIndex: 1289}}
       className={classes.drawer}
       variant='permanent'
       anchor={matches ? 'left' : 'right'}
