@@ -38,7 +38,7 @@ import Button from '@material-ui/core/Button';
 // import Select from '@material-ui/core/Select';
 import {KeyboardDatePicker} from '@material-ui/pickers';
 
-// Multiselect
+// Multi-select
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 // Checkbox
@@ -342,77 +342,77 @@ const EditTrip = ({
       startDate === null ||
       endDate === null
     ) {
-      return createAlerts({validation_error: 'Please fill out all fields'});
-    }
-
-    // Alert if trip end date is before trip start
-    if (Moment(startDate).isAfter(endDate)) {
-      return createAlerts({
-        validation_error: 'Cant start a trip after it ends',
-      });
-    }
-
-    // if start is same day as end day then length is 1 day
-    if (Moment(endDate).isSame(Moment(startDate), 'day')) {
-      length = 1;
-    } else if (Moment(endDate).diff(Moment(startDate), 'days') === 1) {
-      length = 2;
+      // return createAlerts({validation_error: 'Please fill out all fields'});
     } else {
-      length = Moment(endDate).diff(Moment(startDate), 'days') + 1;
-    }
-
-    // sets the new trip with the hours adjusted to account for full days
-    updateTrip({
-      trip_uid,
-      user,
-      name: tripName,
-      total_budget: totalBudget,
-      length,
-      home_currency,
-      start_date: Moment(startDate)
-        .set({hour: 0, minute: 0, second: 0, millisecond: 0})
-        .format(format),
-      end_date: Moment(endDate)
-        .set({hour: 23, minute: 59, second: 59, millisecond: 0})
-        .format(format),
-    });
-
-    if (foreignCurrencies.length) {
-      // Filters new currencies codes from old
-      let previousCurrencies = currencies.map((curr) => curr.currency);
-      let addedCurrencies = foreignCurrencies.filter(
-        (curr) => !previousCurrencies.includes(curr)
-      );
-
-      // Sends new currencies to get exchange rate data
-      if (addedCurrencies.length) {
-        // currencyRates = {CRC: 603.44439, CUC: 1};
-        currencyRates = await getExchangeRate(addedCurrencies);
-
-        // Dispatch add new currencies to database and state
-        addCurrencies({currencyRates}, {trip_uid}, {user});
-        setForeignCurrencies([]);
+      // Alert if trip end date is before trip start
+      if (Moment(startDate).isAfter(endDate)) {
+        return createAlerts({
+          validation_error: 'Cant start a trip after it ends',
+        });
       }
-    }
 
-    if (
-      defaultTripChecked &&
-      default_trips.length &&
-      default_trips[0].trip_uid !== trip_uid
-    ) {
-      deleteDefaultTrip(default_trips[0].default_trip_uid);
-      setDefaultTrip({user: user, trip_uid: trip_uid});
-    } else if (defaultTripChecked && default_trips.length === 0) {
-      setDefaultTrip({user: user, trip_uid: trip_uid});
-    } else if (
-      !defaultTripChecked &&
-      default_trips.length &&
-      default_trips[0].trip_uid === trip_uid
-    ) {
-      deleteDefaultTrip(default_trips[0].default_trip_uid);
-    }
+      // if start is same day as end day then length is 1 day
+      if (Moment(endDate).isSame(Moment(startDate), 'day')) {
+        length = 1;
+      } else if (Moment(endDate).diff(Moment(startDate), 'days') === 1) {
+        length = 2;
+      } else {
+        length = Moment(endDate).diff(Moment(startDate), 'days') + 1;
+      }
 
-    setHidden(true);
+      // sets the new trip with the hours adjusted to account for full days
+      updateTrip({
+        trip_uid,
+        user,
+        name: tripName,
+        total_budget: totalBudget,
+        length,
+        home_currency,
+        start_date: Moment(startDate)
+          .set({hour: 0, minute: 0, second: 0, millisecond: 0})
+          .format(format),
+        end_date: Moment(endDate)
+          .set({hour: 23, minute: 59, second: 59, millisecond: 0})
+          .format(format),
+      });
+
+      if (foreignCurrencies.length) {
+        // Filters new currencies codes from old
+        let previousCurrencies = currencies.map((curr) => curr.currency);
+        let addedCurrencies = foreignCurrencies.filter(
+          (curr) => !previousCurrencies.includes(curr)
+        );
+
+        // Sends new currencies to get exchange rate data
+        if (addedCurrencies.length) {
+          // currencyRates = {CRC: 603.44439, CUC: 1};
+          currencyRates = await getExchangeRate(addedCurrencies);
+
+          // Dispatch add new currencies to database and state
+          addCurrencies({currencyRates}, {trip_uid}, {user});
+          setForeignCurrencies([]);
+        }
+      }
+
+      if (
+        defaultTripChecked &&
+        default_trips.length &&
+        default_trips[0].trip_uid !== trip_uid
+      ) {
+        deleteDefaultTrip(default_trips[0].default_trip_uid);
+        setDefaultTrip({user: user, trip_uid: trip_uid});
+      } else if (defaultTripChecked && default_trips.length === 0) {
+        setDefaultTrip({user: user, trip_uid: trip_uid});
+      } else if (
+        !defaultTripChecked &&
+        default_trips.length &&
+        default_trips[0].trip_uid === trip_uid
+      ) {
+        deleteDefaultTrip(default_trips[0].default_trip_uid);
+      }
+
+      setHidden(true);
+    }
   };
 
   // const ITEM_HEIGHT = 48;
