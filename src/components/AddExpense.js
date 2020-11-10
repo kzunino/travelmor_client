@@ -105,6 +105,7 @@ const AddExpense = ({
   name,
   homeCurrency,
   trip_uid,
+  trip_length,
   addExpense,
   user_id,
   start_date,
@@ -124,9 +125,10 @@ const AddExpense = ({
   // if todays date is within trip boundaries
   // calculate how many days of the trip are left
   if (
-    (todaysDate.isAfter(startDate) && todaysDate.isBefore(endDate)) ||
-    todaysDate.isSame(startDate) ||
-    todaysDate.isSame(endDate)
+    (todaysDate.isAfter(startDate, 'days') &&
+      todaysDate.isBefore(endDate, 'days')) ||
+    todaysDate.isSame(startDate, 'days') ||
+    todaysDate.isSame(endDate, 'days')
   ) {
     defaultDate = todaysDate;
   }
@@ -147,7 +149,9 @@ const AddExpense = ({
   const [selectedExpenseDate, setSelectedExpenseDate] = useState(defaultDate);
   // End of purchase date range state
   const [selectedEndExpenseDate, setSelectedEndExpenseDate] = useState(
-    Moment(selectedExpenseDate).add(1, 'days')
+    todaysDate.isSame(endDate, 'day')
+      ? endDate
+      : Moment(selectedExpenseDate).add(1, 'days')
   );
 
   // Initialize default state values
@@ -208,7 +212,8 @@ const AddExpense = ({
       !expenseType ||
       !currency ||
       !expenseCost ||
-      !selectedExpenseDate
+      !selectedExpenseDate ||
+      !selectedEndExpenseDate
     ) {
       expenseName = expenseName ? expenseName : '';
       expenseCost = expenseCost ? expenseCost : '';
@@ -221,42 +226,44 @@ const AddExpense = ({
       };
       setFormData(newState);
 
-      return createAlerts({validation_error: 'Please fill out all fields'});
-    }
+      // return createAlerts({validation_error: 'Please fill out all fields'});
+    } else {
+      // Alert if trip end date is before trip start
+      if (
+        hideEndDateRange.checked &&
+        Moment(selectedExpenseDate).isAfter(
+          Moment(selectedEndExpenseDate),
+          'days'
+        )
+      ) {
+        return createAlerts({
+          validation_error: 'End date is before start date!',
+        });
+        //return console.log('cannot start trip after end date');
+      }
 
-    // Alert if trip end date is before trip start
-    if (
-      hideEndDateRange.checked &&
-      Moment(selectedExpenseDate).isAfter(
-        Moment(selectedEndExpenseDate),
-        'days'
-      )
-    ) {
-      return createAlerts({validation_error: 'End date is before start date!'});
-      //return console.log('cannot start trip after end date');
+      //construct an expense object
+      let data = {
+        name: expenseName,
+        cost: expense_cost,
+        expense_type: expenseType,
+        currency: currency,
+        home_currency: homeCurrency,
+        exchange_rate: exchangeRate,
+        cost_conversion: conversion,
+        purchase_date: Moment(selectedExpenseDate),
+        // checks to see if purchase is a date range
+        end_of_purchase_date_range: hideEndDateRange.checked
+          ? Moment(selectedEndExpenseDate)
+          : null,
+        trip: trip_uid,
+        user: user_id,
+      };
+      //send call to create expense
+      addExpense(data);
+      //handle close is passed from Bottom Actions Comp to close modal on submit
+      handleClose();
     }
-
-    //construct an expense object
-    let data = {
-      name: expenseName,
-      cost: expense_cost,
-      expense_type: expenseType,
-      currency: currency,
-      home_currency: homeCurrency,
-      exchange_rate: exchangeRate,
-      cost_conversion: conversion,
-      purchase_date: Moment(selectedExpenseDate),
-      // checks to see if purchase is a date range
-      end_of_purchase_date_range: hideEndDateRange.checked
-        ? Moment(selectedEndExpenseDate)
-        : null,
-      trip: trip_uid,
-      user: user_id,
-    };
-    //send call to create expense
-    addExpense(data);
-    //handle close is passed from Bottom Actions Comp to close modal on submit
-    handleClose();
   };
 
   return (
@@ -399,7 +406,9 @@ const AddExpense = ({
 
               <Grid item>
                 <FormControlLabel
-                  className={classes.switchFormControl}
+                  className={
+                    trip_length > 1 ? classes.switchFormControl : classes.hidden
+                  }
                   control={
                     <Switch
                       checked={hideEndDateRange.checked}
@@ -460,7 +469,11 @@ const AddExpense = ({
                   variant='inline'
                   format='MM/DD/yyyy'
                   maxDate={endDate}
-                  minDate={Moment(selectedExpenseDate).add(1, 'days')}
+                  minDate={
+                    todaysDate.isSame(endDate, 'day')
+                      ? endDate
+                      : Moment(selectedExpenseDate).add(1, 'days')
+                  }
                   margin='normal'
                   label='End of Purchase Date'
                   error={!selectedEndExpenseDate}
@@ -498,6 +511,7 @@ addExpense.propTypes = {
   addExpense: PropTypes.func.isRequired,
   createAlerts: PropTypes.func.isRequired,
   user_id: PropTypes.string.isRequired,
+  trip_length: PropTypes.number,
   start_date: PropTypes.string.isRequired,
   end_date: PropTypes.string.isRequired,
 };
@@ -506,6 +520,7 @@ const mapStateToProps = (state) => ({
   user_id: state.auth.user.id,
   start_date: state.trips.start_date,
   end_date: state.trips.end_date,
+  trip_length: state.trips.length,
 });
 
 export default connect(mapStateToProps, {addExpense, createAlerts})(AddExpense);
