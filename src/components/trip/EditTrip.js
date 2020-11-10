@@ -26,16 +26,10 @@ import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Tooltip from '@material-ui/core/Tooltip';
-
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 
-//Select
-// import InputLabel from '@material-ui/core/InputLabel';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import FormControl from '@material-ui/core/FormControl';
-// import Select from '@material-ui/core/Select';
 import {KeyboardDatePicker} from '@material-ui/pickers';
 
 // Multi-select
@@ -44,9 +38,6 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 // Checkbox
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-
-// import Input from '@material-ui/core/Input';
-// import Chip from '@material-ui/core/Chip';
 
 // Delete Dialog Components
 import Dialog from '@material-ui/core/Dialog';
@@ -62,13 +53,6 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     backgroundColor: theme.palette.boxContentBudgetData.main,
   },
-
-  selectEmpty: {
-    width: '10em',
-  },
-  selectMenu: {
-    maxHeight: '15em',
-  },
   container: {
     backgroundColor: theme.palette.boxBackground.form,
     borderRadius: 5,
@@ -81,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     display: 'block',
-    // margin: theme.spacing(0, 0, 2),
     color: 'white',
     fontWeight: 'bold',
   },
@@ -114,22 +97,9 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiAutocomplete-clearIndicator': {
       color: '#D61A3C',
     },
-    //  '& .MuiInput-input':{
-    //   color: theme.palette.secondary.main
-    //  },
   },
   hidden: {
     visibility: 'hidden',
-  },
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  chip: {
-    margin: 2,
-  },
-  noLabel: {
-    marginTop: theme.spacing(3),
   },
   dateField: {
     marginTop: '1em',
@@ -155,27 +125,14 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '.5em',
     color: theme.palette.secondary.main,
   },
-  menuItemRoot: {
-    '&$menuItemSelected, &$menuItemSelected:focus, &$menuItemSelected:hover': {
-      backgroundColor: theme.palette.listItems.selected,
-    },
-  },
+
   /* Styles applied to the root element if `selected={true}`. */
-  menuItemSelected: {},
+  // menuItemSelected: {},
   disabled: {},
   checkbox: {
     color: theme.palette.secondary.main,
   },
 }));
-
-// function getStyles(name, currency, theme) {
-//   return {
-//     fontWeight:
-//       currency.indexOf(name) === -1
-//         ? theme.typography.fontWeightRegular
-//         : theme.typography.fontWeightMedium,
-//   };
-// }
 
 const EditTrip = ({
   updateTrip,
@@ -279,11 +236,6 @@ const EditTrip = ({
     setForeignCurrencies(foreignCurr);
   };
 
-  // const handleCurrencyChange = (event) => {
-  //   toggleHidden();
-  //   setForeignCurrencies(event.target.value);
-  // };
-
   // handles setting trip to default
   const handleSetDefault = () => {
     setDefaultTripChecked(!defaultTripChecked);
@@ -342,7 +294,7 @@ const EditTrip = ({
       startDate === null ||
       endDate === null
     ) {
-      // return createAlerts({validation_error: 'Please fill out all fields'});
+      // Does nothing
     } else {
       // Alert if trip end date is before trip start
       if (Moment(startDate).isAfter(endDate)) {
@@ -414,19 +366,6 @@ const EditTrip = ({
       setHidden(true);
     }
   };
-
-  // const ITEM_HEIGHT = 48;
-  // const ITEM_PADDING_TOP = 8;
-  // const MenuProps = {
-  //   PaperProps: {
-  //     style: {
-  //       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-  //       width: 350,
-  //     },
-  //   },
-  //   variant: 'menu',
-  //   getContentAnchorEl: null,
-  // };
 
   return (
     <>
@@ -604,8 +543,11 @@ const EditTrip = ({
                 id='tags-standard'
                 key={currencyList.length}
                 options={currencyList}
+                // What is added to input
                 getOptionLabel={(option) => option.code}
+                // What options show in menu
                 renderOption={(option) => option.country}
+                // Selects all options that share same value
                 getOptionSelected={(option, value) =>
                   option.code === value.code
                 }
@@ -628,81 +570,6 @@ const EditTrip = ({
                 * Countries that share a currency will all automatically be
                 selected
               </Typography>
-
-              {/* <FormControl
-                className={`${classes.currencyField} ${classes.inputStyles}`}
-              >
-                <InputLabel>Trip Currencies (optional)</InputLabel>
-                <Select
-                  multiple
-                  value={foreignCurrencies}
-                  onChange={handleCurrencyChange}
-                  input={<Input id='select-multiple-chip' />}
-                  renderValue={(selected) => (
-                    <div className={classes.chips}>
-                      {selected.map((value) => (
-                        <Chip
-                          key={value}
-                          label={value}
-                          className={classes.chip}
-                          onDelete={() => {
-                            removeCurrencyFromInput(value);
-                          }}
-                          onMouseDown={(event) => {
-                            event.stopPropagation();
-                          }}
-                        />
-                      ))}
-                    </div>
-                  )}
-                  MenuProps={MenuProps}
-                >
-                  {countryData.map((country) =>
-                    country.countries.length > 1 &&
-                    !previouslyChosenCurrencies.includes(country.code) &&
-                    home_currency !== country.code ? (
-                      country.countries.map((place, index) => (
-                        <MenuItem
-                          key={country.number + country.code + index}
-                          value={country.code}
-                          style={getStyles(name, currencies, theme)}
-                          classes={{
-                            root: classes.menuItemRoot,
-                            selected: classes.menuItemSelected,
-                          }}
-                        >
-                          {`${country.code} - ${place}`}
-                        </MenuItem>
-                      ))
-                    ) : !previouslyChosenCurrencies.includes(country.code) &&
-                      home_currency !== country.code ? (
-                      <MenuItem
-                        key={country.number + country.code}
-                        value={`${country.code}`}
-                        style={getStyles(name, currencies, theme)}
-                        classes={{
-                          root: classes.menuItemRoot,
-                          selected: classes.menuItemSelected,
-                        }}
-                      >
-                        {`${country.code} - ${country.countries}`}
-                      </MenuItem>
-                    ) : null
-                  )}
-                </Select>
-                <Typography
-                  style={{marginTop: '1em'}}
-                  className={classes.fieldDescription}
-                >
-                  * Select foreign currencies for countries you will visit
-                </Typography>
-                <Typography
-                  style={{marginTop: '.5em'}}
-                  className={classes.fieldDescription}
-                >
-                  * Countries that share currency will automatically be selected
-                </Typography>
-              </FormControl> */}
             </Grid>
           </Grid>
 
