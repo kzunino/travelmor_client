@@ -3,7 +3,6 @@ import {data as countryData} from 'currency-codes';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {updateUser} from '../actions/auth';
-import {createAlerts} from '../actions/alerts';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
@@ -22,17 +21,10 @@ import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
 import Button from '@material-ui/core/Button';
 
 // Auto complete search select
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
-//Select
-// import InputLabel from '@material-ui/core/InputLabel';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import FormControl from '@material-ui/core/FormControl';
-// import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -73,9 +65,6 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiAutocomplete-clearIndicator': {
       color: '#D61A3C',
     },
-    //  '& .MuiInput-input':{
-    //   color: theme.palette.secondary.main
-    //  },
   },
   selectEmpty: {
     width: 200,
@@ -83,9 +72,7 @@ const useStyles = makeStyles((theme) => ({
       borderColor: theme.palette.formInputs.border,
     },
   },
-  selectMenu: {
-    maxHeight: '15em',
-  },
+
   container: {
     backgroundColor: theme.palette.boxBackground.form,
     borderRadius: 5,
@@ -103,12 +90,7 @@ const useStyles = makeStyles((theme) => ({
   hidden: {
     visibility: 'hidden',
   },
-  fieldDescription: {
-    width: 200,
-    fontSize: '.5em',
-    marginTop: '1em',
-    color: theme.palette.secondary.main,
-  },
+
   disabled: {},
 }));
 
@@ -118,7 +100,6 @@ const MyAccount = ({
   home_currency,
   email,
   updateUser,
-  createAlerts,
 }) => {
   const theme = useTheme();
   const classes = useStyles();
@@ -156,7 +137,7 @@ const MyAccount = ({
 
     // Alert if forms are blank
     if (!firstName || !lastName || !emailAddress || !homeCurrency) {
-      // return createAlerts({validation_error: 'Please fill out all fields'});
+      // does nothing
     } else {
       updateUser({
         firstName,
@@ -254,6 +235,7 @@ const MyAccount = ({
             </Grid>
 
             <Grid item>
+              {/* ----- Currency Input ------ */}
               <Autocomplete
                 options={countryData.map((country, index) => country.code)}
                 className={`${classes.selectEmpty} ${classes.inputStyles}`}
@@ -273,41 +255,6 @@ const MyAccount = ({
                   />
                 )}
               />
-
-              {/* ------ Currency Input ----- */}
-              {/* <FormControl
-                required
-                className={`${classes.formControl} ${classes.inputStyles}`}
-              >
-                <InputLabel id='required-label'>Home Currency</InputLabel>
-                <Select
-                  id='currency'
-                  autoComplete='off'
-                  value={homeCurrency}
-                  name='homeCurrency'
-                  onChange={(e) => {
-                    handleUserData(e);
-                  }}
-                  className={classes.selectEmpty}
-                  // accesses the menu styles
-                  MenuProps={{classes: {list: classes.selectMenu}}}
-                >
-                  <MenuItem value={'USD'}>USD</MenuItem>
-                  <MenuItem value={'EUR'}>EUR</MenuItem>
-                  <MenuItem value={'AUD'}>AUD</MenuItem>
-                  <Divider />
-                  {countryData.map((country) => (
-                    <MenuItem
-                      key={country.number + country.code}
-                      value={country.code}
-                    >{`${country.code}`}</MenuItem>
-                  ))}
-                </Select>
-                <Typography className={classes.fieldDescription}>
-                  * Changing home currency will not change the home currency of
-                  trips that have been created
-                </Typography>
-              </FormControl> */}
             </Grid>
 
             <Grid item>
@@ -330,7 +277,6 @@ const MyAccount = ({
 
 MyAccount.propTypes = {
   updateUser: PropTypes.func.isRequired,
-  createAlerts: PropTypes.func.isRequired,
   first_name: PropTypes.string.isRequired,
   last_name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
@@ -344,4 +290,4 @@ const mapStateToProps = (state) => ({
   home_currency: state.auth.user.home_currency,
 });
 
-export default connect(mapStateToProps, {updateUser, createAlerts})(MyAccount);
+export default connect(mapStateToProps, {updateUser})(MyAccount);
