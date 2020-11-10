@@ -98,6 +98,12 @@ const theme = createMuiTheme({
   },
 
   overrides: {
+    MuiChip: {
+      root: {
+        color: 'white',
+        backgroundColor: mainBlue,
+      },
+    },
     MuiTableSortLabel: {
       root: {
         color: offWhite,
