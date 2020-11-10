@@ -19,17 +19,8 @@ import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-//Select
-
-// import InputLabel from '@material-ui/core/InputLabel';
-// import MenuItem from '@material-ui/core/MenuItem';
-
 // Auto complete search select
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
-// import FormHelperText from '@material-ui/core/FormHelperText';
-// import FormControl from '@material-ui/core/FormControl';
-// import Select from '@material-ui/core/Select';
 
 function Copyright() {
   return (
@@ -49,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
     marginTop: theme.spacing(2),
     border: 'grey solid thin',
-
+    marginBottom: '2em',
     padding: 15,
     [theme.breakpoints.down('xs')]: {
       border: 'none',
@@ -79,15 +70,9 @@ const useStyles = makeStyles((theme) => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-  formControl: {
-    marginTop: '2em',
-  },
   selectEmpty: {
     width: '10em',
     marginTop: '.5em',
-  },
-  selectMenu: {
-    maxHeight: '15em',
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -234,30 +219,6 @@ const SignUp = ({register, isAuthenticated, isLoading}) => {
               />
             )}
           />
-
-          {/* <FormControl required className={classes.formControl}>
-            <InputLabel id='required-label'>Home Currency</InputLabel>
-            <Select
-              id='currency'
-              onChange={handleForm}
-              name='home_currency'
-              className={classes.selectEmpty}
-              value={home_currency}
-              // accesses the menu styles
-              MenuProps={{classes: {list: classes.selectMenu}}}
-            >
-              <MenuItem value={'USD'}>USD</MenuItem>
-              <MenuItem value={'EUR'}>EUR</MenuItem>
-              <MenuItem value={'AUD'}>AUD</MenuItem>
-              <Divider />
-              {countryData.map((country, index) => (
-                <MenuItem
-                  key={country + index}
-                  value={`${country.code}`}
-                >{`${country.code}`}</MenuItem>
-              ))}
-            </Select>
-          </FormControl> */}
 
           <TextField
             variant='standard'
