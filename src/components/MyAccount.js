@@ -25,11 +25,14 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Button from '@material-ui/core/Button';
 
+// Auto complete search select
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
 //Select
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+// import InputLabel from '@material-ui/core/InputLabel';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import FormControl from '@material-ui/core/FormControl';
+// import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -133,6 +136,12 @@ const MyAccount = ({
   const handleUserData = (e) => {
     toggleHidden();
     setUserData({...userData, [e.target.name]: e.target.value});
+  };
+
+  const handleCurrencyUpdate = (e, values) => {
+    toggleHidden();
+
+    setUserData({...userData, homeCurrency: values});
   };
 
   const toggleHidden = () => {
@@ -242,8 +251,28 @@ const MyAccount = ({
             </Grid>
 
             <Grid item>
+              <Autocomplete
+                options={countryData.map((country, index) => country.code)}
+                className={`${classes.selectEmpty} ${classes.inputStyles}`}
+                getOptionLabel={(option) => option}
+                value={homeCurrency}
+                onChange={handleCurrencyUpdate}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    required
+                    error={!homeCurrency}
+                    helperText={
+                      !homeCurrency ? 'Please enter home currency.' : null
+                    }
+                    label='Home Currency'
+                    variant='standard'
+                  />
+                )}
+              />
+
               {/* ------ Currency Input ----- */}
-              <FormControl
+              {/* <FormControl
                 required
                 className={`${classes.formControl} ${classes.inputStyles}`}
               >
@@ -275,7 +304,7 @@ const MyAccount = ({
                   * Changing home currency will not change the home currency of
                   trips that have been created
                 </Typography>
-              </FormControl>
+              </FormControl> */}
             </Grid>
 
             <Grid item>
