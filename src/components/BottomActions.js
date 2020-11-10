@@ -117,30 +117,6 @@ const BottomActions = ({trip_data}) => {
             disableRipple
             onClick={handleOpen}
           />
-          <Modal
-            aria-labelledby='transition-modal-title'
-            aria-describedby='transition-modal-description'
-            className={classes.modal}
-            open={open}
-            onClose={handleClose}
-            closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-              timeout: 500,
-            }}
-          >
-            <Fade in={open}>
-              <div className={classes.paper}>
-                <AddExpense
-                  name={name}
-                  currencies={currencies}
-                  homeCurrency={home_currency}
-                  trip_uid={trip_uid}
-                  handleClose={handleClose}
-                />
-              </div>
-            </Fade>
-          </Modal>
 
           <BottomNavigationAction
             classes={{wrapper: classes.wrapper, root: classes.navActionButtons}}
@@ -152,6 +128,30 @@ const BottomActions = ({trip_data}) => {
           />
         </BottomNavigation>
       </Grid>
+      <Modal
+        aria-labelledby='transition-modal-title'
+        aria-describedby='transition-modal-description'
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div className={classes.paper}>
+            <AddExpense
+              name={name}
+              currencies={currencies}
+              homeCurrency={home_currency}
+              trip_uid={trip_uid}
+              handleClose={handleClose}
+            />
+          </div>
+        </Fade>
+      </Modal>
     </Grid>
   );
 };
