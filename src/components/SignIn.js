@@ -130,7 +130,7 @@ const SignIn = ({isAuthenticated, login, isLoading}) => {
             required
             fullWidth
             error={email === ''}
-            helperText={email === '' ? 'Please enter an email' : null}
+            helperText={email === '' ? 'Please enter an email.' : null}
             id='email'
             label='Email Address'
             name='email'
@@ -144,7 +144,7 @@ const SignIn = ({isAuthenticated, login, isLoading}) => {
             required
             fullWidth
             error={password === ''}
-            helperText={password === '' ? 'Please enter a password' : null}
+            helperText={password === '' ? 'Please enter a password.' : null}
             name='password'
             label='Password'
             type='password'
