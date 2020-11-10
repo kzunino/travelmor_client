@@ -32,42 +32,7 @@ import {KeyboardDatePicker} from '@material-ui/pickers';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
-  toolbarMargin: {
-    ...theme.mixins.toolbar,
-    marginBottom: '1em',
-  },
-  toolbar: {
-    padding: 0,
-  },
-  container: {
-    width: '50%',
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    marginLeft: drawerWidth,
-    marginBottom: 50,
-    backgroundColor: theme.palette.background.main,
-    [theme.breakpoints.down('sm')]: {
-      marginLeft: 0,
-      padding: theme.spacing(1, 1.5),
-      marginTop: '1em',
-    },
-  },
-
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.primary.main,
-  },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
@@ -225,8 +190,6 @@ const AddExpense = ({
         expenseType,
       };
       setFormData(newState);
-
-      // return createAlerts({validation_error: 'Please fill out all fields'});
     } else {
       // Alert if trip end date is before trip start
       if (
@@ -239,7 +202,6 @@ const AddExpense = ({
         return createAlerts({
           validation_error: 'End date is before start date!',
         });
-        //return console.log('cannot start trip after end date');
       }
 
       //construct an expense object
@@ -362,19 +324,6 @@ const AddExpense = ({
                   }
                   customInput={TextField}
                 />
-                {/* <TextField
-                  className={classes.budgetField}
-                  label='Cost'
-                  variant='standard'
-                  margin='normal'
-                  required
-                  fullWidth
-                  name='expenseCost'
-                  value={expenseCost}
-                  onChange={(e) => handleChange(e)}
-                  // step="0.01"
-                  type='number'
-                /> */}
               </Grid>
 
               <Grid item>

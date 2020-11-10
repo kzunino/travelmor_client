@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import {makeStyles, useTheme} from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {data as countryData} from 'currency-codes';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -16,18 +18,9 @@ import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
 import Button from '@material-ui/core/Button';
 
-//Select
-// import InputLabel from '@material-ui/core/InputLabel';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import FormControl from '@material-ui/core/FormControl';
-// import Select from '@material-ui/core/Select';
-
-// Multiselect
-// import Input from '@material-ui/core/Input';
-// import Chip from '@material-ui/core/Chip';
+// Multi-select
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 // Checkbox
@@ -37,9 +30,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 //Date
 import {KeyboardDatePicker} from '@material-ui/pickers';
 
-import {makeStyles, useTheme} from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-
 const useStyles = makeStyles((theme) => ({
   heading: {
     color: theme.palette.mainHeading.main,
@@ -47,12 +37,6 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     backgroundColor: theme.palette.boxContentBudgetData.main,
   },
-  // paper: {
-  //   marginTop: theme.spacing(8),
-  //   display: 'flex',
-  //   flexDirection: 'column',
-  //   alignItems: 'center',
-  // },
   container: {
     backgroundColor: theme.palette.boxBackground.form,
     borderRadius: 5,
@@ -94,9 +78,6 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiAutocomplete-clearIndicator': {
       color: '#D61A3C',
     },
-    //  '& .MuiInput-input':{
-    //   color: theme.palette.secondary.main
-    //  },
   },
   tripNameField: {
     width: '50%',
@@ -110,16 +91,6 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
     fontWeight: 'bold',
     width: 200,
-  },
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  chip: {
-    margin: 2,
-  },
-  noLabel: {
-    marginTop: theme.spacing(3),
   },
   dateField: {
     marginTop: '1em',
@@ -146,12 +117,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 
-  // menuItemRoot: {
-  //   '&$menuItemSelected, &$menuItemSelected:focus, &$menuItemSelected:hover': {
-  //     backgroundColor: theme.palette.listItems.selected,
-  //   },
-  // },
-
   /* Styles applied to the root element if `selected={true}`. */
   // menuItemSelected: {},
   disabled: {},
@@ -159,15 +124,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.secondary.main,
   },
 }));
-
-// function getStyles(name, personName, theme) {
-//   return {
-//     fontWeight:
-//       personName.indexOf(name) === -1
-//         ? theme.typography.fontWeightRegular
-//         : theme.typography.fontWeightMedium,
-//   };
-// }
 
 const NewTrip = ({
   newTrip,
@@ -231,19 +187,6 @@ const NewTrip = ({
     }
   };
 
-  // const ITEM_HEIGHT = 48;
-  // const ITEM_PADDING_TOP = 8;
-  // const MenuProps = {
-  //   PaperProps: {
-  //     style: {
-  //       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-  //       width: 350,
-  //     },
-  //   },
-  //   variant: 'menu',
-  //   getContentAnchorEl: null,
-  // };
-
   // When a currency is selected, it gets the exchange rate and sets state to
   // an array of currency codes ['USD', 'COP']
   const handleCurrencyChange = (event, values) => {
@@ -264,13 +207,6 @@ const NewTrip = ({
   const handleChange = (e) => {
     setFormData({...formData, [e.target.name]: e.target.value});
   };
-
-  // const removeCurrencyFromInput = (curr) => {
-  //   let updatedForeignCurrencies = currencies.filter(
-  //     (currency) => currency !== curr
-  //   );
-  //   setCurrencies(updatedForeignCurrencies);
-  // };
 
   const handleSetDefault = () => {
     setDefaultTripChecked(!defaultTripChecked);
@@ -373,7 +309,7 @@ const NewTrip = ({
                 id='name'
                 label='Trip Name'
                 name='name'
-                // short circuit becuase starting value in undefined to not trigger
+                // short circuit because starting value in undefined to not trigger
                 // the helper text validation errors if empty string
                 value={name || ''}
                 onChange={(e) => handleChange(e)}
@@ -488,15 +424,14 @@ const NewTrip = ({
                 disableCloseOnSelect
                 id='tags-standard'
                 options={currencyList}
+                // What gets put in state
                 getOptionLabel={(option) => option.code}
+                // What is rendered to menu
                 renderOption={(option) => option.country}
+                // Selects all options with prev selected value
                 getOptionSelected={(option, value) =>
                   option.code === value.code
                 }
-                // filterOptions={(options) => {
-                //   options.filter(option => option.title);
-                //   return options;
-                // }}
                 onChange={handleCurrencyChange}
                 renderInput={(params) => (
                   <TextField
@@ -516,79 +451,6 @@ const NewTrip = ({
                 * Countries that share a currency will all automatically be
                 selected
               </Typography>
-
-              {/* <FormControl
-                className={`${classes.currencyField} ${classes.inputStyles}`}
-              >
-                <InputLabel>Foreign Currencies (optional)</InputLabel>
-                <Select
-                  multiple
-                  value={currencies}
-                  onChange={handleCurrencyChange}
-                  input={<Input id='select-multiple-chip' />}
-                  renderValue={(selected) => (
-                    <div className={classes.chips}>
-                      {selected.map((value) => (
-                        <Chip
-                          key={value}
-                          label={value}
-                          className={classes.chip}
-                          onDelete={() => {
-                            removeCurrencyFromInput(value);
-                          }}
-                          onMouseDown={(event) => {
-                            event.stopPropagation();
-                          }}
-                        />
-                      ))}
-                    </div>
-                  )}
-                  MenuProps={MenuProps}
-                >
-                  {countryData.map((country) =>
-                    country.countries.length > 1 ? (
-                      country.countries.map((place, index) => (
-                        <MenuItem
-                          key={country.number + country.code + index}
-                          value={`${country.code}`}
-                          style={getStyles(name, currencies, theme)}
-                          classes={{
-                            root: classes.menuItemRoot,
-                            selected: classes.menuItemSelected,
-                          }}
-                        >
-                          {`${country.code} - ${place}`}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem
-                        key={country.number + country.code}
-                        value={`${country.code}`}
-                        style={getStyles(name, currencies, theme)}
-                        classes={{
-                          root: classes.menuItemRoot,
-                          selected: classes.menuItemSelected,
-                        }}
-                      >
-                        {`${country.code} - ${country.countries}`}
-                      </MenuItem>
-                    )
-                  )}
-                </Select>
-                <Typography
-                  style={{marginTop: '1em'}}
-                  className={classes.fieldDescription}
-                >
-                  * Select foreign currencies for countries you will visit
-                </Typography>
-                <Typography
-                  style={{marginTop: '.5em'}}
-                  className={classes.fieldDescription}
-                >
-                  * Countries that share a currency will all automatically be
-                  selected
-                </Typography>
-              </FormControl> */}
             </Grid>
 
             <Grid item style={{marginTop: '1em'}}>
