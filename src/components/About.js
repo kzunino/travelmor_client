@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.boxBackground.main,
     borderRadius: 5,
     marginTop: '1em',
-    padding: 5,
+    padding: 15,
     [theme.breakpoints.up('md')]: {
       marginLeft: 0,
     },
@@ -48,8 +48,8 @@ const About = () => {
         <Typography paragraph className={classes.subheading}>
           Travelmor is an idea created after four years of periodic backpacking
           around South America. In order to prepare for an extended journey, I
-          always saved a large sum of money and then divided my money by the
-          amount of days I planned on traveling in order to get an average daily
+          always saved a sum of money and then divided my money by the amount of
+          days I had planned on traveling in order to get an average daily
           budget. What I could have used was a very simple budget calculator
           that let me input my spending to keep an eye on my finances without
           all complicated bells and whistles.
