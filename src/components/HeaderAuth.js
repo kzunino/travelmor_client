@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     background: `linear-gradient( rgb(75,176,248), rgb(55,94,235))`,
   },
   modal: {
-    zIndex: 1289,
+    // zIndex: 1289,
   },
   drawerContainer: {
     overflow: 'auto',
@@ -220,7 +220,7 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
       anchor={matches ? 'left' : 'right'}
       classes={{
         paper: classes.drawerPaper,
-        modal: classes.modal,
+        // modal: classes.modal,
         root: classes.modal,
       }}
     >

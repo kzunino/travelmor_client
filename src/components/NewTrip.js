@@ -303,6 +303,7 @@ const NewTrip = ({
                 required
                 error={name === ''}
                 helperText={name === '' ? 'Please enter a trip name.' : null}
+                // FormHelperTextProps={{classes: {root: classes.helperText}}}
                 placeholder='Name'
                 className={`${classes.tripNameField} ${classes.inputStyles}`}
                 autoComplete='off'

@@ -49,9 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
   spinner: {
     display: 'flex',
-    '& > * + *': {
-      marginLeft: theme.spacing(2),
-    },
+    justifyContent: 'center',
   },
   paper: {
     marginTop: theme.spacing(2),
