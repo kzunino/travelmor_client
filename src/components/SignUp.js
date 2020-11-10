@@ -4,7 +4,6 @@ import {Link, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {register} from '../actions/auth';
-import {createAlerts} from '../actions/alerts';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -97,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
+const SignUp = ({register, isAuthenticated, isLoading}) => {
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
@@ -139,7 +138,7 @@ const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
     ) {
       first_name = first_name ? first_name : '';
       last_name = last_name ? last_name : '';
-      home_currency = home_currency ? home_currency : '';
+      home_currency = home_currency ? home_currency : 'USD';
       email = email ? email : '';
       password1 = password1 ? password1 : '';
       password2 = password2 ? password2 : '';
@@ -147,26 +146,26 @@ const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
       let newState = {
         first_name,
         last_name,
-        home_currency: home_currency ? home_currency : 'USD',
+        home_currency,
         email,
         password1,
         password2,
       };
       setFormData(newState);
-      return createAlerts({validation_error: 'Please fill out all fields'});
+      // return createAlerts({validation_error: 'Please fill out all fields'});
+    } else {
+      email = email.toLowerCase();
+
+      //passes info to register action passed in from props
+      register({
+        first_name,
+        last_name,
+        home_currency,
+        email,
+        password1,
+        password2,
+      });
     }
-
-    email = email.toLowerCase();
-
-    //passes info to register action passed in from props
-    register({
-      first_name,
-      last_name,
-      home_currency,
-      email,
-      password1,
-      password2,
-    });
   };
 
   // Redirect if logged in
@@ -230,7 +229,7 @@ const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
                 helperText={
                   !home_currency ? 'Please enter home currency.' : null
                 }
-                label='Combo box'
+                label='Home Currency'
                 variant='standard'
               />
             )}
@@ -341,7 +340,6 @@ const SignUp = ({register, createAlerts, isAuthenticated, isLoading}) => {
 };
 
 SignUp.propTypes = {
-  createAlerts: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   isLoading: PropTypes.bool,
@@ -352,4 +350,4 @@ const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
 });
 
-export default connect(mapStateToProps, {register, createAlerts})(SignUp);
+export default connect(mapStateToProps, {register})(SignUp);
