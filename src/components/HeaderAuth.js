@@ -253,6 +253,7 @@ const AuthHeader = ({logout, trips}) => {
                             onClick={() => {
                               setValue(1);
                               setTripValue(trip.trip_uid);
+                              setOpenDrawer(false);
                             }}
                             selected={tripValue === trip.trip_uid}
                           >
