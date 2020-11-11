@@ -72,7 +72,10 @@ const useStyles = makeStyles((theme) => ({
       borderColor: theme.palette.formInputs.border,
     },
   },
-
+  fieldDescription: {
+    fontSize: '.5em',
+    color: theme.palette.secondary.main,
+  },
   container: {
     backgroundColor: theme.palette.boxBackground.form,
     borderRadius: 5,
@@ -255,6 +258,13 @@ const MyAccount = ({
                   />
                 )}
               />
+              <Typography
+                style={{marginTop: '.5em'}}
+                className={classes.fieldDescription}
+              >
+                * Changing home currency will not change the home currency of
+                already created trips.
+              </Typography>
             </Grid>
 
             <Grid item>
