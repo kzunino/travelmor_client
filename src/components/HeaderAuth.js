@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AuthHeader = ({isAuthenticated, logout, trips}) => {
+const AuthHeader = ({logout, trips}) => {
   const theme = useTheme();
   const classes = useStyles();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
@@ -212,18 +212,8 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
     });
   }, [drawerItems, trips, tripValue, value]);
 
-  //renders drawer component depending on media breakpoint
-  const drawer = (
-    <Drawer
-      className={classes.drawer}
-      variant='permanent'
-      anchor={matches ? 'left' : 'right'}
-      classes={{
-        paper: classes.drawerPaper,
-        // modal: classes.modal,
-        root: classes.modal,
-      }}
-    >
+  const list = (
+    <>
       <Toolbar className={classes.toolbarMargin} />
       <div className={classes.drawerContainer}>
         <List className={classes.list}>
@@ -312,22 +302,27 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
           })}
         </List>
       </div>
+    </>
+  );
+
+  //renders drawer component depending on media breakpoint
+  const drawer = (
+    <Drawer
+      className={classes.drawer}
+      variant={'permanent'}
+      anchor={'left'}
+      classes={{
+        paper: classes.drawerPaper,
+        // modal: classes.modal,
+        root: classes.modal,
+      }}
+    >
+      {list}
     </Drawer>
   );
   //renders Temporary drawer on smaller screens
   const tempDrawer = (
     <>
-      <SwipeableDrawer
-        style={{zIndex: 1289}}
-        disableBackdropTransition={!iOS}
-        disableDiscovery={iOS}
-        open={openDrawer}
-        anchor='right'
-        onClose={() => setOpenDrawer(false)}
-        onOpen={() => setOpenDrawer(true)}
-      >
-        {drawer}
-      </SwipeableDrawer>
       <IconButton
         onClick={() => setOpenDrawer(!openDrawer)}
         disableRipple
@@ -335,6 +330,21 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
       >
         <MenuIcon className={classes.drawerIcon} />
       </IconButton>
+
+      <SwipeableDrawer
+        style={{zIndex: 1289}}
+        classes={{paper: classes.drawerPaper}}
+        disableBackdropTransition={!iOS}
+        disableDiscovery={iOS}
+        open={openDrawer}
+        anchor='right'
+        onClose={() => setOpenDrawer(false)}
+        onOpen={() => setOpenDrawer(true)}
+      >
+        <div className={classes.drawer} role='presentation' anchor='right'>
+          {list}
+        </div>
+      </SwipeableDrawer>
     </>
   );
 
@@ -351,7 +361,6 @@ const AuthHeader = ({isAuthenticated, logout, trips}) => {
           >
             <img src={logo} alt='Travelmor. logo' className={classes.logo} />
           </Button>
-          {/* <Typography variant='h6' noWrap></Typography> */}
           {matches ? null : tempDrawer}
         </Toolbar>
       </AppBar>
