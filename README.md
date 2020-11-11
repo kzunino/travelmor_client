@@ -1,4 +1,4 @@
-# travelmor_budget
+# Travelmor. Travel Budget App
 
 A lightweight travel budgeting app that helps you track your spending over the course of a trip.
 
