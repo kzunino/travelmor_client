@@ -107,10 +107,16 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
 
   let options = {
     maintainAspectRatio: false,
+    legend: {
+      labels: {
+        fontColor: '#fff',
+      },
+    },
     scales: {
       xAxes: [
         {
           ticks: {
+            fontColor: 'whitesmoke',
             userCallback: function (item, index) {
               //always return first day of trip to chart
               if (index === 0) return item;
@@ -166,6 +172,7 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
           ticks: {
             beginAtZero: true,
             maxTicksLimit: 7,
+            fontColor: 'whitesmoke',
           },
         },
       ],
