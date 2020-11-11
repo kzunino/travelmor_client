@@ -34,7 +34,7 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
   const {
     // trip_uid,
     // user,
-    // name,
+    name,
     total_budget,
     length,
     home_currency,
@@ -205,7 +205,7 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
         <Box m={1} boxShadow={3} className={classes.spendingChartContainer}>
           <Grid item>
             <Typography className={classes.heading} variant='h6'>
-              Trip Spending Overview
+              {name} - Spending Overview
             </Typography>
             <Typography variant='subtitle2'>
               {Moment(start_date).format('MMM Do')} &ndash;{' '}
