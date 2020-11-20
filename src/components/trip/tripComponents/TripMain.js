@@ -38,9 +38,14 @@ const useStyles = makeStyles((theme) => ({
 // if none, then 0 is default value
 const reduceExpenses = (obj) => {
   return (
-    obj.reduce((acc, item) => {
-      return acc + parseFloat(item.cost);
-    }, 0) || 0
+    parseFloat(
+      obj
+        .reduce((acc, item) => {
+          console.log(acc + parseFloat(item.cost));
+          return acc + parseFloat(item.cost);
+        }, 0)
+        .toFixed(2)
+    ) || 0
   );
 };
 
