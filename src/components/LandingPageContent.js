@@ -13,6 +13,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Traveler from '../imgs/undraw_stranded_traveler_pdbw.svg';
 import Adventure from '../imgs/undraw_adventure_4hum.svg';
 import Globe from '../imgs/undraw_connected_world_wuay.svg';
+import Dash from '../imgs/landingpageDash.png';
 
 import Background2 from '../imgs/simon-migaj-Yui5vfKHuzs-unsplash.jpg';
 
@@ -70,10 +71,12 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.primary.light,
     },
   },
+  arrowContainer: {
+    marginTop: '-5em',
+  },
   arrows: {
     color: 'white',
     fontSize: '5em',
-    marginTop: '-2em',
   },
   dataReports: {
     marginLeft: '2em',
@@ -166,7 +169,13 @@ const LandingPageContent = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid container direction='column' justify='center' alignItems='center'>
+      <Grid
+        container
+        direction='column'
+        justify='center'
+        alignItems='center'
+        className={classes.arrowContainer}
+      >
         <Grid item>
           <ExpandMoreIcon fontSize='large' className={classes.arrows} />
         </Grid>
@@ -365,6 +374,70 @@ const LandingPageContent = () => {
                 <img
                   alt='screenshots of travelmor app'
                   src={Globe}
+                  className={classes.icons}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+
+          {/* -----  Demo Container  ------ */}
+
+          <Grid item className={classes.contentBlock}>
+            <Grid
+              container
+              justify='flex-start'
+              alignItems='center'
+              direction='row-reverse'
+            >
+              <Grid sm item className={classes.servicesContainer}>
+                <Grid
+                  container
+                  direction='column'
+                  alignItems='center'
+                  justify='center'
+                >
+                  <Grid item>
+                    <Typography
+                      variant={matchesXs ? 'h5' : 'h3'}
+                      className={classes.servicesTextContainer}
+                    >
+                      How does it work?
+                    </Typography>
+
+                    <Divider
+                      variant='fullWidth'
+                      classes={{root: classes.divider}}
+                    />
+
+                    <Typography variant='body1' style={{marginTop: '1em'}}>
+                      &#8226; Choose a budget.
+                      <br />
+                      <br />
+                      &#8226; Set a trip date.
+                      <br />
+                      <br />
+                      &#8226; Travelmor creates a simple dashboard so users can
+                      manage their expenses and track their spending.
+                    </Typography>
+                  </Grid>
+
+                  <Grid item style={{marginTop: '2em'}}>
+                    <Button
+                      component={Link}
+                      to='/signin'
+                      variant='outlined'
+                      className={classes.button}
+                      disableRipple
+                    >
+                      Start Budgeting!
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid sm item className={classes.iconContainerLeft}>
+                <img
+                  alt='screenshots of travelmor app'
+                  src={Dash}
                   className={classes.icons}
                 />
               </Grid>
