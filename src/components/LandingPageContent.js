@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -68,6 +69,11 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: theme.palette.primary.light,
     },
+  },
+  arrows: {
+    color: 'white',
+    fontSize: '5em',
+    marginTop: '-2em',
   },
   dataReports: {
     marginLeft: '2em',
@@ -158,6 +164,11 @@ const LandingPageContent = () => {
               </Button>
             </Grid>
           </Grid>
+        </Grid>
+      </Grid>
+      <Grid container direction='column' justify='center' alignItems='center'>
+        <Grid item>
+          <ExpandMoreIcon fontSize='large' className={classes.arrows} />
         </Grid>
       </Grid>
 
