@@ -416,8 +416,8 @@ const LandingPageContent = () => {
                       &#8226; Set a trip date.
                       <br />
                       <br />
-                      &#8226; Travelmor creates a simple dashboard so users can
-                      manage their expenses and track their spending.
+                      &#8226; Travelmor. creates a simple dashboard so you can
+                      manage your expenses and track your spending.
                     </Typography>
                   </Grid>
 
