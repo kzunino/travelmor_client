@@ -41,7 +41,6 @@ const reduceExpenses = (obj) => {
     parseFloat(
       obj
         .reduce((acc, item) => {
-          console.log(acc + parseFloat(item.cost));
           return acc + parseFloat(item.cost);
         }, 0)
         .toFixed(2)
