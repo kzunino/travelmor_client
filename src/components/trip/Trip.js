@@ -7,6 +7,8 @@ import Moment from 'moment';
 // Trip Components
 import TripMain from './tripComponents/TripMain';
 import TripSpendingOverview from './tripComponents/TripSpendingOverview';
+import TripSpendingOverviewNew from './tripComponents/TripSpendingOverviewNew';
+
 import TripBudgetBoxes from './tripComponents/TripBudgetBoxes';
 import TripTable from './tripComponents/TripTable';
 import TripPieChart from './tripComponents/TripPieChart';
@@ -34,7 +36,7 @@ const Trip = ({match, getTrip, trip_data}) => {
     <>
       <Grid container justify='space-between'>
         {todayIsAfterTripEnded ? (
-          <TripSpendingOverview tripData={trip_data} />
+          <TripSpendingOverviewNew tripData={trip_data} />
         ) : (
           <TripMain tripData={trip_data} />
         )}
@@ -42,7 +44,6 @@ const Trip = ({match, getTrip, trip_data}) => {
         <TripBudgetBoxes tripData={trip_data} />
         <TripPieChart tripData={trip_data} />
         <TripTable tripData={trip_data} />
-        
       </Grid>
 
       <BottomAction />

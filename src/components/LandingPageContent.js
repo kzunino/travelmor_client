@@ -403,7 +403,9 @@ const LandingPageContent = () => {
                     >
                       How does it work?
                     </Typography>
-
+                    <Typography variant='body1'>
+                      Simply and intuitive!
+                    </Typography>
                     <Divider
                       variant='fullWidth'
                       classes={{root: classes.divider}}
@@ -429,7 +431,7 @@ const LandingPageContent = () => {
                       className={classes.button}
                       disableRipple
                     >
-                      Start Budgeting!
+                      Start Budgeting Now!
                     </Button>
                   </Grid>
                 </Grid>
