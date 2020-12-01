@@ -73,7 +73,6 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
       let end = lastDayOfTrip.clone();
 
       while (start < end) {
-        console.log(start.startOf('month').format("MMM 'YY"));
         tripMonths.push(start.startOf('month').format("MMM 'YY"));
         start.add(1, 'month');
       }
@@ -92,7 +91,12 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
     // Formats the dates for the X axis on graph
     tripDays = daysArr.map((day, index) => {
       if (index === 0) return Moment(day, 'MM-DD-YYYY').format('MMM Do');
-      else if (Moment(day, 'MM-DD-YYYY').format('DD') === '01') {
+      else if (Moment(day, 'MM-DD-YYYY').format('MMM DD') === 'Jan 01') {
+        return Moment(day, 'MM-DD-YYYY').format("MMM Do 'YY");
+      } else if (
+        Moment(day, 'MM-DD-YYYY').format('DD') === '01' ||
+        index === daysArr.length - 1
+      ) {
         return Moment(day, 'MM-DD-YYYY').format('MMM Do');
       } else {
         return Moment(day, 'MM-DD-YYYY').format('Do');
@@ -116,9 +120,17 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
           Moment(expense.purchase_date).format('MM-DD-YYYY')
         ] = parseFloat(expense.cost);
       } else {
+        // adds cost to previous cost
         daysObj[
           Moment(expense.purchase_date).format('MM-DD-YYYY')
         ] += parseFloat(expense.cost);
+
+        //to fix rounding error fix the decimals to 2 places and make integer
+        daysObj[
+          Moment(expense.purchase_date).format('MM-DD-YYYY')
+        ] = parseFloat(
+          daysObj[Moment(expense.purchase_date).format('MM-DD-YYYY')]
+        ).toFixed(2);
       }
     });
 
@@ -142,14 +154,30 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
           ticks: {
             fontColor: 'whitesmoke',
             userCallback: function (item, index) {
+              // displays first day of trip on graph
               if (index === 0) return item;
-
+              //displays second day of trip on graph
               if (index === tripDays.length - 1) return item;
-              if (item.length > 4 && index > 13) return item;
 
               if (tripDays.length < 31) {
-                if (tripDays.length >= 1 && tripDays.length < 30 && !matchXs) {
+                if (tripDays.length >= 1 && tripDays.length < 30) {
                   if ((index + 1) % 1 === 0) return item;
+                }
+              } else if (tripDays.length < 380) {
+                // if start trip is within half a month from new month, skips month
+                if (
+                  item.length > 4 &&
+                  index > 13 &&
+                  index < tripDays.length - 12
+                )
+                  return item;
+              } else if (
+                tripDays.length > 378 &&
+                index > 13 &&
+                index < tripDays.length - 12
+              ) {
+                if (item.includes('Jan 1st')) {
+                  return item;
                 }
               }
 
