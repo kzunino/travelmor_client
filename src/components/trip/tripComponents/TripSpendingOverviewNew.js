@@ -176,7 +176,7 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
                 index > 13 &&
                 index < tripDays.length - 12
               ) {
-                if (item.includes('Jan 1st')) {
+                if (item.includes('Jan 1st') || item.includes('Jun')) {
                   return item;
                 }
               }
@@ -271,8 +271,8 @@ const TripSpendingOverview = ({match, getTrip, trip_data}) => {
               {name} - Spending Overview
             </Typography>
             <Typography variant='subtitle2'>
-              {Moment(start_date).format('MMM Do')} &ndash;{' '}
-              {Moment(end_date).format('MMM Do')}
+              {Moment(start_date).format('MMM Do, YYYY')} &ndash;{' '}
+              {Moment(end_date).format('MMM Do, YYYY')}
             </Typography>
             <Typography
               style={{marginTop: '1em', color: 'white'}}
